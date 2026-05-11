@@ -92,7 +92,7 @@
 <body class="text-slate-800 h-[100dvh] w-full flex justify-center overflow-hidden antialiased selection:bg-emerald-200">
 
     <!-- Başlangıç Yükleme Ekranı -->
-    <div id="loading-screen" class="absolute inset-0 bg-gradient-to-br from-emerald-900 to-emerald-800 z-[100] flex flex-col items-center justify-center text-white">
+    <div id="loading-screen" class="absolute inset-0 bg-gradient-to-br from-emerald-900 to-emerald-800 z-[200] flex flex-col items-center justify-center text-white">
         <div class="text-7xl animate-bounce mb-6 drop-shadow-[0_0_15px_rgba(251,191,36,0.5)]">🕌</div>
         <h1 class="text-3xl font-extrabold mb-2 tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-gold-400 to-yellow-200">Dijital Hazine</h1>
         <p class="text-emerald-200/80 text-sm font-medium tracking-wide">Premium Deneyim Yükleniyor...</p>
@@ -100,6 +100,60 @@
             <div class="w-3 h-3 bg-gold-400 rounded-full animate-bounce" style="animation-delay: 0s;"></div>
             <div class="w-3 h-3 bg-gold-400 rounded-full animate-bounce" style="animation-delay: 0.15s;"></div>
             <div class="w-3 h-3 bg-gold-400 rounded-full animate-bounce" style="animation-delay: 0.3s;"></div>
+        </div>
+    </div>
+
+    <!-- KVKK, KÜNYE, GİZLİLİK POLİTİKASI (TAM EKRAN KARŞILAMA MODALI) -->
+    <div id="modal-info" class="hidden absolute inset-0 bg-slate-900/90 z-[150] flex items-center justify-center p-4 backdrop-blur-md transition-opacity">
+        <div class="bg-white rounded-3xl shadow-2xl w-full max-w-md max-h-[90vh] h-full flex flex-col overflow-hidden animate-[slideUp_0.3s_ease-out]">
+            <!-- Header -->
+            <div class="bg-gradient-to-r from-emerald-800 to-emerald-900 text-white p-5 flex justify-between items-center shrink-0 shadow-md">
+                <h3 class="font-extrabold text-lg flex items-center gap-2"><span>📜</span> Uygulama Hakkında</h3>
+                <button onclick="infoModalKapat()" class="w-8 h-8 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center text-xl font-bold transition">&times;</button>
+            </div>
+            <!-- Content -->
+            <div class="p-6 overflow-y-auto flex-1 text-slate-600 text-sm space-y-6 bg-slate-50">
+                
+                <div class="text-center mb-2">
+                    <div class="text-5xl mb-2 drop-shadow-sm">🕌</div>
+                    <h2 class="font-black text-2xl text-emerald-800 tracking-tight">Dijital Hazine</h2>
+                    <p class="text-xs text-emerald-600 font-bold tracking-widest uppercase mt-1">Premium</p>
+                </div>
+
+                <div class="bg-white p-4 rounded-2xl border border-slate-100 shadow-sm">
+                    <h4 class="font-bold text-emerald-800 text-base mb-2 border-b border-slate-100 pb-2 flex items-center gap-2"><span>📌</span> Künye</h4>
+                    <ul class="space-y-1 mt-2">
+                        <li><strong>Geliştirici:</strong> KSY (Kamil Sinan)</li>
+                        <li><strong>Sürüm:</strong> 2.5.0 (PWA / Web App)</li>
+                        <li><strong>Altyapı:</strong> Google Firebase & IndexedDB</li>
+                    </ul>
+                </div>
+
+                <div class="bg-white p-4 rounded-2xl border border-slate-100 shadow-sm">
+                    <h4 class="font-bold text-emerald-800 text-base mb-2 border-b border-slate-100 pb-2 flex items-center gap-2"><span>🛡️</span> KVKK Aydınlatma Metni</h4>
+                    <p class="mt-2 text-justify leading-relaxed">
+                        6698 sayılı Kişisel Verilerin Korunması Kanunu ("KVKK") uyarınca, "Dijital Hazine" uygulaması içerisindeki kişisel kullanım verileriniz (okuduğunuz dualar, zikir hedefleri ve kaza namazı bilgileriniz) kural olarak <strong>sadece kendi cihazınızın yerel hafızasında (çevrimdışı olarak)</strong> barındırılır. Cihaz dışına istemsiz hiçbir veri aktarımı yapılmaz.
+                    </p>
+                </div>
+
+                <div class="bg-white p-4 rounded-2xl border border-slate-100 shadow-sm mb-4">
+                    <h4 class="font-bold text-emerald-800 text-base mb-2 border-b border-slate-100 pb-2 flex items-center gap-2"><span>🔒</span> Veri ve Gizlilik Politikası</h4>
+                    <p class="mt-2 mb-2">Uygulamamız mahremiyetinize en üst düzeyde önem verir:</p>
+                    <ul class="list-disc pl-5 space-y-2 text-justify leading-relaxed">
+                        <li><strong>Yerel Depolama:</strong> Verileriniz cihazınızda (IndexedDB) tutulur.</li>
+                        <li><strong>Bulut Senkronizasyonu (İsteğe Bağlı):</strong> Yalnızca kendi isteğinizle ayarlar bölümünden kayıt olursanız, verileriniz eşitleme amacıyla <strong>Google Firebase</strong> sunucularına şifreli olarak aktarılır. Şifreleriniz Google standartlarında korunur ve bizim tarafımızdan görülemez.</li>
+                        <li><strong>Üçüncü Partiler:</strong> Verileriniz hiçbir reklam, pazarlama veya üçüncü şahıs kurumuyla paylaşılmaz.</li>
+                        <li><strong>Konum Bilgisi:</strong> Pusula ve namaz vakti hesaplamaları için istenen anlık GPS konumu doğrudan cihazınızda işlenir, sunucularımızda izlenmez veya kaydedilmez.</li>
+                    </ul>
+                </div>
+                
+            </div>
+            <!-- Footer Button -->
+            <div class="p-4 bg-white border-t border-slate-100 shrink-0">
+                <button onclick="infoModalKapat()" class="w-full bg-emerald-600 text-white font-bold py-3.5 rounded-xl shadow-md active:scale-95 transition-transform flex justify-center items-center gap-2">
+                    <span>✅</span> Okudum, Anladım (Kapat)
+                </button>
+            </div>
         </div>
     </div>
 
@@ -228,7 +282,7 @@
                 <div class="flex justify-between items-center mb-6">
                     <h2 class="text-2xl font-extrabold text-slate-800 tracking-tight">Kütüphanem</h2>
                     <div class="flex gap-2">
-                        <button onclick="yedekModalAc()" class="bg-white text-slate-600 p-2.5 rounded-xl text-lg hover:bg-slate-50 shadow-sm transition active:scale-95 border border-slate-200" title="Yedekle / Yükle">⚙️</button>
+                        <button onclick="yedekModalAc()" class="bg-white text-slate-600 p-2.5 rounded-xl text-lg hover:bg-slate-50 shadow-sm transition active:scale-95 border border-slate-200" title="Ayarlar / Yedekle">⚙️</button>
                         <button onclick="modalAc()" class="bg-gradient-to-r from-emerald-600 to-emerald-500 text-white px-4 py-2.5 rounded-xl text-sm font-bold hover:shadow-md transition active:scale-95 flex items-center gap-1.5 shadow-sm border border-emerald-400">
                             <span class="text-lg leading-none">+</span> Yeni
                         </button>
@@ -317,7 +371,7 @@
 
         </div>
 
-        <!-- YENİ GLASSMORPHISM ALT NAVİGASYON -->
+        <!-- GLASSMORPHISM ALT NAVİGASYON -->
         <div class="absolute bottom-0 left-0 right-0 glass-panel border-t border-slate-200/60 flex justify-between items-center z-30 nav-container px-2 pt-2 shadow-[0_-10px_20px_rgba(0,0,0,0.03)]">
             <button onclick="sekmeyeGec('zikirmatik')" class="nav-btn active flex flex-col items-center justify-center w-1/5 h-14 text-slate-400 hover:text-emerald-600 transition-colors relative group" data-target="view-zikirmatik">
                 <span class="text-2xl mb-1 group-active:scale-90 transition-transform">📿</span>
@@ -346,7 +400,7 @@
             </button>
         </div>
 
-        <!-- MODALLAR (Premium Stilleri Uygulandı) -->
+        <!-- MODALLAR -->
         
         <!-- CRUD MODAL -->
         <div id="modal-crud" class="hidden absolute inset-0 bg-slate-900/60 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 backdrop-blur-sm transition-opacity">
@@ -478,7 +532,7 @@
         <div id="modal-yedek" class="hidden absolute inset-0 bg-slate-900/60 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 backdrop-blur-sm">
             <div class="bg-white rounded-t-3xl sm:rounded-3xl shadow-2xl w-full max-w-sm flex flex-col overflow-hidden max-h-[95vh] animate-[slideUp_0.3s_ease-out]">
                 <div class="bg-slate-800 text-white p-5 flex justify-between items-center">
-                    <h3 class="font-bold text-lg">Yedekleme & Bulut</h3>
+                    <h3 class="font-bold text-lg">Ayarlar & Yedekleme</h3>
                     <button onclick="yedekModalKapat()" class="text-white text-2xl leading-none">&times;</button>
                 </div>
                 <div class="p-6 text-center overflow-y-auto bg-slate-50">
@@ -488,16 +542,18 @@
                         <button onclick="document.getElementById('yedek-dosya-secici').click()" class="w-full bg-blue-600 text-white font-bold py-3.5 rounded-xl shadow-md flex items-center justify-center gap-2"><span>⬆️</span> Geri Yükle</button>
                     </div>
 
-                    <div class="mt-8 pt-6 border-t border-slate-200 text-left">
+                    <div class="mt-6 pt-5 border-t border-slate-200 text-left">
                         <h4 class="font-extrabold text-slate-800 text-sm flex items-center gap-2 mb-3"><span class="text-xl">☁️</span> Bulut Senkronizasyonu</h4>
                         <div id="cloud-offline-warning" class="bg-amber-50 text-amber-800 p-4 rounded-xl text-xs border border-amber-200">
-                            <strong>Bağlantı Yok:</strong> Firebase ayarları eksik (GITHUB_FIREBASE_CONFIG).
+                            <strong>Bağlantı Yok:</strong> Firebase ayarları eksik.
                         </div>
                         <div id="cloud-auth-section" class="hidden">
                             <div id="auth-logged-out" class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
-                                <input type="email" id="auth-email" placeholder="E-posta adresiniz" class="w-full p-3 text-sm bg-slate-50 border border-slate-200 rounded-lg mb-3 outline-none focus:border-emerald-500">
-                                <input type="password" id="auth-pass" placeholder="Şifreniz" class="w-full p-3 text-sm bg-slate-50 border border-slate-200 rounded-lg mb-4 outline-none focus:border-emerald-500">
-                                <button onclick="bulutGirisYap(event)" class="w-full bg-slate-800 text-white font-bold py-3 rounded-lg shadow-md active:scale-95 text-sm">Giriş Yap / Kayıt Ol</button>
+                                <form onsubmit="bulutGirisYap(event)" class="flex flex-col">
+                                    <input type="email" id="auth-email" name="email" autocomplete="email" placeholder="E-posta adresiniz" class="w-full p-3 text-sm bg-slate-50 border border-slate-200 rounded-lg mb-3 outline-none focus:border-emerald-500" required>
+                                    <input type="password" id="auth-pass" name="password" autocomplete="current-password" placeholder="Şifreniz" class="w-full p-3 text-sm bg-slate-50 border border-slate-200 rounded-lg mb-4 outline-none focus:border-emerald-500" required>
+                                    <button type="submit" id="btn-auth-submit" class="w-full bg-slate-800 text-white font-bold py-3 rounded-lg shadow-md active:scale-95 text-sm transition-transform">Giriş Yap / Kayıt Ol</button>
+                                </form>
                             </div>
                             <div id="auth-logged-in" class="hidden text-center bg-white p-4 rounded-xl border border-emerald-100 shadow-sm">
                                 <div class="text-3xl mb-2">✅</div>
@@ -507,11 +563,19 @@
                             </div>
                         </div>
                     </div>
+
+                    <!-- YENİ: BİLGİLENDİRME (KVKK) AÇMA BUTONU -->
+                    <div class="mt-6 pt-5 border-t border-slate-200">
+                        <button onclick="infoModalAc()" class="w-full bg-slate-200 text-slate-700 font-bold py-3 rounded-xl hover:bg-slate-300 transition text-sm flex items-center justify-center gap-2">
+                            <span>📄</span> KVKK, Gizlilik ve Künye
+                        </button>
+                    </div>
+
                 </div>
             </div>
         </div>
 
-        <!-- KIBLE PUSULASI MODALI (Premium Design) -->
+        <!-- KIBLE PUSULASI MODALI -->
         <div id="modal-kible" class="hidden absolute inset-0 bg-slate-900 z-50 flex flex-col items-center justify-start p-6">
             <div class="w-full flex justify-between items-center mt-2 mb-6">
                 <h3 class="font-extrabold text-2xl text-white tracking-tight">Kıble Pusulası</h3>
@@ -523,12 +587,9 @@
             </div>
 
             <div class="relative w-80 h-80 mb-10 flex justify-center items-center">
-                <!-- Sabit Ok -->
                 <div class="absolute -top-8 text-gold-400 text-3xl z-40 drop-shadow-[0_0_10px_rgba(251,191,36,0.8)] animate-pulse">▼</div>
                 
-                <!-- Dönen Kadran -->
                 <div id="pusula-kadran" class="compass-needle absolute w-full h-full rounded-full border-[6px] border-emerald-500/30 bg-slate-800/80 backdrop-blur-xl shadow-[0_0_50px_rgba(16,185,129,0.15)] overflow-hidden" style="transform: rotate(0deg);">
-                    <!-- Çizgiler -->
                     <div class="absolute inset-0 flex flex-col items-center justify-start z-10 opacity-80"><div class="w-1.5 h-12 bg-red-500 mt-6 rounded-b-full"></div></div>
                     <div class="absolute inset-0 flex flex-col items-center py-1"><span class="text-emerald-400 font-bold text-xl mt-1">K</span></div>
                     <div class="absolute inset-0 flex flex-col items-center py-2" style="transform: rotate(30deg);"><span class="text-slate-500 font-bold text-[10px] mt-3">30°</span></div>
@@ -543,7 +604,6 @@
                     <div class="absolute inset-0 flex flex-col items-center py-2" style="transform: rotate(300deg);"><span class="text-slate-500 font-bold text-[10px] mt-3 rotate-90">300°</span></div>
                     <div class="absolute inset-0 flex flex-col items-center py-2" style="transform: rotate(330deg);"><span class="text-slate-500 font-bold text-[10px] mt-3 rotate-90">330°</span></div>
                     
-                    <!-- Kıble İğnesi -->
                     <div id="pusula-igne" class="compass-needle absolute inset-0 flex flex-col items-center justify-start z-30" style="transform: rotate(0deg);">
                         <div id="mekke-ikon" class="mekke-anim text-[3.5rem] z-40 mt-8 drop-shadow-2xl" style="filter: drop-shadow(0 0 15px rgba(251,191,36,0.6)); transform: rotate(0deg);">🕋</div>
                         <div class="w-2 h-20 bg-gradient-to-b from-gold-400 to-transparent -mt-2 rounded-full relative shadow-lg"></div>
@@ -578,7 +638,6 @@
 
     <!-- JAVASCRIPT: FIREBASE & CORE LOGIC -->
     <script type="module">
-        // Firebase Config Bilgilerinizi Buraya Ekledik
         const GITHUB_FIREBASE_CONFIG = {
             apiKey: "AIzaSyCsIHOJqn-6HfjvzLTkLO69In6UtLaaawY",
             authDomain: "duahazinem-9ec06.firebaseapp.com",
@@ -590,7 +649,7 @@
         };
 
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInAnonymously, onAuthStateChanged, signInWithCustomToken, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getAuth, signInAnonymously, onAuthStateChanged, signInWithCustomToken, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, collection, doc, setDoc, getDoc, getDocs, deleteDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
         window.xssKoru = (str) => {
@@ -670,9 +729,16 @@
                 if (fConfig) {
                     document.getElementById('cloud-offline-warning').classList.add('hidden');
                     document.getElementById('cloud-auth-section').classList.remove('hidden');
-                    const app = initializeApp(fConfig); auth = getAuth(app); firestoreDb = getFirestore(app);
+                    
+                    const app = initializeApp(fConfig); 
+                    auth = getAuth(app); 
+                    firestoreDb = getFirestore(app);
+
+                    try { await setPersistence(auth, browserLocalPersistence); } catch(err) { console.error("Kalıcı oturum hatası:", err); }
+
                     if (!GITHUB_FIREBASE_CONFIG && typeof __initial_auth_token !== 'undefined' && __initial_auth_token) { await signInWithCustomToken(auth, __initial_auth_token).catch(()=>{}); } 
                     else if (!GITHUB_FIREBASE_CONFIG) { await signInAnonymously(auth).catch(()=>{}); }
+                    
                     onAuthStateChanged(auth, async (u) => {
                         currentUser = u;
                         if (u) {
@@ -683,10 +749,25 @@
                         } else {
                             isCloudConnected = false; document.getElementById('auth-logged-out').classList.remove('hidden'); document.getElementById('auth-logged-in').classList.add('hidden');
                         }
+                        
+                        // Sistem Hazır
                         document.getElementById('loading-screen').classList.add('hidden');
+                        
+                        // YENİ: İlk girişte KVKK (Yasal Bilgi) ekranını göster
+                        if (!localStorage.getItem('hazine_policy_accepted')) {
+                            window.infoModalAc();
+                        }
                     });
-                } else { document.getElementById('loading-screen').classList.add('hidden'); }
-            } catch (e) { document.getElementById('loading-screen').classList.add('hidden'); }
+                } else { 
+                    document.getElementById('loading-screen').classList.add('hidden'); 
+                    if (!localStorage.getItem('hazine_policy_accepted')) {
+                        window.infoModalAc();
+                    }
+                }
+            } catch (e) { 
+                document.getElementById('loading-screen').classList.add('hidden'); 
+                if (!localStorage.getItem('hazine_policy_accepted')) window.infoModalAc();
+            }
         };
 
         const saveLocalState = async () => { await idb.set('state', JSON.stringify({ aktifZikirId, sayac, zikirMode, freeSayac, freeHedef, ulke, sehir, kazaDurumu })); };
@@ -710,13 +791,33 @@
         };
 
         window.bulutGirisYap = async (event) => {
-            const email = document.getElementById('auth-email').value.trim(); const pass = document.getElementById('auth-pass').value.trim();
+            event.preventDefault();
+            const email = document.getElementById('auth-email').value.trim(); 
+            const pass = document.getElementById('auth-pass').value.trim();
             if(!email || !pass) return window.toastGoster("E-posta ve şifre giriniz.", "error");
-            const btn = event.target; btn.innerText = "⏳ Bekleyiniz...";
-            try { await signInWithEmailAndPassword(auth, email, pass); window.toastGoster("Giriş yapıldı, verileriniz yüklendi.", "success"); } 
-            catch(err) { try { await createUserWithEmailAndPassword(auth, email, pass); await window.syncAllToCloud(); window.toastGoster("Hesap oluşturuldu, veriler buluta kopyalandı!", "success"); } catch(err2) { window.toastGoster("Hata: " + err2.message, "error"); } }
-            btn.innerText = "Giriş Yap / Kayıt Ol";
+            
+            const btn = document.getElementById('btn-auth-submit'); 
+            const eskiMetin = btn.innerText; 
+            btn.innerText = "⏳ Bekleyiniz..."; 
+            btn.disabled = true;
+            
+            try { 
+                await signInWithEmailAndPassword(auth, email, pass); 
+                window.toastGoster("Giriş yapıldı, verileriniz yüklendi.", "success"); 
+            } 
+            catch(err) { 
+                try { 
+                    await createUserWithEmailAndPassword(auth, email, pass); 
+                    await window.syncAllToCloud(); 
+                    window.toastGoster("Hesap oluşturuldu, veriler buluta kopyalandı!", "success"); 
+                } catch(err2) { 
+                    window.toastGoster("Hata: " + err2.message, "error"); 
+                } 
+            }
+            btn.innerText = eskiMetin; 
+            btn.disabled = false;
         };
+
         window.bulutCikisYap = async () => { await signOut(auth); window.toastGoster("Çıkış yapıldı.", "info"); };
 
         window.sekmeyeGec = (hedef) => {
@@ -934,6 +1035,13 @@
                     }
                 } catch(err) { window.toastGoster("Bozuk yedek.", "error"); }
             }; reader.readAsText(file);
+        };
+
+        // YENİ: YASAL BİLGİ MODALI KONTROLLERİ
+        window.infoModalAc = () => { document.getElementById('modal-info').classList.remove('hidden'); };
+        window.infoModalKapat = () => { 
+            localStorage.setItem('hazine_policy_accepted', 'true'); // Tekrar çıkmaması için onayı kaydet
+            document.getElementById('modal-info').classList.add('hidden'); 
         };
 
         window.konumMetinleriniGuncelle = () => { document.getElementById('header-konum').innerText = `${sehir}, ${ulke}`; document.getElementById('vakit-konum-metni').innerHTML = `<span class="font-bold text-slate-700">${sehir}</span>, ${ulke}`; };
