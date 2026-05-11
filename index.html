@@ -184,7 +184,7 @@
                 </div>
             </div>
 
-            <!-- 4. NAMAZ VAKİTLERİ EKRANI -->
+            <!-- 4. NAMAZ VAKİTLERİ VE NAFİLE NAMAZLAR EKRANI -->
             <div id="view-vakitler" class="tab-content flex-col p-5">
                 
                 <div class="flex gap-2 mb-4">
@@ -219,6 +219,9 @@
                     <p class="text-sm text-emerald-800 font-medium">Bir Sonraki Vakit:</p>
                     <div class="text-2xl font-bold text-emerald-900 mt-1" id="kalan-sure">Hesaplanıyor...</div>
                 </div>
+
+                <!-- CANLI NAFİLE NAMAZLAR KARTI -->
+                <div id="nafile-namaz-karti" class="mt-4 bg-white p-4 rounded-xl border border-gray-100 shadow-sm hidden transition-all"></div>
 
                 <button onclick="kibleModalAc()" class="w-full mt-6 bg-gray-800 text-white font-bold py-4 rounded-xl shadow-lg hover:bg-gray-900 transition flex items-center justify-center gap-2 active:scale-95">
                     <span class="text-2xl">🧭</span> Kıble Pusulası
@@ -339,7 +342,7 @@
             </div>
         </div>
 
-        <!-- DİNİ GÜNLER MODALI (DİNAMİK) -->
+        <!-- DİNİ GÜNLER MODALI -->
         <div id="modal-dinigunler" class="hidden absolute inset-0 bg-gray-900 bg-opacity-60 z-50 flex items-center justify-center p-4 backdrop-blur-sm">
             <div class="bg-white rounded-2xl shadow-2xl w-full max-w-sm flex flex-col overflow-hidden max-h-[85vh]">
                 <div class="bg-blue-700 text-white p-4 flex justify-between items-center">
@@ -490,7 +493,7 @@
 
     </div>
 
-    <!-- JAVASCRIPT: Firebase Cloud + IndexedDB + Kerahat + İmsakiye + Dini Günler (Dinamik) -->
+    <!-- JAVASCRIPT -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInAnonymously, onAuthStateChanged, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
@@ -694,7 +697,6 @@
             } catch (e) {}
         };
 
-
         window.sekmeyeGec = (hedef) => {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
             const h = document.getElementById('view-' + hedef);
@@ -721,7 +723,7 @@
             }, 1000);
         };
 
-        // --- ZİKİRMATİK MANTIĞI ---
+        // --- ZİKİRMATİK ---
         window.zikirModDegistir = (mod, kaydetVeSenkronizeEt = true) => {
             zikirMode = mod;
             const btnKut = document.getElementById('btn-mode-kutuphane');
@@ -1049,7 +1051,7 @@
             ulke = yU; sehir = yS; saveLocalState(); syncToCloud(); window.konumMetinleriniGuncelle(); window.konumModalKapat(); window.vakitleriGetir();
         };
 
-        // --- DİNİ GÜNLER DİNAMİK HESAPLAMA MOTORU ---
+        // --- DİNİ GÜNLER ---
         window.diniGunleriHesapla = (yil) => {
             const holidays = [];
             const baslangic = new Date(yil, 0, 1);
@@ -1100,54 +1102,31 @@
                 }
 
                 gunler.forEach(g => {
-                    let colorClass = "";
-                    let bgClass = "bg-gray-100";
-                    
-                    if (g.color === "emerald") {
-                        colorClass = "text-emerald-700 font-bold";
-                        bgClass = "bg-emerald-100 border border-emerald-200";
-                    } else if (g.color === "blue") {
-                        colorClass = "text-blue-700 font-bold";
-                        bgClass = "bg-blue-100 border border-blue-200";
-                    }
+                    let colorClass = ""; let bgClass = "bg-gray-100";
+                    if (g.color === "emerald") { colorClass = "text-emerald-700 font-bold"; bgClass = "bg-emerald-100 border border-emerald-200"; } 
+                    else if (g.color === "blue") { colorClass = "text-blue-700 font-bold"; bgClass = "bg-blue-100 border border-blue-200"; }
                     
                     const tarihStr = `${g.date.getDate()} ${aylar[g.date.getMonth()]} ${g.date.getFullYear()}`;
-                    
-                    liste.innerHTML += `
-                        <li class="py-3 flex justify-between items-center ${colorClass}">
-                            <span>${g.name}</span>
-                            <span class="font-bold ${bgClass} px-2 py-1 rounded text-xs shadow-sm">${tarihStr}</span>
-                        </li>
-                    `;
+                    liste.innerHTML += `<li class="py-3 flex justify-between items-center ${colorClass}"><span>${g.name}</span><span class="font-bold ${bgClass} px-2 py-1 rounded text-xs shadow-sm">${tarihStr}</span></li>`;
                 });
             }, 50);
         };
 
-        window.diniGunlerYiliDegisti = (yil) => {
-            window.diniGunlerEkraniDoldur(parseInt(yil));
-        };
-
+        window.diniGunlerYiliDegisti = (yil) => { window.diniGunlerEkraniDoldur(parseInt(yil)); };
         window.diniGunlerModalAc = () => {
             const currentYear = new Date().getFullYear();
             const secici = document.getElementById('dini-gunler-yil-secici');
-            
             if (secici.options.length === 0) {
                 for(let y = currentYear - 2; y <= currentYear + 5; y++) {
-                    let opt = document.createElement('option');
-                    opt.value = y;
-                    opt.text = y;
-                    if(y === currentYear) opt.selected = true;
-                    secici.appendChild(opt);
+                    let opt = document.createElement('option'); opt.value = y; opt.text = y; if(y === currentYear) opt.selected = true; secici.appendChild(opt);
                 }
             }
-            
             document.getElementById('modal-dinigunler').classList.remove('hidden');
             window.diniGunlerEkraniDoldur(parseInt(secici.value));
         };
-
         window.diniGunlerModalKapat = () => document.getElementById('modal-dinigunler').classList.add('hidden');
 
-        // --- İMSAKİYE MODAL ---
+        // --- İMSAKİYE ---
         window.imsakiyeModalAc = async () => {
             document.getElementById('modal-imsakiye').classList.remove('hidden');
             document.getElementById('imsakiye-yukleniyor').classList.remove('hidden');
@@ -1156,9 +1135,7 @@
             tbody.innerHTML = "";
 
             try {
-                const d = new Date();
-                const m = d.getMonth() + 1;
-                const y = d.getFullYear();
+                const d = new Date(); const m = d.getMonth() + 1; const y = d.getFullYear();
                 const todayStr = String(d.getDate()).padStart(2, '0') + '-' + String(m).padStart(2, '0') + '-' + y;
 
                 const res = await fetch(`https://api.aladhan.com/v1/calendarByCity?city=${encodeURIComponent(sehir)}&country=${encodeURIComponent(ulke)}&method=13&month=${m}&year=${y}`);
@@ -1183,13 +1160,11 @@
                     document.getElementById('imsakiye-yukleniyor').classList.add('hidden');
                     document.getElementById('imsakiye-tablo-kapsayici').classList.remove('hidden');
                 } else throw new Error();
-            } catch (e) {
-                document.getElementById('imsakiye-yukleniyor').innerHTML = "❌ Veri çekilemedi.";
-            }
+            } catch (e) { document.getElementById('imsakiye-yukleniyor').innerHTML = "❌ Veri çekilemedi."; }
         };
         window.imsakiyeModalKapat = () => document.getElementById('modal-imsakiye').classList.add('hidden');
 
-        // --- KERAHAT VE VAKİT HESAPLAMA ---
+        // --- KERAHAT VE CANLI NAFİLE NAMAZ HESAPLAMA ---
         window.kerahatKontrol = () => {
             if(!window.namazVakitleri) return;
             const s = new Date();
@@ -1228,10 +1203,117 @@
             if(vakitBanner) { vakitBanner.innerHTML = bannerHtml; vakitBanner.classList.remove('hidden'); }
         };
 
+        window.nafileNamazlariHesapla = () => {
+            if(!window.namazVakitleri) return;
+            const s = new Date();
+            const simdi = s.getHours() * 60 + s.getMinutes();
+
+            const parseTime = (timeStr) => {
+                const [h, m] = timeStr.split(':').map(Number);
+                return h * 60 + m;
+            };
+
+            const imsak = parseTime(window.namazVakitleri.Fajr);
+            const gunes = parseTime(window.namazVakitleri.Sunrise);
+            const ogle = parseTime(window.namazVakitleri.Dhuhr);
+            const ikindi = parseTime(window.namazVakitleri.Asr);
+            const aksam = parseTime(window.namazVakitleri.Maghrib);
+            const yatsi = parseTime(window.namazVakitleri.Isha);
+
+            // Gerçek Kerahat Kontrolü (Güneş doğuş, Zeval, Güneş batış)
+            let isKerahat = false;
+            if ((simdi >= gunes && simdi < gunes + 45) ||
+                (simdi >= ogle - 45 && simdi < ogle) ||
+                (simdi >= aksam - 45 && simdi < aksam)) {
+                isKerahat = true;
+            }
+
+            const nafileListesi = [];
+
+            if (!isKerahat) {
+                // Teheccüd
+                if (simdi >= yatsi || simdi < imsak) {
+                    nafileListesi.push({
+                        ad: "Teheccüd Namazı",
+                        rekat: "2 - 12 Rekat",
+                        tarif: "Yatsı namazından sonra uyunup uyanıldıktan sonra imsak vaktine kadar kılınan çok faziletli gece namazıdır."
+                    });
+                }
+                // İşrak / Kuşluk
+                if (simdi >= gunes + 45 && simdi < ogle - 45) {
+                    nafileListesi.push({
+                        ad: "İşrak / Kuşluk Namazı",
+                        rekat: "2 - 12 Rekat",
+                        tarif: "Güneş doğup 45 dakika yükseldikten sonra başlar, zeval vaktine (öğleye 45 dk kala) kadar kılınabilir."
+                    });
+                }
+                // Evvabin
+                if (simdi >= aksam && simdi < yatsi) {
+                    nafileListesi.push({
+                        ad: "Evvâbîn Namazı",
+                        rekat: "2 - 6 Rekat",
+                        tarif: "Akşam namazının sünnetinden sonra, yatsı namazı vaktine kadar kılınan ve günahların affına vesile olan namazdır."
+                    });
+                }
+                
+                // Genel durumlarda (İkindi fardı kılındıktan sonra akşam vaktine kadar veya sabah fardından sonra güneş doğana kadar nafile mekruhtur ama biz saat bazlı basitleştirelim)
+                if ((simdi >= imsak && simdi < gunes) || (simdi >= ikindi && simdi < aksam)) {
+                    // Bu aralıklarda sünnetler hariç yeni nafile kılınması genelde mekruh görülür.
+                } else {
+                    nafileListesi.push({
+                        ad: "Abdest Şükür / Hacet / Tövbe",
+                        rekat: "2 Rekat",
+                        tarif: "Kerahat vakitleri hariç günün her saatinde abdest aldıktan sonra şükür için veya bir dilek/tövbe için kılınabilir."
+                    });
+                }
+            }
+
+            const kart = document.getElementById('nafile-namaz-karti');
+            if(!kart) return;
+
+            if (isKerahat) {
+                kart.innerHTML = `
+                    <div class="flex items-center gap-2 mb-2">
+                        <span class="text-xl">🚫</span>
+                        <h3 class="font-bold text-red-800">Şu An Nafile Namaz Kılınmaz</h3>
+                    </div>
+                    <p class="text-xs text-red-600">İçinde bulunduğumuz zaman dilimi kerahat vaktidir. Bu vakitte hiçbir nafile namaz kılınması mekruhtur.</p>
+                `;
+                kart.className = "mt-4 bg-red-50 p-4 rounded-xl border border-red-100 shadow-sm";
+            } else if (nafileListesi.length > 0) {
+                let html = `
+                    <div class="flex items-center gap-2 mb-3">
+                        <span class="text-xl">✨</span>
+                        <h3 class="font-bold text-emerald-800">Şu An Kılınabilecek Nafileler</h3>
+                    </div>
+                    <div class="flex flex-col gap-3">
+                `;
+                nafileListesi.forEach(n => {
+                    html += `
+                        <div class="border-l-2 border-emerald-500 pl-3">
+                            <div class="flex justify-between items-center mb-1">
+                                <span class="font-bold text-gray-800 text-sm">${n.ad}</span>
+                                <span class="text-[10px] font-bold bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded shadow-sm">${n.rekat}</span>
+                            </div>
+                            <p class="text-[11px] text-gray-500 leading-tight">${n.tarif}</p>
+                        </div>
+                    `;
+                });
+                html += `</div>`;
+                kart.innerHTML = html;
+                kart.className = "mt-4 bg-white p-4 rounded-xl border border-gray-100 shadow-sm";
+            } else {
+                kart.classList.add('hidden');
+                return;
+            }
+            kart.classList.remove('hidden');
+        };
+
         window.vakitleriGetir = async () => {
             document.getElementById('vakit-yukleniyor').classList.remove('hidden');
             document.getElementById('vakit-grid').classList.add('hidden');
             document.getElementById('sonraki-vakit-karti').classList.add('hidden');
+            document.getElementById('nafile-namaz-karti').classList.add('hidden');
             try {
                 const res = await fetch(`https://api.aladhan.com/v1/timingsByCity?city=${encodeURIComponent(sehir)}&country=${encodeURIComponent(ulke)}&method=13`);
                 const data = await res.json();
@@ -1248,8 +1330,10 @@
                     document.getElementById('vakit-yukleniyor').classList.add('hidden');
                     grid.classList.remove('hidden');
                     document.getElementById('sonraki-vakit-karti').classList.remove('hidden');
-                    window.sonrakiVaktiHesapla();
+                    
                     window.kerahatKontrol();
+                    window.nafileNamazlariHesapla();
+                    window.sonrakiVaktiHesapla();
                 } else throw new Error();
             } catch (err) { document.getElementById('vakit-yukleniyor').innerHTML = "❌ Hatalı şehir veya internet yok."; }
         };
@@ -1271,7 +1355,10 @@
                 }
                 if(!bulundu) document.getElementById('kalan-sure').innerText = "İmsak bekleniyor...";
                 
-                if(s.getSeconds() === 0) window.kerahatKontrol();
+                if(s.getSeconds() === 0) {
+                    window.kerahatKontrol();
+                    window.nafileNamazlariHesapla();
+                }
             }, 1000); 
         };
 
