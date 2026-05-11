@@ -136,7 +136,7 @@
         <div class="flex-1 overflow-y-auto relative scroll-smooth pb-6" id="main-scroll">
 
             <!-- 1. ZİKİRMATİK EKRANI -->
-            <div id="view-zikirmatik" class="tab-content active flex-col items-center justify-start px-5 pt-6 pb-2 min-h-full">
+            <div id="view-zikirmatik" class="tab-content active flex-col items-center justify-start px-5 pt-6 pb-28 min-h-full">
                 
                 <!-- Mod Seçici -->
                 <div class="flex bg-slate-200/70 p-1.5 rounded-2xl mb-6 w-full flex-none shadow-inner relative">
@@ -161,7 +161,7 @@
                     </div>
                 </div>
 
-                <!-- Dua Detay Kartı (Sadece Kütüphanede) -->
+                <!-- Dua Detay Kartı -->
                 <div id="zikir-detay" class="w-full bg-white p-6 rounded-3xl shadow-lg shadow-slate-200/50 border border-slate-100 text-center mb-6 mt-4 relative hidden transition-all">
                     <div class="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-emerald-500 to-teal-500 text-white text-[10px] font-bold uppercase tracking-widest px-4 py-1.5 rounded-full shadow-md" id="z-kategori">Kategori</div>
                     <h2 id="z-baslik" class="text-xl font-bold mt-3 mb-5 text-slate-800">Başlık</h2>
@@ -210,7 +210,7 @@
                 </div>
 
                 <!-- Alt Kontroller -->
-                <div class="grid grid-cols-3 gap-4 w-full mt-auto mb-2">
+                <div class="grid grid-cols-3 gap-2 sm:gap-4 w-full mt-auto mb-2">
                     <button id="btn-dinle" onclick="sesliOku()" class="bg-white text-blue-600 font-bold py-3.5 rounded-2xl border border-slate-200 hover:bg-blue-50 transition-all shadow-sm flex flex-col items-center gap-1.5 active:scale-95 group">
                         <span class="text-2xl group-active:scale-110 transition-transform">🔊</span> <span class="text-[10px] uppercase tracking-wider">Dinle</span>
                     </button>
@@ -224,7 +224,7 @@
             </div>
 
             <!-- 2. KÜTÜPHANE -->
-            <div id="view-kutuphane" class="tab-content flex-col px-5 pt-6 pb-24">
+            <div id="view-kutuphane" class="tab-content flex-col px-5 pt-6 pb-28">
                 <div class="flex justify-between items-center mb-6">
                     <h2 class="text-2xl font-extrabold text-slate-800 tracking-tight">Kütüphanem</h2>
                     <div class="flex gap-2">
@@ -244,7 +244,7 @@
             </div>
 
             <!-- 3. KAZA NAMAZLARI EKRANI -->
-            <div id="view-kaza" class="tab-content flex-col px-5 pt-6 pb-24">
+            <div id="view-kaza" class="tab-content flex-col px-5 pt-6 pb-28">
                 <div class="flex justify-between items-center mb-6">
                     <h2 class="text-2xl font-extrabold text-slate-800 tracking-tight">Kazalarım</h2>
                     <button onclick="kazaTopluAyarModalAc()" class="bg-white text-emerald-700 px-3 py-2 rounded-xl text-xs font-bold hover:bg-emerald-50 shadow-sm transition active:scale-95 border border-emerald-200 flex items-center gap-1">
@@ -260,7 +260,7 @@
             </div>
 
             <!-- 4. VAKİTLER VE PUSULA EKRANI -->
-            <div id="view-vakitler" class="tab-content flex-col px-5 pt-6 pb-24">
+            <div id="view-vakitler" class="tab-content flex-col px-5 pt-6 pb-28">
                 
                 <div class="grid grid-cols-2 gap-3 mb-6">
                     <button onclick="imsakiyeModalAc()" class="bg-white text-emerald-700 py-3.5 rounded-2xl font-bold border border-emerald-100 hover:bg-emerald-50 transition active:scale-95 shadow-sm text-sm flex items-center justify-center gap-2"><span>📅</span> İmsakiye</button>
@@ -302,7 +302,7 @@
             </div>
 
             <!-- 5. RAPORLAR EKRANI -->
-            <div id="view-raporlar" class="tab-content flex-col px-5 pt-6 pb-24">
+            <div id="view-raporlar" class="tab-content flex-col px-5 pt-6 pb-28">
                 <div class="flex justify-between items-center mb-6">
                     <h2 class="text-2xl font-extrabold text-slate-800 tracking-tight">Geçmiş</h2>
                     <button onclick="csvIndir()" class="bg-slate-800 text-white px-4 py-2 rounded-xl text-xs font-bold hover:bg-slate-700 shadow-md transition active:scale-95 flex items-center gap-1.5">
@@ -391,7 +391,6 @@
             </div>
         </div>
 
-        <!-- DİĞER MODALLAR (AYNI MANTIKLA STİLLENDİRİLDİ) -->
         <!-- KONUM SEÇİM MODALI -->
         <div id="modal-konum" class="hidden absolute inset-0 bg-slate-900/60 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 backdrop-blur-sm">
             <div class="bg-white rounded-t-3xl sm:rounded-3xl shadow-2xl w-full max-w-sm flex flex-col overflow-hidden animate-[slideUp_0.3s_ease-out]">
@@ -579,7 +578,16 @@
 
     <!-- JAVASCRIPT: FIREBASE & CORE LOGIC -->
     <script type="module">
-        const GITHUB_FIREBASE_CONFIG = null; 
+        // Firebase Config Bilgilerinizi Buraya Ekledik
+        const GITHUB_FIREBASE_CONFIG = {
+            apiKey: "AIzaSyCsIHOJqn-6HfjvzLTkLO69In6UtLaaawY",
+            authDomain: "duahazinem-9ec06.firebaseapp.com",
+            projectId: "duahazinem-9ec06",
+            storageBucket: "duahazinem-9ec06.firebasestorage.app",
+            messagingSenderId: "292700906572",
+            appId: "1:292700906572:web:38d6c74a17d8c2946280e9",
+            measurementId: "G-T9TYWMWB91"
+        };
 
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInAnonymously, onAuthStateChanged, signInWithCustomToken, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
@@ -803,8 +811,14 @@
         window.sayaciSifirla = () => { window.onayIste("Sayacı Sıfırla", "Mevcut sayacınızı sıfırlamak istiyor musunuz? Bu işlem geri alınamaz.", "🔄", () => { if (zikirMode === 'kutuphane') sayac = 0; else freeSayac = 0; saveLocalState(); syncToCloud(); window.zikirEkraniGuncelle(); window.toastGoster("Sayaç sıfırlandı.", "info"); }); };
         window.zikriKaydet = async () => {
             let baslikStr = "", kaydedilecekSayi = 0;
-            if (zikirMode === 'kutuphane') { if(sayac === 0) return window.toastGoster("Okuma yok.", "error"); const zikir = dbData.find(d => String(d.id) === String(aktifZikirId)); baslikStr = zikir.baslik; kaydedilecekSayi = sayac; sayac = 0; } 
-            else { if(freeSayac === 0) return window.toastGoster("Okuma yok.", "error"); baslikStr = "Serbest Zikir"; kaydedilecekSayi = freeSayac; freeSayac = 0; }
+            if (zikirMode === 'kutuphane') {
+                if(sayac === 0) return window.toastGoster("Okuma yok.", "error");
+                const zikir = dbData.find(d => String(d.id) === String(aktifZikirId));
+                baslikStr = zikir.baslik; kaydedilecekSayi = sayac; sayac = 0;
+            } else {
+                if(freeSayac === 0) return window.toastGoster("Okuma yok.", "error");
+                baslikStr = "Serbest Zikir"; kaydedilecekSayi = freeSayac; freeSayac = 0;
+            }
             const kayitObj = { id: String(Date.now()), baslik: baslikStr, sayi: kaydedilecekSayi, tarih: new Date().toLocaleString('tr-TR') };
             kayitlar.unshift(kayitObj); await idb.set('kayitlar', JSON.stringify(kayitlar));
             if (isCloudConnected && currentUser) setDoc(doc(firestoreDb, 'artifacts', appId, 'users', currentUser.uid, 'kayitlar', kayitObj.id), kayitObj);
