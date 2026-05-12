@@ -217,6 +217,10 @@
                             <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-0.5">İlerleme</span>
                             <span id="hedef-metin" class="text-slate-700 font-bold text-lg">0 / 0</span>
                         </div>
+                        <div class="text-center">
+                            <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-0.5">Süre</span>
+                            <span id="zikir-suresi" class="text-slate-600 font-bold text-sm bg-white px-2 py-1 rounded-lg border border-slate-200 shadow-sm font-mono">00:00</span>
+                        </div>
                         <div class="text-right bg-red-50 px-3 py-1 rounded-lg border border-red-100">
                             <span class="text-[10px] font-bold text-red-500 uppercase tracking-wider block">Kalan</span>
                             <span id="hedef-kalan" class="text-red-600 font-extrabold text-lg leading-none">0</span>
@@ -229,11 +233,7 @@
                     </div>
                 </div>
 
-                <div class="relative w-full flex justify-center mb-6 mt-2">
-                    <div id="z-sayac" class="text-[4.5rem] leading-none font-black text-slate-800 w-full py-6 rounded-[2rem] bg-white border border-slate-100 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08),inset_0_-4px_10px_rgba(0,0,0,0.02)] text-center no-select transition-all duration-300 font-mono tracking-tighter z-10 relative overflow-hidden">
-                        0
-                    </div>
-                </div>
+                <div class="relative w-full flex justify-center mb-8 mt-2">
 
                 <div class="flex-1 w-full flex items-center justify-center mb-6 mt-auto">
                     <button onclick="window.zikirArtir()" class="relative w-48 h-48 rounded-full bg-gradient-to-b from-emerald-400 to-emerald-700 btn-3d flex items-center justify-center group outline-none no-select touch-manipulation">
@@ -1038,9 +1038,10 @@
             document.getElementById('btn-onay-evet').onclick = () => { evetFonksiyonu(); window.onayIptal(); };
         };
         window.onayIptal = () => { document.getElementById('modal-onay').classList.add('hidden'); };
-        window.sayaciSifirla = () => { window.onayIste("Sayacı Sıfırla", "Mevcut sayacınızı sıfırlamak istiyor musunuz?", "🔄", () => { 
+        window.sayaciSifirla = () => { window.onayIste("Sayacı Sıfırla", "Mevcut sayacınızı sıfırlamak istiyor musunuz? Bu işlem geri alınamaz.", "🔄", () => { 
             if (zikirMode === 'kutuphane') { sayac = 0; } else { freeSayac = 0; freeHedef = 0; document.getElementById('input-serbest-hedef').value = ''; }
-            zikirBaslangicZamani = null; if(zikirTimer) clearInterval(zikirTimer); document.getElementById('zikir-suresi').innerText = "00:00";
+            zikirBaslangicZamani = null; if(zikirTimer) clearInterval(zikirTimer); 
+            const suresiEl = document.getElementById('zikir-suresi'); if(suresiEl) suresiEl.innerText = "00:00";
             saveLocalState(); syncToCloud(); window.zikirEkraniGuncelle(); window.toastGoster("Sıfırlandı.", "info"); 
         }); };
         
@@ -1053,11 +1054,18 @@
                 if(freeSayac === 0) return window.toastGoster("Okuma yok.", "error");
                 baslikStr = "Serbest Zikir"; kaydedilecekSayi = freeSayac; freeSayac = 0;
             }
-            let gecenSure = document.getElementById('zikir-suresi').innerText;
-            const kayitObj = { id: String(Date.now()), baslik: baslikStr, sayi: kaydedilecekSayi, tarih: new Date().toLocaleString('tr-TR') + ` (${gecenSure})` };
+            
+            let gecenSureStr = "";
+            const suresiEl = document.getElementById('zikir-suresi');
+            if (suresiEl && suresiEl.innerText !== "00:00") gecenSureStr = ` (${suresiEl.innerText})`;
+
+            const kayitObj = { id: String(Date.now()), baslik: baslikStr, sayi: kaydedilecekSayi, tarih: new Date().toLocaleString('tr-TR') + gecenSureStr };
             kayitlar.unshift(kayitObj); await idb.set('kayitlar', JSON.stringify(kayitlar));
             if (isCloudConnected && currentUser) setDoc(doc(firestoreDb, 'artifacts', appId, 'users', currentUser.uid, 'kayitlar', kayitObj.id), kayitObj);
-            zikirBaslangicZamani = null; if(zikirTimer) clearInterval(zikirTimer); document.getElementById('zikir-suresi').innerText = "00:00";
+            
+            zikirBaslangicZamani = null; if(zikirTimer) clearInterval(zikirTimer); 
+            if(suresiEl) suresiEl.innerText = "00:00";
+            
             saveLocalState(); syncToCloud(); window.zikirEkraniGuncelle(); window.raporlariListele(); window.toastGoster("Kayıt eklendi.", "success");
         };
 
