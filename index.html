@@ -31,12 +31,19 @@
     </script>
 
     <style>
-        body {
-            overscroll-behavior-y: none;
-            -webkit-tap-highlight-color: transparent;
+        /* YENİ EKLENEN: APK Webview Aşağı Çekince Yenileme (Pull-to-refresh) Engelleme */
+        html, body {
+            overscroll-behavior-y: none !important;
+            overscroll-behavior: none !important;
             touch-action: pan-x pan-y;
             background-color: #e2e8f0;
         }
+
+        #main-scroll {
+            /* Bu komut sayesinde kaydırma ekranın üstüne çarptığında sekmeyi yenilemez */
+            overscroll-behavior-y: contain !important; 
+        }
+
         .no-select { user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; }
         .nav-container { padding-bottom: env(safe-area-inset-bottom); }
         
@@ -682,7 +689,7 @@
 
     </div>
 
-    <!-- JAVASCRIPT: FIREBASE & CORE LOGIC -->
+    <!-- JAVASCRIPT: Tamamen Güvenli Onarım Sistemi (Versiyon 2) -->
     <script type="module">
         const GITHUB_FIREBASE_CONFIG = {
             apiKey: "AIzaSyCsIHOJqn-6HfjvzLTkLO69In6UtLaaawY",
@@ -700,6 +707,8 @@
 
         window.xssKoru = (str) => { return str ? String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;') : ""; };
 
+        // --- YENİ VERSİYON (2) INDEXED-DB KORUMASI ---
+        // Eski bozuk verileri atlayıp temiz bir sayfa açar
         const idb = {
             db: null,
             init: function() { 
@@ -708,6 +717,7 @@
                         const req = indexedDB.open("HazineDB_Pro", 2); 
                         req.onupgradeneeded = (e) => { 
                             const db = e.target.result; 
+                            // Eğer eski tablo varsa sil ve yenisini kur
                             if(db.objectStoreNames.contains('store')) {
                                 db.deleteObjectStore('store');
                             }
@@ -988,8 +998,16 @@
             const secici = document.getElementById('zikir-secici'); if(!secici) return; secici.innerHTML = "";
             const kategoriler = [...new Set(dbData.map(item => item.kategori))];
             kategoriler.forEach(kat => {
-                const grup = document.createElement('optgroup'); grup.label = window.xssKoru(kat);
-                dbData.filter(d => d.kategori === kat).forEach(dua => { const opt = document.createElement('option'); opt.value = dua.id; opt.textContent = dua.baslik; if(String(dua.id) === String(aktifZikirId)) opt.selected = true; grup.appendChild(opt); }); secici.appendChild(grup);
+                const grup = document.createElement('optgroup'); 
+                grup.label = kat; // DÜZELTME: xssKoru kaldırıldı, &amp; hatası çözüldü
+                dbData.filter(d => d.kategori === kat).forEach(dua => { 
+                    const opt = document.createElement('option'); 
+                    opt.value = dua.id; 
+                    opt.textContent = dua.baslik; 
+                    if(String(dua.id) === String(aktifZikirId)) opt.selected = true; 
+                    grup.appendChild(opt); 
+                }); 
+                secici.appendChild(grup);
             });
         };
 
@@ -1531,14 +1549,9 @@
                     oku.rate = 0.8; 
                     oku.pitch = 0.7; 
                     
-                    // YENİ EKLENEN: Erkek sesini tercih etmek için ses listesinden Türkçe erkek sesi arama
                     const voices = window.speechSynthesis.getVoices();
                     const turkishVoices = voices.filter(v => v.lang.includes('tr'));
-                    if(turkishVoices.length > 0) {
-                        // Genellikle Türkçe dil paketindeki ilk ses varsayılan (kadın), ikinci veya alternatif sesler farklı tonlarda olabilir.
-                        // Kesin erkek sesi tespiti her cihazda mümkün olmasa da pitch ayarı sesi kalınlaştırır.
-                        oku.voice = turkishVoices[0];
-                    }
+                    if(turkishVoices.length > 0) oku.voice = turkishVoices[0];
                     
                     oku.onerror = (e) => { window.toastGoster("Ses motoru başlatılamadı.", "error"); }; 
                     window.speechSynthesis.speak(oku); 
