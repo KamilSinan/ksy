@@ -120,7 +120,7 @@
                 <div class="bg-white p-4 rounded-2xl border border-slate-100 shadow-sm">
                     <h4 class="font-bold text-emerald-800 text-base mb-2 border-b border-slate-100 pb-2 flex items-center gap-2"><span>📌</span> Künye</h4>
                     <ul class="space-y-1 mt-2">
-                        <li><strong>Geliştirici:</strong> KSY (Kamil Sinan) "Martenzit"</li>
+                        <li><strong>Geliştirici:</strong> Martenzit</li>
                         <li><strong>Sürüm:</strong> 2.6.0 (PWA / Web App)</li>
                         <li><strong>Altyapı:</strong> Google Firebase & IndexedDB</li>
                     </ul>
@@ -968,7 +968,6 @@
                         </div>
                         <div class="flex gap-2">
                             <button onclick="kazaDegistir('${v.id}', -1)" class="w-12 h-12 flex items-center justify-center bg-red-50 border border-red-100 text-red-500 rounded-xl hover:bg-red-100 transition font-black text-2xl active:scale-95 shadow-sm">-</button>
-                            <button onclick="kazaDegistir('${v.id}', 1)" class="w-12 h-12 flex items-center justify-center bg-emerald-50 border border-emerald-100 text-emerald-600 rounded-xl hover:bg-emerald-100 transition font-black text-2xl active:scale-95 shadow-sm">+</button>
                         </div>
                     </div>`;
             });
@@ -979,7 +978,7 @@
             if (navigator.vibrate) navigator.vibrate(20);
             if (artis < 0 && kazaDurumu[vakitId] >= 0) window.toastGoster("Allah kabul etsin.", "success");
         };
-
+        
         window.kazaOtomatikHesapla = () => {
             const yil = parseInt(document.getElementById('kaza-hesap-yil').value) || 0;
             const ay = parseInt(document.getElementById('kaza-hesap-ay').value) || 0;
