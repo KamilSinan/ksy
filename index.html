@@ -705,8 +705,14 @@
             init: function() { 
                 return new Promise((r) => { 
                     try {
-                        const req = indexedDB.open("HazineDB_Pro", 1); 
-                        req.onupgradeneeded = (e) => { const db = e.target.result; if(!db.objectStoreNames.contains('store')) db.createObjectStore('store'); }; 
+                        const req = indexedDB.open("HazineDB_Pro", 2); 
+                        req.onupgradeneeded = (e) => { 
+                            const db = e.target.result; 
+                            if(db.objectStoreNames.contains('store')) {
+                                db.deleteObjectStore('store');
+                            }
+                            db.createObjectStore('store'); 
+                        }; 
                         req.onsuccess = (e) => { this.db = e.target.result; r(); }; 
                         req.onerror = () => { r(); }; 
                     } catch(e) { r(); }
@@ -1525,9 +1531,14 @@
                     oku.rate = 0.8; 
                     oku.pitch = 0.7; 
                     
+                    // YENİ EKLENEN: Erkek sesini tercih etmek için ses listesinden Türkçe erkek sesi arama
                     const voices = window.speechSynthesis.getVoices();
                     const turkishVoices = voices.filter(v => v.lang.includes('tr'));
-                    if(turkishVoices.length > 0) oku.voice = turkishVoices[0];
+                    if(turkishVoices.length > 0) {
+                        // Genellikle Türkçe dil paketindeki ilk ses varsayılan (kadın), ikinci veya alternatif sesler farklı tonlarda olabilir.
+                        // Kesin erkek sesi tespiti her cihazda mümkün olmasa da pitch ayarı sesi kalınlaştırır.
+                        oku.voice = turkishVoices[0];
+                    }
                     
                     oku.onerror = (e) => { window.toastGoster("Ses motoru başlatılamadı.", "error"); }; 
                     window.speechSynthesis.speak(oku); 
