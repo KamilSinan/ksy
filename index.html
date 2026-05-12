@@ -217,13 +217,9 @@
                             <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-0.5">İlerleme</span>
                             <span id="hedef-metin" class="text-slate-700 font-bold text-lg">0 / 0</span>
                         </div>
-                        <div class="text-center">
-                            <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-0.5">Süre</span>
-                            <span id="zikir-suresi" class="text-slate-600 font-bold text-sm bg-white px-2 py-1 rounded-lg border border-slate-200 shadow-sm font-mono">00:00</span>
-                        </div>
-                        <div class="text-right bg-emerald-50 px-3 py-1 rounded-lg border border-emerald-100">
-                            <span class="text-[10px] font-bold text-emerald-600 uppercase tracking-wider block">Kalan</span>
-                            <span id="hedef-kalan" class="text-emerald-700 font-extrabold text-lg leading-none">0</span>
+                        <div class="text-right bg-red-50 px-3 py-1 rounded-lg border border-red-100">
+                            <span class="text-[10px] font-bold text-red-500 uppercase tracking-wider block">Kalan</span>
+                            <span id="hedef-kalan" class="text-red-600 font-extrabold text-lg leading-none">0</span>
                         </div>
                     </div>
                     <div class="w-full bg-slate-200 rounded-full h-3.5 shadow-inner overflow-hidden">
@@ -233,18 +229,18 @@
                     </div>
                 </div>
 
-                <div class="relative w-full flex justify-center mb-8 mt-2">
-                    <div id="z-sayac" class="text-[4.5rem] leading-none font-black text-slate-800 w-full py-8 rounded-[2.5rem] bg-white border border-slate-100 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08),inset_0_-4px_10px_rgba(0,0,0,0.02)] text-center no-select transition-all duration-300 font-mono tracking-tighter z-10 relative overflow-hidden">
+                <div class="relative w-full flex justify-center mb-6 mt-2">
+                    <div id="z-sayac" class="text-[4.5rem] leading-none font-black text-slate-800 w-full py-6 rounded-[2rem] bg-white border border-slate-100 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08),inset_0_-4px_10px_rgba(0,0,0,0.02)] text-center no-select transition-all duration-300 font-mono tracking-tighter z-10 relative overflow-hidden">
                         0
                     </div>
                 </div>
 
-                <div class="flex-1 w-full flex items-center justify-center mb-8 mt-auto">
-                    <button onclick="window.zikirArtir()" class="relative w-56 h-56 rounded-full bg-gradient-to-b from-emerald-400 to-emerald-700 btn-3d flex items-center justify-center group outline-none no-select touch-manipulation">
-                        <div class="absolute inset-[-15px] rounded-full border-2 border-emerald-500/20 group-active:scale-95 transition-transform"></div>
-                        <div class="absolute inset-[-30px] rounded-full border border-emerald-500/10 group-active:scale-90 transition-transform"></div>
-                        <div class="w-48 h-48 rounded-full bg-gradient-to-br from-emerald-500 to-emerald-800 shadow-inner flex items-center justify-center border-t border-emerald-300/50">
-                            <span class="text-white font-black text-4xl tracking-widest drop-shadow-md">OKU</span>
+                <div class="flex-1 w-full flex items-center justify-center mb-6 mt-auto">
+                    <button onclick="window.zikirArtir()" class="relative w-48 h-48 rounded-full bg-gradient-to-b from-emerald-400 to-emerald-700 btn-3d flex items-center justify-center group outline-none no-select touch-manipulation">
+                        <div class="absolute inset-[-12px] rounded-full border-2 border-emerald-500/20 group-active:scale-95 transition-transform"></div>
+                        <div class="absolute inset-[-24px] rounded-full border border-emerald-500/10 group-active:scale-90 transition-transform"></div>
+                        <div class="w-40 h-40 rounded-full bg-gradient-to-br from-emerald-500 to-emerald-800 shadow-inner flex items-center justify-center border-t border-emerald-300/50">
+                            <span class="text-white font-black text-3xl tracking-widest drop-shadow-md">OKU</span>
                         </div>
                     </button>
                 </div>
@@ -287,7 +283,7 @@
                 <div class="flex justify-between items-center mb-6">
                     <h2 class="text-2xl font-extrabold text-slate-800 tracking-tight">Kazalarım</h2>
                     <button onclick="kazaTopluAyarModalAc()" class="bg-white text-emerald-700 px-3 py-2 rounded-xl text-xs font-bold hover:bg-emerald-50 shadow-sm transition active:scale-95 border border-emerald-200 flex items-center gap-1">
-                        <span>✏️</span> Ayarla
+                        <span>⚙️</span> Ayarla
                     </button>
                 </div>
                 
@@ -572,7 +568,6 @@
                                 <input type="number" id="kaza-hesap-gun" min="0" placeholder="0" class="w-full p-2 bg-white border border-emerald-200 rounded-lg text-center font-bold outline-none focus:border-emerald-500" oninput="window.kazaOtomatikHesapla(false)">
                             </div>
                         </div>
-                        <button onclick="window.kazaOtomatikHesapla(true)" class="w-full bg-emerald-600 text-white text-xs font-bold py-2 rounded-lg active:scale-95 transition-transform">Dağıt (Vakitlere Uygula)</button>
                     </div>
 
                     <div class="flex flex-col gap-4" id="kaza-ayar-inputs"></div>
@@ -753,6 +748,13 @@
             { ad: "Zilhicce", aciklama: "Haram aylardandır. Hac ibadetinin yapıldığı ve Kurban Bayramının olduğu aydır. İlk 10 günü çok kıymetlidir.", ibadetler: ["İlk 9 gün oruç (özellikle Arefe günü)", "Kurban kesmek", "Teşrik Tekbirleri getirmek", "Hac ibadeti (gidenler için)"], dualar: ["Allahu ekber Allahu ekber, Lâ ilâhe illallahu vallahu ekber. Allahu ekber ve lillahi'l-hamd", "Sübhanallahi ve bihamdihi sübhanallahil azîm", "La havle ve la kuvvete illa billah"] }
         ];
 
+        const asriSerifVerileri = {
+            'sabah': { vakit: 'Sabah ve Akşam Namazı', baslik: "Haşr Suresi (Son 3 Ayet)", arapca: "هُوَ اللّٰهُ الَّذ۪ي لَآ اِلٰهَ اِلَّا هُوَۚ عَالِمُ الْغَيْبِ وَالشَّهَادَةِۚ هُوَ الرَّحْمٰنُ الرَّح۪يمُ ﴿٢٢﴾ هُوَ اللّٰهُ الَّذ۪ي لَآ اِلٰهَ اِلَّا هُوَۚ اَلْمَلِكُ الْقُدُّوسُ السَّلَامُ الْمُؤْمِنُ الْمُهَيْمِنُ الْعَز۪يزُ الْجَبَّارُ الْمُتَكَبِّرُۚ سُبْحَانَ اللّٰهِ عَمَّا يُشْرِكُونَ ﴿٢٣﴾ هُوَ اللّٰهُ الْخَالِقُ الْبَارِئُ الْمُصَوِّرُ لَهُ الْاَسْمَآءُ الْحُسْنٰىۚ يُسَبِّحُ لَهُ مَا فِي السَّمٰوَاتِ وَالْاَرْضِۚ وَهُوَ الْعَز۪يزُ الْحَك۪يمُ ﴿٢٤﴾", okunus: "Hüvallâhüllezî lâ ilâhe illâ hû. Âlimül ğaybi veş-şehâdeh. Hüver-rahmânür-rahîm. Hüvallâhüllezî lâ ilâhe illâ hû. El-melikül-kuddûsüs-selâmül mü'minül müheyminül azîzül cebbârul mütekebbir. Sübhânallâhi ammâ yüşrikûn. Hüvallâhül hâlikul bâriül musavviru lehül esmâül hüsnâ. Yüsebbihu lehû mâ fis-semâvâti vel-ard. Ve hüvel azîzül hakîm." },
+            'ogle': { vakit: 'Öğle Namazı', baslik: "Fetih Suresi (Son 3 Ayet)", arapca: "لَقَدْ صَدَقَ اللَّهُ رَسُولَهُ الرُّؤْيَا بِالْحَقِّ ۖ لَتَدْخُلُنَّ الْمَسْجِدَ الْحَرَامَ إِنْ شَاءَ اللَّهُ آمِنِينَ مُحَلِّقِينَ رُءُوسَكُمْ وَمُقَصِّرِينَ لَا تَخَافُونَ ۖ فَعَلِمَ مَا لَمْ تَعْلَمُوا فَجَعَلَ مِنْ دُونِ ذَٰلِكَ فَتْحًا قَرِيبًا ﴿٢٧﴾ هُوَ الَّذِي أَرْسَلَ رَسُولَهُ بِالْهُدَىٰ وَدِينِ الْحَقِّ لِيُظْهِرَهُ عَلَى الدِّينِ كُلِّهِ ۚ وَكَفَىٰ بِاللَّهِ شَهِيدًا ﴿٢٨﴾ مُحَمَّدٌ رَسُولُ اللَّهِ ۚ وَالَّذِينَ مَعَهُ أَشِدَّاءُ عَلَى الْكُفَّارِ رُحَمَاءُ بَيْنَهُمْ ۖ تَرَاهُمْ رُكَّعًا سُجَّدًا يَبْتَغُونَ فَضْلًا مِنَ اللَّهِ وَرِضْوَانًا ۖ سِيمَاهُمْ فِي وُجُوهِهِمْ مِنْ أَثَرِ السُّجُودِ ۚ ذَٰلِكَ مَثَلُهُمْ فِي التَّوْرَاةِ ۚ وَمَثَلُهُمْ فِي الْإِنْجِيلِ كَزَرْعٍ أَخْرَجَ شَطْأَهُ فَآزَرَهُ فَاسْتَغْلَظَ فَاسْتَوَىٰ عَلَىٰ سُوقِهِ يُعْجِبُ الزُّرَّاعَ لِيَغِيظَ بِهِمُ الْكُفَّارَ ۗ وَعَدَ اللَّهُ الَّذِينَ آمَنُوا وَعَمِلُوا الصَّالِحَاتِ مِنْهُمْ مَغْفِرَةً وَأَجْرًا عَظِيمًا ﴿٢٩﴾", okunus: "Lekad sadakallâhü rasûlehür-ru'yâ bil-hakk. Letedhulünnel mescidel-harâme inşâellâhü âminîne muhallikîne ruûseküm ve mükassırîne lâ tehâfûn. Fe'alime mâ lem ta'lemû fece'ale min dûni zâlike fethan karîbâ. Hüvellezî ersele rasûlehû bil-hüdâ ve dînil hakkı liyuzhirahû aled-dîni küllih. Ve kefâ billâhi şehîdâ. Muhammedür-rasûlüllâh. Vellezîne me'ahû eşiddâü alel küffâri ruhamâü beynehüm. Terâhüm rukke'an süccedey-yebteğûne fadlem-minellâhi ve rıdvânâ. Sîmâhüm fî vucûhihim min eseris-sücûd. Zâlike meselühüm fit-tevrâh. Ve meselühüm fil incîl. Kezer'in ahrace şat'ehû feâzerahû festağleza festevâ alâ sûkıhî yu'cibüz-zürrâ'a liyeğîza bihimül küffâr. Ve'adellâhüllezîne âmenû ve amilüs-sâlihâti minhüm mağfiratev-ve ecran azîmâ." },
+            'ikindi': { vakit: 'İkindi Namazı', baslik: "Nebe Suresi (Son 10 Ayet)", arapca: "إِنَّ لِلْمُتَّقِينَ مَفَازًا ﴿٣١﴾ حَدَائِقَ وَأَعْنَابًا ﴿٣٢﴾ وَكَوَاعِبَ أَتْرَابًا ﴿٣٣﴾ وَكَأْسًا دِهَاقًا ﴿٣٤﴾ لَّا يَسْمَعُونَ فِيهَا لَغْوًا وَلَا كِذَّابًا ﴿٣٥﴾ جَزَاءً مِّن رَّبِّكَ عَطَاءً حِسَابًا ﴿٣٦﴾ رَّبِّ السَّمَاوَاتِ وَالْأَرْضِ وَمَا بَيْنَهُمَا الرَّحْمَٰنِ ۖ لَا يَمْلِكُونَ مِنْهُ خِطَابًا ﴿٣٧﴾ يَوْمَ يَقُومُ الرُّوحُ وَالْمَلَائِكَةُ صَفًّا ۖ لَّا يَتَكَلَّمُونَ إِلَّا مَنْ أَذِنَ لَهُ الرَّحْمَٰنُ وَقَالَ صَوَابًا ﴿٣٨﴾ ذَٰلِكَ الْيَوْمُ الْحَقُّ ۖ فَمَن شَاءَ اتَّخَذَ إِلَىٰ رَبِّهِ مَآبًا ﴿٣٩﴾ إِنَّا أَنذَرْنَاكُمْ عَذَابًا قَرِيبًا يَوْمَ يَنظُرُ الْمَرْءُ مَا قَدَّمَتْ يَدَاهُ وَيَقُولُ الْكَافِرُ يَا لَيْتَنِي كُنتُ تُرَابًا ﴿٤٠﴾", okunus: "İnne lil-müttekîne mefâzâ. Hadâika ve a'nâbâ. Ve kevâıbe etrâbâ. Ve ke'sen dihhâkâ. Lâ yesme'ûne fîhâ lağvev-ve lâ kizzâbâ. Cezâem-mir-rabbike atâen hısâbâ. Rabbis-semâvâti vel ardı vemâ beynehümer-rahmân, Lâ yemlikûne minhü hıtâbâ. Yevme yekûmür-rûhu vel melâiketü saffâ. Lâ yetekellemûne illâ men ezine lehür-rahmânü ve kâle savâbâ. Zâlikel yevmül hakk, Femen şâettehaze ilâ rabbihî meâbâ. İnnâ enzernâküm azâben karîbâ. Yevme yenzurul mer'ü mâ kaddemet yedâhü ve yekûlül kâfiru yâ leytenî küntü türâbâ." },
+            'yatsi': { vakit: 'Yatsı Namazı', baslik: "Amenerrasulü (Bakara 285-286)", arapca: "آمَنَ الرَّسُولُ بِمَا أُنزِلَ إِلَيْهِ مِن رَّبِّهِ وَالْمُؤْمِنُونَ ۚ كُلٌّ آمَنَ بِاللَّهِ وَمَلَائِكَتِهِ وَكُتُبِهِ وَرُسُلِهِ لَا نُفَرِّقُ بَيْنَ أَحَدٍ مِّن رُّسُلِهِ ۚ وَقَالُوا سَمِعْنَا وَأَطَعْنَا ۖ غُفْرَانَكَ رَبَّنَا وَإِلَيْكَ الْمَصِيرُ ﴿٢٨٥﴾ لَا يُكَلِّفُ اللَّهُ نَفْسًا إِلَّا وُسْعَهَا ۚ لَهَا مَا كَسَبَتْ وَعَلَيْهَا مَا اكْتَسَبَتْ ۗ رَبَّنَا لَا تُؤَاخِذْنَا إِن نَّسِينَا أَوْ أَخْطَأْنَا ۚ رَبَّنَا وَلَا تَحْمِلْ عَلَيْنَا إِصْرًا كَمَا حَمَلْتَهُ عَلَى الَّذِينَ مِن قَبْلِنَا ۚ رَبَّنَا وَلَا تُحَمِّلْنَا مَا لَا طَاقَةَ لَنَا بِهِ ۖ وَاعْفُ عَنَّا وَاغْفِرْ لَنَا وَارْحَمْنَا ۚ أَنتَ مَوْلَانَا فَانصُرْنَا عَلَى الْقَوْمِ الْكَافِرِينَ ﴿٢٨٦﴾", okunus: "Âmener-rasûlü bimâ ünzile ileyhi mir-rabbihî vel mü'minûn. Küllün âmene billâhi ve melâiketihî ve kütübihî ve rusulih. Lâ nüferriku beyne ehadim-mir-rusulih. Ve kâlû semi'nâ ve ata'nâ ğufrâneke rabbenâ ve ileykel masîr. Lâ yükellifüllâhü nefsen illâ vüs'ahâ. Lehâ mâ kesebet ve aleyhâ mektesebet. Rabbenâ lâ tüâhıznâ in nesînâ ev ahta'nâ. Rabbenâ ve lâ tahmil aleynâ ısran kemâ hameltehû alellezîne min kablinâ. Rabbenâ ve lâ tühammilnâ mâ lâ tâkate lenâ bih. Va'fü annâ vağfirlenâ verhamnâ, ente mevlânâ fensurnâ alel kavmil kâfirîn." }
+        };
+
         function veritabaniYukle() {
             try {
                 const data = ls.get('hazine_db_pro');
@@ -907,6 +909,19 @@
 
         window.hicriBilgiModalAc = () => { document.getElementById('modal-hicribilgi').classList.remove('hidden'); };
 
+        window.asriSerifModalAc = (vakit) => {
+            const data = asriSerifVerileri[vakit];
+            if(data) {
+                document.getElementById('asr-vakit').innerText = data.vakit;
+                document.getElementById('asr-baslik').innerText = data.baslik;
+                document.getElementById('asr-arapca').innerText = data.arapca;
+                document.getElementById('asr-okunus').innerText = data.okunus;
+                document.getElementById('modal-asriserif').classList.remove('hidden');
+            }
+        };
+
+        window.asriSerifModalKapat = () => { document.getElementById('modal-asriserif').classList.add('hidden'); };
+
         window.zikirSuresiGuncelle = () => {
             if(!zikirBaslangicZamani) return;
             const gecenSaniye = Math.floor((Date.now() - zikirBaslangicZamani) / 1000);
@@ -1024,9 +1039,9 @@
         };
         window.onayIptal = () => { document.getElementById('modal-onay').classList.add('hidden'); };
         window.sayaciSifirla = () => { window.onayIste("Sayacı Sıfırla", "Mevcut sayacınızı sıfırlamak istiyor musunuz?", "🔄", () => { 
-            if (zikirMode === 'kutuphane') sayac = 0; else freeSayac = 0; 
+            if (zikirMode === 'kutuphane') { sayac = 0; } else { freeSayac = 0; freeHedef = 0; document.getElementById('input-serbest-hedef').value = ''; }
             zikirBaslangicZamani = null; if(zikirTimer) clearInterval(zikirTimer); document.getElementById('zikir-suresi').innerText = "00:00";
-            saveLocalState(); syncToCloud(); window.zikirEkraniGuncelle(); window.toastGoster("Sayaç sıfırlandı.", "info"); 
+            saveLocalState(); syncToCloud(); window.zikirEkraniGuncelle(); window.toastGoster("Sıfırlandı.", "info"); 
         }); };
         
         window.zikriKaydet = async () => {
@@ -1038,12 +1053,10 @@
                 if(freeSayac === 0) return window.toastGoster("Okuma yok.", "error");
                 baslikStr = "Serbest Zikir"; kaydedilecekSayi = freeSayac; freeSayac = 0;
             }
-            
             let gecenSure = document.getElementById('zikir-suresi').innerText;
             const kayitObj = { id: String(Date.now()), baslik: baslikStr, sayi: kaydedilecekSayi, tarih: new Date().toLocaleString('tr-TR') + ` (${gecenSure})` };
             kayitlar.unshift(kayitObj); await idb.set('kayitlar', JSON.stringify(kayitlar));
             if (isCloudConnected && currentUser) setDoc(doc(firestoreDb, 'artifacts', appId, 'users', currentUser.uid, 'kayitlar', kayitObj.id), kayitObj);
-            
             zikirBaslangicZamani = null; if(zikirTimer) clearInterval(zikirTimer); document.getElementById('zikir-suresi').innerText = "00:00";
             saveLocalState(); syncToCloud(); window.zikirEkraniGuncelle(); window.raporlariListele(); window.toastGoster("Kayıt eklendi.", "success");
         };
@@ -1057,8 +1070,15 @@
                     <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-100 flex flex-col gap-3 relative overflow-hidden group">
                         <div class="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-emerald-400 to-teal-500"></div>
                         <div class="flex justify-between items-start">
-                            <div><span class="text-[10px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-100 px-2.5 py-1 rounded-md uppercase tracking-wide">${window.xssKoru(dua.kategori)}</span><h3 class="font-bold text-slate-800 mt-2 text-lg leading-tight">${window.xssKoru(dua.baslik)}</h3><p class="text-xs text-slate-500 mt-1 line-clamp-1">${window.xssKoru(dua.okunus)}</p></div>
-                            <div class="flex gap-2 opacity-100 sm:opacity-0 group-hover:opacity-100 transition-opacity"><button onclick="kaydiDuzenle('${dua.id}')" class="w-9 h-9 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center hover:bg-blue-100 transition active:scale-95">✏️</button><button onclick="kaydiSil('${dua.id}')" class="w-9 h-9 bg-red-50 text-red-500 rounded-xl flex items-center justify-center hover:bg-red-100 transition active:scale-95">🗑️</button></div>
+                            <div>
+                                <span class="text-[10px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-100 px-2.5 py-1 rounded-md uppercase tracking-wide">${window.xssKoru(dua.kategori)}</span>
+                                <h3 class="font-bold text-slate-800 mt-2 text-lg leading-tight">${window.xssKoru(dua.baslik)}</h3>
+                                <p class="text-xs text-slate-500 mt-1 line-clamp-1">${window.xssKoru(dua.okunus)}</p>
+                            </div>
+                            <div class="flex gap-2 opacity-100 sm:opacity-0 group-hover:opacity-100 transition-opacity">
+                                <button onclick="kaydiDuzenle('${dua.id}')" class="w-9 h-9 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center hover:bg-blue-100 transition active:scale-95">✏️</button>
+                                <button onclick="kaydiSil('${dua.id}')" class="w-9 h-9 bg-red-50 text-red-500 rounded-xl flex items-center justify-center hover:bg-red-100 transition active:scale-95">🗑️</button>
+                            </div>
                         </div>
                     </div>`;
             });
@@ -1098,7 +1118,10 @@
                 listeDiv.innerHTML += `
                     <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-100 flex items-center justify-between relative overflow-hidden">
                         <div class="absolute left-0 top-0 bottom-0 w-1 bg-slate-200"></div>
-                        <div class="pl-2"><h4 class="font-extrabold text-slate-700 text-[15px]">${v.ad}</h4><div class="text-xs text-slate-400 mt-0.5 font-medium">Kalan: <span class="text-emerald-600 font-black text-lg ml-1">${val}</span></div></div>
+                        <div class="pl-2">
+                            <h4 class="font-extrabold text-slate-700 text-[15px]">${v.ad}</h4>
+                            <div class="text-xs text-slate-400 mt-0.5 font-medium">Kalan: <span class="text-emerald-600 font-black text-lg ml-1">${val}</span></div>
+                        </div>
                         <div class="flex gap-2">
                             <button onclick="kazaDegistir('${v.id}', -1)" class="w-14 h-12 flex items-center justify-center border rounded-xl transition font-black text-2xl ${btnCls}">-</button>
                         </div>
@@ -1106,22 +1129,20 @@
             });
         };
         window.kazaDegistir = (vakitId, artis) => {
-            if (!kazaDurumu[vakitId]) kazaDurumu[vakitId] = 0;
-            if (artis < 0 && kazaDurumu[vakitId] === 0) return; // 0'ın altına düşemez
-            
+            if (!kazaDurumu[vakitId]) kazaDurumu[vakitId] = 0; 
+            if (artis < 0 && kazaDurumu[vakitId] === 0) return; 
             kazaDurumu[vakitId] += artis; 
             saveLocalState(); syncToCloud(); window.kazaEkraniGuncelle();
             if (navigator.vibrate) navigator.vibrate(20);
             if (artis < 0 && kazaDurumu[vakitId] >= 0) window.toastGoster("Allah kabul etsin.", "success");
         };
-
+        
         window.kazaOtomatikHesapla = (showToast = true) => {
             const yil = parseInt(document.getElementById('kaza-hesap-yil').value) || 0;
             const ay = parseInt(document.getElementById('kaza-hesap-ay').value) || 0;
             const gun = parseInt(document.getElementById('kaza-hesap-gun').value) || 0;
             const toplamGun = (yil * 365) + (ay * 30) + gun;
-            
-            if(toplamGun <= 0 && showToast) { window.toastGoster("Sıfırdan büyük değer girin.", "error"); return; }
+            if(toplamGun <= 0 && showToast) { window.toastGoster("Lütfen sıfırdan büyük bir değer girin.", "error"); return; }
             if (toplamGun >= 0) { kazaVakitBilgileri.forEach(v => { const el = document.getElementById(`input-kaza-${v.id}`); if(el) el.value = toplamGun; }); if (showToast && toplamGun > 0) window.toastGoster(`${toplamGun} günlük borç uygulandı. Kaydet'e basın.`, "success"); }
         };
 
@@ -1136,7 +1157,9 @@
                 const val = kazaDurumu[v.id] || 0;
                 div.innerHTML += `<div class="flex justify-between items-center border-b border-slate-100 pb-4 mb-3"><label class="text-sm font-bold text-slate-600 w-1/2">${v.ad}</label><input type="number" id="input-kaza-${v.id}" value="${val}" min="0" class="w-1/2 p-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-emerald-500 outline-none text-center font-bold text-emerald-800"></div>`;
             });
-            const elYil = document.getElementById('kaza-hesap-yil'); if(elYil) elYil.value = ""; const elAy = document.getElementById('kaza-hesap-ay'); if(elAy) elAy.value = ""; const elGun = document.getElementById('kaza-hesap-gun'); if(elGun) elGun.value = "";
+            const elYil = document.getElementById('kaza-hesap-yil'); if(elYil) elYil.value = "";
+            const elAy = document.getElementById('kaza-hesap-ay'); if(elAy) elAy.value = "";
+            const elGun = document.getElementById('kaza-hesap-gun'); if(elGun) elGun.value = "";
             document.getElementById('modal-kaza-ayar').classList.remove('hidden');
         };
         window.kazaTopluAyarModalKapat = () => { document.getElementById('modal-kaza-ayar').classList.add('hidden'); };
@@ -1152,6 +1175,7 @@
             const blob = new Blob([JSON.stringify(dataObj, null, 2)], { type: 'application/json' });
             const link = document.createElement("a"); link.href = URL.createObjectURL(blob); link.download = "Dijital_Hazine_Yedek.json"; link.click(); window.toastGoster("Yedek indirildi.", "success"); window.yedekModalKapat();
         };
+
         window.dosyadanYedekOku = (event) => {
             const file = event.target.files[0]; if(!file) return; const reader = new FileReader();
             reader.onload = async (e) => {
@@ -1310,14 +1334,11 @@
                     const parseTime = (timeStr) => { const [h, m] = timeStr.split(':').map(Number); return h * 60 + m; };
                     
                     // Aktif vakti bulma
-                    let aktifVakitId = 'Isha'; // Varsayılan olarak yatsıda kalmış kabul et
+                    let aktifVakitId = 'Isha'; 
                     const vakitDakikalar = {
-                        Fajr: parseTime(window.namazVakitleri.Fajr),
-                        Sunrise: parseTime(window.namazVakitleri.Sunrise),
-                        Dhuhr: parseTime(window.namazVakitleri.Dhuhr),
-                        Asr: parseTime(window.namazVakitleri.Asr),
-                        Maghrib: parseTime(window.namazVakitleri.Maghrib),
-                        Isha: parseTime(window.namazVakitleri.Isha)
+                        Fajr: parseTime(window.namazVakitleri.Fajr), Sunrise: parseTime(window.namazVakitleri.Sunrise),
+                        Dhuhr: parseTime(window.namazVakitleri.Dhuhr), Asr: parseTime(window.namazVakitleri.Asr),
+                        Maghrib: parseTime(window.namazVakitleri.Maghrib), Isha: parseTime(window.namazVakitleri.Isha)
                     };
                     
                     if (simdiDakika >= vakitDakikalar.Fajr && simdiDakika < vakitDakikalar.Sunrise) aktifVakitId = 'Fajr';
@@ -1353,7 +1374,7 @@
                 if(!bulundu) document.getElementById('kalan-sure').innerText = "Bekleniyor";
                 if(s.getSeconds() === 0) { 
                     window.kerahatKontrol(); window.nafileNamazlariHesapla(); 
-                    if(s.getMinutes() === 0) window.vakitleriGetir(); // Saat başlarında aktif vakti güncelle
+                    if(s.getMinutes() === 0) window.vakitleriGetir(); 
                 }
             }, 1000); 
         };
@@ -1446,7 +1467,23 @@
             const zikir = dbData.find(d => String(d.id) === String(aktifZikirId));
             if(!zikir || !zikir.okunus) return window.toastGoster("Okunacak metin bulunamadı.", "error");
             if (!('speechSynthesis' in window) || !window.SpeechSynthesisUtterance) return window.toastGoster("Tarayıcınız sesli okumayı desteklemiyor.", "error");
-            try { window.speechSynthesis.cancel(); setTimeout(() => { const oku = new SpeechSynthesisUtterance(zikir.okunus); oku.lang = 'tr-TR'; oku.rate = 0.85; oku.pitch = 1; oku.onerror = (e) => { window.toastGoster("Ses motoru başlatılamadı.", "error"); }; window.speechSynthesis.speak(oku); }, 50); } catch (e) { window.toastGoster("Cihazın ses sistemi yanıt vermiyor.", "error"); }
+            
+            try { 
+                window.speechSynthesis.cancel(); 
+                setTimeout(() => { 
+                    const oku = new SpeechSynthesisUtterance(zikir.okunus); 
+                    oku.lang = 'tr-TR'; 
+                    oku.rate = 0.8; 
+                    oku.pitch = 0.7; 
+                    
+                    const voices = window.speechSynthesis.getVoices();
+                    const turkishVoices = voices.filter(v => v.lang.includes('tr'));
+                    if(turkishVoices.length > 0) oku.voice = turkishVoices[0];
+                    
+                    oku.onerror = (e) => { window.toastGoster("Ses motoru başlatılamadı.", "error"); }; 
+                    window.speechSynthesis.speak(oku); 
+                }, 50); 
+            } catch (e) { window.toastGoster("Cihazın ses sistemi yanıt vermiyor.", "error"); }
         };
 
         window.toastGoster = (mesaj, tip="info") => {
