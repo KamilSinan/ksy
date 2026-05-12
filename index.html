@@ -199,7 +199,7 @@
                 <div id="serbest-ayarlar-container" class="w-full mb-2 hidden">
                     <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200">
                         <label class="block text-xs font-bold text-slate-400 uppercase mb-2 text-center tracking-wider">Hedef Sayı (Opsiyonel)</label>
-                        <input type="number" id="input-serbest-hedef" placeholder="Limit yok" class="w-full p-3 bg-slate-50 border border-slate-100 rounded-xl focus:ring-2 focus:ring-emerald-500 outline-none text-slate-800 font-bold text-2xl text-center transition-all" oninput="window.serbestHedefKaydet()">
+                        <input type="number" id="input-serbest-hedef" placeholder="Limit yok" min="0" class="w-full p-3 bg-slate-50 border border-slate-100 rounded-xl focus:ring-2 focus:ring-emerald-500 outline-none text-slate-800 font-bold text-2xl text-center transition-all" oninput="window.serbestHedefKaydet()">
                     </div>
                 </div>
 
@@ -234,6 +234,8 @@
                 </div>
 
                 <div class="relative w-full flex justify-center mb-8 mt-2">
+                    <div id="z-sayac" class="text-[4.5rem] leading-none font-black text-slate-800 w-full py-8 rounded-[2.5rem] bg-white border border-slate-100 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08),inset_0_-4px_10px_rgba(0,0,0,0.02)] text-center no-select transition-all duration-300 font-mono tracking-tighter z-10 relative overflow-hidden">0</div>
+                </div>
 
                 <div class="flex-1 w-full flex items-center justify-center mb-6 mt-auto">
                     <button onclick="window.zikirArtir()" class="relative w-48 h-48 rounded-full bg-gradient-to-b from-emerald-400 to-emerald-700 btn-3d flex items-center justify-center group outline-none no-select touch-manipulation">
@@ -700,7 +702,16 @@
 
         const idb = {
             db: null,
-            init: function() { return new Promise((r, j) => { const req = indexedDB.open("HazineDB_Pro", 1); req.onupgradeneeded = (e) => { const db = e.target.result; if(!db.objectStoreNames.contains('store')) db.createObjectStore('store'); }; req.onsuccess = (e) => { this.db = e.target.result; r(); }; req.onerror = j; }); },
+            init: function() { 
+                return new Promise((r) => { 
+                    try {
+                        const req = indexedDB.open("HazineDB_Pro", 1); 
+                        req.onupgradeneeded = (e) => { const db = e.target.result; if(!db.objectStoreNames.contains('store')) db.createObjectStore('store'); }; 
+                        req.onsuccess = (e) => { this.db = e.target.result; r(); }; 
+                        req.onerror = () => { r(); }; 
+                    } catch(e) { r(); }
+                }); 
+            },
             get: function(k) { return new Promise((r) => { if(!this.db) return r(null); const tx = this.db.transaction('store', 'readonly'); const req = tx.objectStore('store').get(k); req.onsuccess = () => r(req.result); req.onerror = () => r(null); }); },
             set: function(k, v) { return new Promise((r) => { if(!this.db) return r(); const tx = this.db.transaction('store', 'readwrite'); tx.objectStore('store').put(v, k); tx.oncomplete = () => r(); }); },
             remove: function(k) { return new Promise((r) => { if(!this.db) return r(); const tx = this.db.transaction('store', 'readwrite'); tx.objectStore('store').delete(k); tx.oncomplete = () => r(); }); }
@@ -784,18 +795,29 @@
                 await idb.init();
                 const yerelDB = await idb.get('dbData'); 
                 if(yerelDB) {
-                    dbData = JSON.parse(yerelDB);
-                    varsayilanDB.forEach(vd => { if(!dbData.find(d => d.id === vd.id)) dbData.push(vd); });
+                    try {
+                        dbData = JSON.parse(yerelDB);
+                        if (!Array.isArray(dbData)) dbData = veritabaniYukle();
+                    } catch(e) {
+                        dbData = veritabaniYukle();
+                    }
+                    varsayilanDB.forEach(vd => { if(!dbData.find(d => String(d.id) === String(vd.id))) dbData.push(vd); });
                 } else {
                     dbData = veritabaniYukle();
                 }
                 await idb.set('dbData', JSON.stringify(dbData));
 
-                const yerelKayit = await idb.get('kayitlar'); kayitlar = yerelKayit ? JSON.parse(yerelKayit) : [];
+                const yerelKayit = await idb.get('kayitlar'); 
+                try { kayitlar = yerelKayit ? JSON.parse(yerelKayit) : []; if(!Array.isArray(kayitlar)) kayitlar = []; } catch(e) { kayitlar = []; }
+                
                 const yerelState = await idb.get('state');
                 if (yerelState) {
-                    const s = JSON.parse(yerelState);
-                    aktifZikirId = s.aktifZikirId || dbData[0].id; sayac = s.sayac || 0; zikirMode = s.zikirMode || 'kutuphane'; freeSayac = s.freeSayac || 0; freeHedef = s.freeHedef || 0; ulke = s.ulke || "Turkey"; sehir = s.sehir || "Ankara"; kazaDurumu = s.kazaDurumu || kazaDurumu;
+                    try {
+                        const s = JSON.parse(yerelState);
+                        if(s) {
+                            aktifZikirId = s.aktifZikirId || dbData[0].id; sayac = s.sayac || 0; zikirMode = s.zikirMode || 'kutuphane'; freeSayac = s.freeSayac || 0; freeHedef = s.freeHedef || 0; ulke = s.ulke || "Turkey"; sehir = s.sehir || "Ankara"; kazaDurumu = s.kazaDurumu || kazaDurumu;
+                        }
+                    } catch(e) { aktifZikirId = dbData[0].id; }
                 } else { aktifZikirId = dbData[0].id; }
 
                 if(freeHedef > 0) document.getElementById('input-serbest-hedef').value = freeHedef;
@@ -831,20 +853,20 @@
                             }
                             
                             document.getElementById('loading-screen').classList.add('hidden');
-                            if (!localStorage.getItem('hazine_policy_accepted')) { window.infoModalAc(); }
+                            if (!ls.get('hazine_policy_accepted')) { window.infoModalAc(); }
                         });
                     } else { 
                         document.getElementById('loading-screen').classList.add('hidden'); 
-                        if (!localStorage.getItem('hazine_policy_accepted')) { window.infoModalAc(); }
+                        if (!ls.get('hazine_policy_accepted')) { window.infoModalAc(); }
                     }
                 } catch (e) { 
                     document.getElementById('loading-screen').classList.add('hidden'); 
-                    if (!localStorage.getItem('hazine_policy_accepted')) window.infoModalAc();
+                    if (!ls.get('hazine_policy_accepted')) window.infoModalAc();
                 }
             } catch (error) {
                 console.error("Kritik Çökme Engellendi:", error);
-                ls.remove('hazine_db_pro'); ls.remove('hazine_aktif_id'); ls.remove('hazine_sayac');
-                alert("Veriler onarıldı, lütfen sayfayı yenileyin.");
+                document.getElementById('loading-screen').classList.add('hidden');
+                if (!ls.get('hazine_policy_accepted')) window.infoModalAc();
             }
         };
 
@@ -883,9 +905,17 @@
         window.sekmeyeGec = (hedef) => {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
             const h = document.getElementById('view-' + hedef); if (h) h.classList.add('active');
-            document.querySelectorAll('.nav-btn').forEach(btn => { btn.classList.remove('active', 'text-emerald-600'); btn.classList.add('text-slate-400'); btn.querySelector('.nav-indicator').style.opacity = '0'; });
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('active', 'text-emerald-600');
+                btn.classList.add('text-slate-400');
+                btn.querySelector('.nav-indicator').style.opacity = '0';
+            });
             const aktifBtn = document.querySelector(`[data-target="view-${hedef}"]`);
-            if (aktifBtn) { aktifBtn.classList.remove('text-slate-400'); aktifBtn.classList.add('active', 'text-emerald-600'); aktifBtn.querySelector('.nav-indicator').style.opacity = '1'; }
+            if (aktifBtn) {
+                aktifBtn.classList.remove('text-slate-400');
+                aktifBtn.classList.add('active', 'text-emerald-600');
+                aktifBtn.querySelector('.nav-indicator').style.opacity = '1';
+            }
             document.getElementById('main-scroll').scrollTop = 0; syncToCloud();
         };
 
@@ -1038,12 +1068,23 @@
             document.getElementById('btn-onay-evet').onclick = () => { evetFonksiyonu(); window.onayIptal(); };
         };
         window.onayIptal = () => { document.getElementById('modal-onay').classList.add('hidden'); };
-        window.sayaciSifirla = () => { window.onayIste("Sayacı Sıfırla", "Mevcut sayacınızı sıfırlamak istiyor musunuz? Bu işlem geri alınamaz.", "🔄", () => { 
-            if (zikirMode === 'kutuphane') { sayac = 0; } else { freeSayac = 0; freeHedef = 0; document.getElementById('input-serbest-hedef').value = ''; }
-            zikirBaslangicZamani = null; if(zikirTimer) clearInterval(zikirTimer); 
-            const suresiEl = document.getElementById('zikir-suresi'); if(suresiEl) suresiEl.innerText = "00:00";
-            saveLocalState(); syncToCloud(); window.zikirEkraniGuncelle(); window.toastGoster("Sıfırlandı.", "info"); 
-        }); };
+        
+        window.sayaciSifirla = () => { 
+            window.onayIste("Sayacı Sıfırla", "Mevcut sayacınızı sıfırlamak istiyor musunuz? Bu işlem geri alınamaz.", "🔄", () => { 
+                if (zikirMode === 'kutuphane') { 
+                    sayac = 0; 
+                } else { 
+                    freeSayac = 0; 
+                    freeHedef = 0; 
+                    document.getElementById('input-serbest-hedef').value = ''; 
+                }
+                zikirBaslangicZamani = null; 
+                if(zikirTimer) clearInterval(zikirTimer); 
+                const suresiEl = document.getElementById('zikir-suresi'); 
+                if(suresiEl) suresiEl.innerText = "00:00";
+                saveLocalState(); syncToCloud(); window.zikirEkraniGuncelle(); window.toastGoster("Sıfırlandı.", "info"); 
+            }); 
+        };
         
         window.zikriKaydet = async () => {
             let baslikStr = "", kaydedilecekSayi = 0;
@@ -1202,7 +1243,7 @@
         };
 
         window.infoModalAc = () => { document.getElementById('modal-info').classList.remove('hidden'); };
-        window.infoModalKapat = () => { localStorage.setItem('hazine_policy_accepted', 'true'); document.getElementById('modal-info').classList.add('hidden'); };
+        window.infoModalKapat = () => { ls.set('hazine_policy_accepted', 'true'); document.getElementById('modal-info').classList.add('hidden'); };
 
         window.konumMetinleriniGuncelle = () => { document.getElementById('header-konum').innerText = `${sehir}, ${ulke}`; document.getElementById('vakit-konum-metni').innerHTML = `<span class="font-bold text-slate-700">${sehir}</span>, ${ulke}`; };
         window.konumModalAc = () => { document.getElementById('input-ulke').value = ulke; document.getElementById('input-sehir').value = sehir; document.getElementById('modal-konum').classList.remove('hidden'); };
