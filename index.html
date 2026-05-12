@@ -31,69 +31,41 @@
     </script>
 
     <style>
-        body {
-            overscroll-behavior-y: none;
-            -webkit-tap-highlight-color: transparent;
+        html, body {
+            overscroll-behavior-y: none !important;
+            overscroll-behavior: none !important;
             touch-action: pan-x pan-y;
             background-color: #e2e8f0;
         }
+        #main-scroll { overscroll-behavior-y: contain !important; }
         .no-select { user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; }
         .nav-container { padding-bottom: env(safe-area-inset-bottom); }
-        
-        /* Modern Scrollbar */
         ::-webkit-scrollbar { width: 4px; }
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
-        
-        /* Tab Transitions */
         .tab-content { display: none; animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
         .tab-content.active { display: flex; }
         @keyframes slideUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
         
-        /* 3D Zikir Button Effect */
-        .btn-3d {
-            box-shadow: 0 10px 25px -5px rgba(5, 150, 105, 0.5), inset 0 -8px 15px rgba(0,0,0,0.1), inset 0 8px 15px rgba(255,255,255,0.3);
-            transition: all 0.15s ease;
-        }
-        .btn-3d:active {
-            box-shadow: 0 2px 10px -2px rgba(5, 150, 105, 0.5), inset 0 -2px 5px rgba(0,0,0,0.1), inset 0 4px 8px rgba(255,255,255,0.2);
-            transform: scale(0.96) translateY(4px);
-        }
+        .btn-3d { box-shadow: 0 10px 25px -5px rgba(5, 150, 105, 0.5), inset 0 -8px 15px rgba(0,0,0,0.1), inset 0 8px 15px rgba(255,255,255,0.3); transition: all 0.15s ease; }
+        .btn-3d:active { box-shadow: 0 2px 10px -2px rgba(5, 150, 105, 0.5), inset 0 -2px 5px rgba(0,0,0,0.1), inset 0 4px 8px rgba(255,255,255,0.2); transform: scale(0.96) translateY(4px); }
 
-        /* Compass Animations */
         .compass-needle { transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1); }
         .mekke-anim { transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.3s ease; }
 
-        /* Glassmorphism */
         .glass-panel { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
         .glass-dark { background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); }
 
-        /* Glow Effects */
-        @keyframes glowPulse {
-            0% { box-shadow: 0 0 20px rgba(16, 185, 129, 0.2); }
-            50% { box-shadow: 0 0 40px rgba(16, 185, 129, 0.6); }
-            100% { box-shadow: 0 0 20px rgba(16, 185, 129, 0.2); }
-        }
+        @keyframes glowPulse { 0% { box-shadow: 0 0 20px rgba(16, 185, 129, 0.2); } 50% { box-shadow: 0 0 40px rgba(16, 185, 129, 0.6); } 100% { box-shadow: 0 0 20px rgba(16, 185, 129, 0.2); } }
         .isikli-vurus { animation: glowPulse 0.3s ease-out; }
         
-        .hedef-basarili {
-            background: linear-gradient(135deg, #fef08a, #facc15) !important;
-            color: #713f12 !important;
-            box-shadow: 0 0 50px rgba(250, 204, 21, 0.6), inset 0 0 20px rgba(255,255,255,0.5) !important;
-            border-color: #eab308 !important;
-            transform: scale(1.02);
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-
-        /* Vakit Aktif Işığı */
+        .hedef-basarili { background: linear-gradient(135deg, #fef08a, #facc15) !important; color: #713f12 !important; box-shadow: 0 0 50px rgba(250, 204, 21, 0.6), inset 0 0 20px rgba(255,255,255,0.5) !important; border-color: #eab308 !important; transform: scale(1.02); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
         .vakit-aktif { animation: pulse-emerald 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; border-color: #10b981 !important; background-color: #ecfdf5 !important; }
         @keyframes pulse-emerald { 0%, 100% { opacity: 1; box-shadow: 0 0 0px rgba(16, 185, 129, 0); } 50% { opacity: .8; box-shadow: 0 0 15px rgba(16, 185, 129, 0.5); } }
-
     </style>
 </head>
 <body class="text-slate-800 h-[100dvh] w-full flex justify-center overflow-hidden antialiased selection:bg-emerald-200">
 
-    <!-- Başlangıç Yükleme Ekranı -->
     <div id="loading-screen" class="absolute inset-0 bg-gradient-to-br from-emerald-900 to-emerald-800 z-[200] flex flex-col items-center justify-center text-white">
         <div class="text-7xl animate-bounce mb-6 drop-shadow-[0_0_15px_rgba(251,191,36,0.5)]">🕌</div>
         <h1 class="text-3xl font-extrabold mb-2 tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-gold-400 to-yellow-200">Dijital Hazine</h1>
@@ -105,7 +77,6 @@
         </div>
     </div>
 
-    <!-- KVKK, KÜNYE, GİZLİLİK POLİTİKASI -->
     <div id="modal-info" class="hidden absolute inset-0 bg-slate-900/90 z-[150] flex items-center justify-center p-4 backdrop-blur-md transition-opacity">
         <div class="bg-white rounded-3xl shadow-2xl w-full max-w-md max-h-[90vh] h-full flex flex-col overflow-hidden animate-[slideUp_0.3s_ease-out]">
             <div class="bg-gradient-to-r from-emerald-800 to-emerald-900 text-white p-5 flex justify-between items-center shrink-0 shadow-md">
@@ -128,9 +99,7 @@
                 </div>
                 <div class="bg-white p-4 rounded-2xl border border-slate-100 shadow-sm">
                     <h4 class="font-bold text-emerald-800 text-base mb-2 border-b border-slate-100 pb-2 flex items-center gap-2"><span>🛡️</span> KVKK Aydınlatma Metni</h4>
-                    <p class="mt-2 text-justify leading-relaxed">
-                        6698 sayılı Kişisel Verilerin Korunması Kanunu ("KVKK") uyarınca, "Dijital Hazine" uygulaması içerisindeki kişisel kullanım verileriniz (okuduğunuz dualar, zikir hedefleri ve kaza namazı bilgileriniz) kural olarak <strong>sadece kendi cihazınızın yerel hafızasında (çevrimdışı olarak)</strong> barındırılır. Cihaz dışına istemsiz hiçbir veri aktarımı yapılmaz.
-                    </p>
+                    <p class="mt-2 text-justify leading-relaxed">6698 sayılı Kişisel Verilerin Korunması Kanunu ("KVKK") uyarınca, "Dijital Hazine" uygulaması içerisindeki kişisel kullanım verileriniz (okuduğunuz dualar, zikir hedefleri ve kaza namazı bilgileriniz) kural olarak <strong>sadece kendi cihazınızın yerel hafızasında (çevrimdışı olarak)</strong> barındırılır. Cihaz dışına istemsiz hiçbir veri aktarımı yapılmaz.</p>
                 </div>
                 <div class="bg-white p-4 rounded-2xl border border-slate-100 shadow-sm mb-4">
                     <h4 class="font-bold text-emerald-800 text-base mb-2 border-b border-slate-100 pb-2 flex items-center gap-2"><span>🔒</span> Veri ve Gizlilik Politikası</h4>
@@ -144,21 +113,16 @@
                 </div>
             </div>
             <div class="p-4 bg-white border-t border-slate-100 shrink-0">
-                <button onclick="infoModalKapat()" class="w-full bg-emerald-600 text-white font-bold py-3.5 rounded-xl shadow-md active:scale-95 transition-transform flex justify-center items-center gap-2">
-                    <span>✅</span> Okudum, Anladım (Kapat)
-                </button>
+                <button onclick="infoModalKapat()" class="w-full bg-emerald-600 text-white font-bold py-3.5 rounded-xl shadow-md active:scale-95 transition-transform flex justify-center items-center gap-2"><span>✅</span> Okudum, Anladım (Kapat)</button>
             </div>
         </div>
     </div>
 
-    <!-- Ana Mobil Uygulama Çerçevesi -->
     <div class="w-full max-w-md bg-slate-50 shadow-2xl relative flex flex-col h-full overflow-hidden sm:border-x sm:border-slate-200">
         
-        <!-- Premium Header -->
         <div class="bg-gradient-to-r from-emerald-900 to-emerald-800 text-white pt-5 pb-6 px-5 shadow-lg z-20 flex-none relative overflow-hidden rounded-b-[2rem]">
             <div class="absolute -right-10 -top-10 w-32 h-32 bg-emerald-700 rounded-full mix-blend-multiply filter blur-2xl opacity-50"></div>
             <div class="absolute -left-10 -bottom-10 w-32 h-32 bg-gold-500 rounded-full mix-blend-multiply filter blur-2xl opacity-20"></div>
-            
             <div class="flex justify-between items-center relative z-10">
                 <div class="flex items-center gap-3">
                     <button onclick="hicriBilgiModalAc()" id="hicri-ay-bilgisi" class="text-[10px] font-bold bg-white/20 px-2 py-1 rounded-lg hover:bg-white/30 transition shadow-sm border border-white/20 active:scale-95 truncate max-w-[120px]" title="Hicri Ay Bilgisi">Hicri Ay</button>
@@ -177,12 +141,10 @@
             <span id="toast-msg">Mesaj...</span>
         </div>
 
-        <!-- İÇERİK ALANLARI -->
         <div class="flex-1 overflow-y-auto relative scroll-smooth pb-6" id="main-scroll">
 
             <!-- 1. ZİKİRMATİK EKRANI -->
             <div id="view-zikirmatik" class="tab-content active flex-col items-center justify-start px-5 pt-6 pb-28 min-h-full">
-                
                 <div class="flex bg-slate-200/70 p-1.5 rounded-2xl mb-6 w-full flex-none shadow-inner relative">
                     <button onclick="window.zikirModDegistir('kutuphane')" id="btn-mode-kutuphane" class="flex-1 py-2.5 rounded-xl text-sm font-bold bg-white shadow text-emerald-800 transition-all duration-300">📚 Kütüphane</button>
                     <button onclick="window.zikirModDegistir('serbest')" id="btn-mode-serbest" class="flex-1 py-2.5 rounded-xl text-sm font-bold text-slate-500 hover:text-slate-700 transition-all duration-300">✨ Serbest</button>
@@ -212,23 +174,12 @@
 
                 <div id="hedef-kapsayici" class="w-full mb-6 mt-4 hidden">
                     <div class="flex justify-between items-end mb-2 px-1">
-                        <div>
-                            <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-0.5">İlerleme</span>
-                            <span id="hedef-metin" class="text-slate-700 font-bold text-lg">0 / 0</span>
-                        </div>
-                        <div class="text-center">
-                            <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-0.5">Süre</span>
-                            <span id="zikir-suresi" class="text-slate-600 font-bold text-sm bg-white px-2 py-1 rounded-lg border border-slate-200 shadow-sm font-mono">00:00</span>
-                        </div>
-                        <div class="text-right bg-red-50 px-3 py-1 rounded-lg border border-red-100">
-                            <span class="text-[10px] font-bold text-red-500 uppercase tracking-wider block">Kalan</span>
-                            <span id="hedef-kalan" class="text-red-600 font-extrabold text-lg leading-none">0</span>
-                        </div>
+                        <div><span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-0.5">İlerleme</span><span id="hedef-metin" class="text-slate-700 font-bold text-lg">0 / 0</span></div>
+                        <div class="text-center"><span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-0.5">Süre</span><span id="zikir-suresi" class="text-slate-600 font-bold text-sm bg-white px-2 py-1 rounded-lg border border-slate-200 shadow-sm font-mono">00:00</span></div>
+                        <div class="text-right bg-red-50 px-3 py-1 rounded-lg border border-red-100"><span class="text-[10px] font-bold text-red-500 uppercase tracking-wider block">Kalan</span><span id="hedef-kalan" class="text-red-600 font-extrabold text-lg leading-none">0</span></div>
                     </div>
                     <div class="w-full bg-slate-200 rounded-full h-3.5 shadow-inner overflow-hidden">
-                        <div id="hedef-bar" class="bg-gradient-to-r from-emerald-400 to-teal-500 h-full rounded-full transition-all duration-500 relative">
-                            <div class="absolute inset-0 bg-white/20 w-full h-full animate-pulse"></div>
-                        </div>
+                        <div id="hedef-bar" class="bg-gradient-to-r from-emerald-400 to-teal-500 h-full rounded-full transition-all duration-500 relative"><div class="absolute inset-0 bg-white/20 w-full h-full animate-pulse"></div></div>
                     </div>
                 </div>
 
@@ -236,7 +187,7 @@
                     <div id="z-sayac" class="text-[4.5rem] leading-none font-black text-slate-800 w-full py-8 rounded-[2.5rem] bg-white border border-slate-100 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08),inset_0_-4px_10px_rgba(0,0,0,0.02)] text-center no-select transition-all duration-300 font-mono tracking-tighter z-10 relative overflow-hidden">0</div>
                 </div>
 
-                <div class="flex-1 w-full flex items-center justify-center mb-8 mt-auto">
+                <div class="flex-1 w-full flex items-center justify-center mb-6 mt-auto">
                     <button onclick="window.zikirArtir()" class="relative w-48 h-48 rounded-full bg-gradient-to-b from-emerald-400 to-emerald-700 btn-3d flex items-center justify-center group outline-none no-select touch-manipulation">
                         <div class="absolute inset-[-12px] rounded-full border-2 border-emerald-500/20 group-active:scale-95 transition-transform"></div>
                         <div class="absolute inset-[-24px] rounded-full border border-emerald-500/10 group-active:scale-90 transition-transform"></div>
@@ -247,7 +198,8 @@
                 </div>
 
                 <div class="grid grid-cols-3 gap-2 sm:gap-4 w-full mt-auto mb-2">
-                    <button id="btn-dinle" onclick="window.sesliOku()" class="bg-white text-blue-600 font-bold py-3.5 rounded-2xl border border-slate-200 hover:bg-blue-50 transition-all shadow-sm flex flex-col items-center gap-1.5 active:scale-95 group">
+                    <!-- Dinle Butonu (Sesli Okuma - Düzeltilmiş) -->
+                    <button id="btn-dinle" onclick="window.sesliOku(event)" class="bg-white text-blue-600 font-bold py-3.5 rounded-2xl border border-slate-200 hover:bg-blue-50 transition-all shadow-sm flex flex-col items-center gap-1.5 active:scale-95 group">
                         <span class="text-2xl group-active:scale-110 transition-transform">🔊</span> <span class="text-[10px] uppercase tracking-wider">Dinle</span>
                     </button>
                     <button onclick="window.sayaciSifirla()" class="bg-white text-red-500 font-bold py-3.5 rounded-2xl border border-slate-200 hover:bg-red-50 transition-all shadow-sm flex flex-col items-center gap-1.5 active:scale-95 group">
@@ -270,12 +222,10 @@
                         </button>
                     </div>
                 </div>
-                
                 <div class="relative mb-6 shadow-sm">
                     <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400">🔍</div>
                     <input type="text" id="arama-kutusu" placeholder="Dua veya zikir ara..." class="w-full pl-11 pr-4 py-3.5 bg-white border border-slate-200 rounded-2xl focus:ring-2 focus:ring-emerald-500 outline-none transition-shadow text-sm font-medium" onkeyup="kutuphaneListele()">
                 </div>
-                
                 <div id="kutuphane-listesi" class="flex flex-col gap-4"></div>
             </div>
 
@@ -287,17 +237,13 @@
                         <span>⚙️</span> Ayarla
                     </button>
                 </div>
-                
                 <div id="kaza-kerahat-banner" class="hidden"></div>
-                
                 <p class="text-sm text-slate-500 mb-6 leading-relaxed bg-white p-4 rounded-2xl border border-slate-100 shadow-sm">Geçmişe dönük kaza namazlarınızı buradan takip edin. Kıldıkça <b class="text-red-500">eksi (-)</b> butonuna basarak borcunuzu azaltın.</p>
-                
                 <div id="kaza-listesi" class="grid gap-3"></div>
             </div>
 
             <!-- 4. VAKİTLER VE PUSULA -->
             <div id="view-vakitler" class="tab-content flex-col px-5 pt-6 pb-28">
-                
                 <div class="grid grid-cols-2 gap-3 mb-6">
                     <button onclick="imsakiyeModalAc()" class="bg-white text-emerald-700 py-3.5 rounded-2xl font-bold border border-emerald-100 hover:bg-emerald-50 transition active:scale-95 shadow-sm text-sm flex items-center justify-center gap-2"><span>📅</span> İmsakiye</button>
                     <button onclick="diniGunlerModalAc()" class="bg-white text-blue-700 py-3.5 rounded-2xl font-bold border border-blue-100 hover:bg-blue-50 transition active:scale-95 shadow-sm text-sm flex items-center justify-center gap-2"><span>🌙</span> Dini Günler</button>
@@ -305,9 +251,7 @@
 
                 <div class="flex justify-between items-center mb-3">
                     <h2 class="text-2xl font-extrabold text-slate-800 tracking-tight">Vakitler</h2>
-                    <button onclick="konumModalAc()" class="text-emerald-700 text-xs font-bold bg-emerald-50 px-3 py-2 rounded-xl border border-emerald-200 hover:bg-emerald-100 transition active:scale-95 shadow-sm flex items-center gap-1">
-                        📍 Konum
-                    </button>
+                    <button onclick="konumModalAc()" class="text-emerald-700 text-xs font-bold bg-emerald-50 px-3 py-2 rounded-xl border border-emerald-200 hover:bg-emerald-100 transition active:scale-95 shadow-sm flex items-center gap-1">📍 Konum</button>
                 </div>
                 
                 <p class="text-xs font-medium text-slate-500 mb-5 flex items-center justify-between bg-slate-100 px-3 py-2 rounded-lg">
@@ -316,12 +260,7 @@
                 </p>
 
                 <div id="vakit-kerahat-banner" class="hidden"></div>
-
-                <div id="vakit-yukleniyor" class="text-center py-12 bg-white rounded-3xl border border-slate-100 shadow-sm">
-                    <span class="text-4xl animate-spin mb-3 block">⏳</span>
-                    <span class="text-slate-500 font-medium text-sm">Vakitler hesaplanıyor...</span>
-                </div>
-
+                <div id="vakit-yukleniyor" class="text-center py-12 bg-white rounded-3xl border border-slate-100 shadow-sm"><span class="text-4xl animate-spin mb-3 block">⏳</span><span class="text-slate-500 font-medium text-sm">Vakitler hesaplanıyor...</span></div>
                 <div id="vakit-grid" class="grid grid-cols-2 gap-3 hidden mb-2"></div>
                 
                 <div class="mt-4 bg-gradient-to-br from-emerald-800 to-emerald-900 p-5 rounded-3xl shadow-lg hidden relative overflow-hidden text-white" id="sonraki-vakit-karti">
@@ -366,16 +305,13 @@
             <div id="view-raporlar" class="tab-content flex-col px-5 pt-6 pb-28">
                 <div class="flex justify-between items-center mb-6">
                     <h2 class="text-2xl font-extrabold text-slate-800 tracking-tight">Geçmiş</h2>
-                    <button onclick="csvIndir()" class="bg-slate-800 text-white px-4 py-2 rounded-xl text-xs font-bold hover:bg-slate-700 shadow-md transition active:scale-95 flex items-center gap-1.5">
-                        <span>📥</span> CSV İndir
-                    </button>
+                    <button onclick="csvIndir()" class="bg-slate-800 text-white px-4 py-2 rounded-xl text-xs font-bold hover:bg-slate-700 shadow-md transition active:scale-95 flex items-center gap-1.5"><span>📥</span> CSV İndir</button>
                 </div>
                 <div id="kayit-listesi" class="flex flex-col gap-3"></div>
                 <button onclick="kayitlariTemizle()" class="mt-8 w-full bg-white text-red-500 py-3.5 rounded-2xl font-bold border border-red-100 hover:bg-red-50 transition shadow-sm flex items-center justify-center gap-2">
                     <span class="text-lg">🗑️</span> Tüm Geçmişi Sil
                 </button>
             </div>
-
         </div>
 
         <!-- YUKARI ÇIK BUTONU -->
@@ -385,40 +321,17 @@
 
         <!-- GLASSMORPHISM ALT NAVİGASYON -->
         <div class="absolute bottom-0 left-0 right-0 glass-panel border-t border-slate-200/60 flex justify-between items-center z-30 nav-container px-2 pt-2 shadow-[0_-10px_20px_rgba(0,0,0,0.03)]">
-            <button onclick="sekmeyeGec('zikirmatik')" class="nav-btn active flex flex-col items-center justify-center w-1/5 h-14 text-slate-400 hover:text-emerald-600 transition-colors relative group" data-target="view-zikirmatik">
-                <span class="text-2xl mb-1 group-active:scale-90 transition-transform">📿</span>
-                <span class="text-[10px] font-bold">Zikirmatik</span>
-                <div class="nav-indicator absolute -top-2 w-8 h-1 bg-emerald-500 rounded-b-full opacity-0 transition-opacity"></div>
-            </button>
-            <button onclick="sekmeyeGec('kutuphane')" class="nav-btn flex flex-col items-center justify-center w-1/5 h-14 text-slate-400 hover:text-emerald-600 transition-colors relative group" data-target="view-kutuphane">
-                <span class="text-2xl mb-1 group-active:scale-90 transition-transform">📚</span>
-                <span class="text-[10px] font-bold">Kütüphane</span>
-                <div class="nav-indicator absolute -top-2 w-8 h-1 bg-emerald-500 rounded-b-full opacity-0 transition-opacity"></div>
-            </button>
-            <button onclick="sekmeyeGec('kaza')" class="nav-btn flex flex-col items-center justify-center w-1/5 h-14 text-slate-400 hover:text-emerald-600 transition-colors relative group" data-target="view-kaza">
-                <span class="text-2xl mb-1 group-active:scale-90 transition-transform">📝</span>
-                <span class="text-[10px] font-bold">Kaza</span>
-                <div class="nav-indicator absolute -top-2 w-8 h-1 bg-emerald-500 rounded-b-full opacity-0 transition-opacity"></div>
-            </button>
-            <button onclick="sekmeyeGec('vakitler')" class="nav-btn flex flex-col items-center justify-center w-1/5 h-14 text-slate-400 hover:text-emerald-600 transition-colors relative group" data-target="view-vakitler">
-                <span class="text-2xl mb-1 group-active:scale-90 transition-transform">🕌</span>
-                <span class="text-[10px] font-bold">Vakitler</span>
-                <div class="nav-indicator absolute -top-2 w-8 h-1 bg-emerald-500 rounded-b-full opacity-0 transition-opacity"></div>
-            </button>
-            <button onclick="sekmeyeGec('raporlar')" class="nav-btn flex flex-col items-center justify-center w-1/5 h-14 text-slate-400 hover:text-emerald-600 transition-colors relative group" data-target="view-raporlar">
-                <span class="text-2xl mb-1 group-active:scale-90 transition-transform">📊</span>
-                <span class="text-[10px] font-bold">Rapor</span>
-                <div class="nav-indicator absolute -top-2 w-8 h-1 bg-emerald-500 rounded-b-full opacity-0 transition-opacity"></div>
-            </button>
+            <button onclick="sekmeyeGec('zikirmatik')" class="nav-btn active flex flex-col items-center justify-center w-1/5 h-14 text-slate-400 hover:text-emerald-600 transition-colors relative group" data-target="view-zikirmatik"><span class="text-2xl mb-1 group-active:scale-90 transition-transform">📿</span><span class="text-[10px] font-bold">Zikirmatik</span><div class="nav-indicator absolute -top-2 w-8 h-1 bg-emerald-500 rounded-b-full opacity-0 transition-opacity"></div></button>
+            <button onclick="sekmeyeGec('kutuphane')" class="nav-btn flex flex-col items-center justify-center w-1/5 h-14 text-slate-400 hover:text-emerald-600 transition-colors relative group" data-target="view-kutuphane"><span class="text-2xl mb-1 group-active:scale-90 transition-transform">📚</span><span class="text-[10px] font-bold">Kütüphane</span><div class="nav-indicator absolute -top-2 w-8 h-1 bg-emerald-500 rounded-b-full opacity-0 transition-opacity"></div></button>
+            <button onclick="sekmeyeGec('kaza')" class="nav-btn flex flex-col items-center justify-center w-1/5 h-14 text-slate-400 hover:text-emerald-600 transition-colors relative group" data-target="view-kaza"><span class="text-2xl mb-1 group-active:scale-90 transition-transform">📝</span><span class="text-[10px] font-bold">Kaza</span><div class="nav-indicator absolute -top-2 w-8 h-1 bg-emerald-500 rounded-b-full opacity-0 transition-opacity"></div></button>
+            <button onclick="sekmeyeGec('vakitler')" class="nav-btn flex flex-col items-center justify-center w-1/5 h-14 text-slate-400 hover:text-emerald-600 transition-colors relative group" data-target="view-vakitler"><span class="text-2xl mb-1 group-active:scale-90 transition-transform">🕌</span><span class="text-[10px] font-bold">Vakitler</span><div class="nav-indicator absolute -top-2 w-8 h-1 bg-emerald-500 rounded-b-full opacity-0 transition-opacity"></div></button>
+            <button onclick="sekmeyeGec('raporlar')" class="nav-btn flex flex-col items-center justify-center w-1/5 h-14 text-slate-400 hover:text-emerald-600 transition-colors relative group" data-target="view-raporlar"><span class="text-2xl mb-1 group-active:scale-90 transition-transform">📊</span><span class="text-[10px] font-bold">Rapor</span><div class="nav-indicator absolute -top-2 w-8 h-1 bg-emerald-500 rounded-b-full opacity-0 transition-opacity"></div></button>
         </div>
 
         <!-- MODALLAR -->
         <div id="modal-crud" class="hidden absolute inset-0 bg-slate-900/60 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 backdrop-blur-sm transition-opacity">
             <div class="bg-white rounded-t-3xl sm:rounded-3xl shadow-2xl w-full max-w-md max-h-[90vh] flex flex-col overflow-hidden animate-[slideUp_0.3s_ease-out]">
-                <div class="bg-slate-50 border-b border-slate-100 p-5 flex justify-between items-center relative">
-                    <h3 id="modal-baslik" class="font-extrabold text-lg text-slate-800">Yeni İçerik Ekle</h3>
-                    <button onclick="modalKapat()" class="w-8 h-8 bg-white border border-slate-200 rounded-full text-slate-500 flex items-center justify-center font-bold hover:bg-slate-100">&times;</button>
-                </div>
+                <div class="bg-slate-50 border-b border-slate-100 p-5 flex justify-between items-center relative"><h3 id="modal-baslik" class="font-extrabold text-lg text-slate-800">Yeni İçerik Ekle</h3><button onclick="modalKapat()" class="w-8 h-8 bg-white border border-slate-200 rounded-full text-slate-500 flex items-center justify-center font-bold hover:bg-slate-100">&times;</button></div>
                 <div class="p-5 overflow-y-auto flex-1">
                     <form id="crud-form" onsubmit="kaydiKaydet(event)" class="flex flex-col gap-4">
                         <input type="hidden" id="crud-id">
@@ -428,10 +341,7 @@
                         <div><label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">Arapça Metin</label><textarea id="crud-arapca" dir="rtl" rows="2" class="arabic-text w-full p-3.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:bg-white outline-none transition-all text-lg"></textarea></div>
                         <div><label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">Okunuşu</label><textarea id="crud-okunus" rows="2" class="w-full p-3.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:bg-white outline-none transition-all text-sm font-medium"></textarea></div>
                         <div><label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">Meali</label><textarea id="crud-meal" rows="2" class="w-full p-3.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:bg-white outline-none transition-all text-sm font-medium"></textarea></div>
-                        <div class="flex gap-3 mt-4 pt-4 border-t border-slate-100">
-                            <button type="button" onclick="modalKapat()" class="flex-1 bg-white border border-slate-200 text-slate-700 py-3.5 rounded-xl font-bold hover:bg-slate-50 transition active:scale-95">İptal</button>
-                            <button type="submit" class="flex-1 bg-emerald-600 text-white py-3.5 rounded-xl font-bold hover:bg-emerald-700 shadow-md transition active:scale-95">Kaydet</button>
-                        </div>
+                        <div class="flex gap-3 mt-4 pt-4 border-t border-slate-100"><button type="button" onclick="modalKapat()" class="flex-1 bg-white border border-slate-200 text-slate-700 py-3.5 rounded-xl font-bold hover:bg-slate-50 transition active:scale-95">İptal</button><button type="submit" class="flex-1 bg-emerald-600 text-white py-3.5 rounded-xl font-bold hover:bg-emerald-700 shadow-md transition active:scale-95">Kaydet</button></div>
                     </form>
                 </div>
             </div>
@@ -439,64 +349,26 @@
 
         <div id="modal-konum" class="hidden absolute inset-0 bg-slate-900/60 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 backdrop-blur-sm">
             <div class="bg-white rounded-t-3xl sm:rounded-3xl shadow-2xl w-full max-w-sm flex flex-col overflow-hidden animate-[slideUp_0.3s_ease-out]">
-                <div class="bg-slate-50 border-b border-slate-100 p-5 flex justify-between items-center relative">
-                    <h3 class="font-extrabold text-lg text-slate-800">Konum Ayarları</h3>
-                    <button onclick="konumModalKapat()" class="w-8 h-8 bg-white border border-slate-200 rounded-full text-slate-500 flex items-center justify-center font-bold hover:bg-slate-100">&times;</button>
-                </div>
+                <div class="bg-slate-50 border-b border-slate-100 p-5 flex justify-between items-center relative"><h3 class="font-extrabold text-lg text-slate-800">Konum Ayarları</h3><button onclick="konumModalKapat()" class="w-8 h-8 bg-white border border-slate-200 rounded-full text-slate-500 flex items-center justify-center font-bold hover:bg-slate-100">&times;</button></div>
                 <div class="p-6">
-                    <div class="flex flex-col gap-4">
-                        <div>
-                            <div class="flex justify-between items-center mb-1.5">
-                                <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider">Ülke</label>
-                                <button onclick="otomatikKonumBul(event)" type="button" class="text-[10px] bg-emerald-50 text-emerald-700 px-2.5 py-1 rounded-md border border-emerald-200 font-bold active:scale-95">🌍 Otomatik Bul</button>
-                            </div>
-                            <input type="text" id="input-ulke" class="w-full p-3.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-emerald-500 outline-none font-medium">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">Şehir</label>
-                            <input type="text" id="input-sehir" class="w-full p-3.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-emerald-500 outline-none font-medium">
-                        </div>
-                    </div>
-                    <div class="flex gap-3 mt-8">
-                        <button onclick="konumModalKapat()" class="flex-1 bg-white border border-slate-200 text-slate-700 py-3.5 rounded-xl font-bold">İptal</button>
-                        <button onclick="konumKaydet()" class="flex-1 bg-emerald-600 text-white py-3.5 rounded-xl font-bold shadow-md">Kaydet</button>
-                    </div>
+                    <div class="flex flex-col gap-4"><div><div class="flex justify-between items-center mb-1.5"><label class="block text-xs font-bold text-slate-500 uppercase tracking-wider">Ülke</label><button onclick="otomatikKonumBul(event)" type="button" class="text-[10px] bg-emerald-50 text-emerald-700 px-2.5 py-1 rounded-md border border-emerald-200 font-bold active:scale-95">🌍 Otomatik Bul</button></div><input type="text" id="input-ulke" class="w-full p-3.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-emerald-500 outline-none font-medium"></div><div><label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">Şehir</label><input type="text" id="input-sehir" class="w-full p-3.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-emerald-500 outline-none font-medium"></div></div>
+                    <div class="flex gap-3 mt-8"><button onclick="konumModalKapat()" class="flex-1 bg-white border border-slate-200 text-slate-700 py-3.5 rounded-xl font-bold">İptal</button><button onclick="konumKaydet()" class="flex-1 bg-emerald-600 text-white py-3.5 rounded-xl font-bold shadow-md">Kaydet</button></div>
                 </div>
             </div>
         </div>
 
         <div id="modal-dinigunler" class="hidden absolute inset-0 bg-slate-900/60 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 backdrop-blur-sm">
             <div class="bg-white rounded-t-3xl sm:rounded-3xl shadow-2xl w-full max-w-sm flex flex-col overflow-hidden max-h-[85vh] animate-[slideUp_0.3s_ease-out]">
-                <div class="bg-blue-700 text-white p-5 flex justify-between items-center shadow-md z-10">
-                    <h3 class="font-bold text-lg">Dini Günler</h3>
-                    <div class="flex items-center gap-3">
-                        <select id="dini-gunler-yil-secici" class="bg-blue-800 text-white text-sm font-bold py-1.5 px-3 rounded-lg border border-blue-600 outline-none" onchange="diniGunlerYiliDegisti(this.value)"></select>
-                        <button onclick="diniGunlerModalKapat()" class="text-white text-2xl leading-none">&times;</button>
-                    </div>
-                </div>
-                <div class="p-0 overflow-y-auto bg-slate-50">
-                    <ul id="dini-gunler-listesi" class="text-sm text-slate-700 divide-y divide-slate-100"></ul>
-                </div>
+                <div class="bg-blue-700 text-white p-5 flex justify-between items-center shadow-md z-10"><h3 class="font-bold text-lg">Dini Günler</h3><div class="flex items-center gap-3"><select id="dini-gunler-yil-secici" class="bg-blue-800 text-white text-sm font-bold py-1.5 px-3 rounded-lg border border-blue-600 outline-none" onchange="diniGunlerYiliDegisti(this.value)"></select><button onclick="diniGunlerModalKapat()" class="text-white text-2xl leading-none">&times;</button></div></div>
+                <div class="p-0 overflow-y-auto bg-slate-50"><ul id="dini-gunler-listesi" class="text-sm text-slate-700 divide-y divide-slate-100"></ul></div>
             </div>
         </div>
 
         <div id="modal-imsakiye" class="hidden absolute inset-0 bg-slate-900/60 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 backdrop-blur-sm">
             <div class="bg-white rounded-t-3xl sm:rounded-3xl shadow-2xl w-full max-w-md flex flex-col overflow-hidden max-h-[90vh] animate-[slideUp_0.3s_ease-out]">
-                <div class="bg-emerald-700 text-white p-5 flex justify-between items-center shadow-md z-10">
-                    <h3 class="font-bold text-lg">Aylık İmsakiye</h3>
-                    <button onclick="imsakiyeModalKapat()" class="text-white text-2xl leading-none">&times;</button>
-                </div>
-                <div id="imsakiye-yukleniyor" class="text-center py-12 bg-slate-50">
-                    <span class="text-4xl animate-spin mb-3 block">⏳</span><span class="font-medium text-slate-500">Takvim yükleniyor...</span>
-                </div>
-                <div class="overflow-x-auto overflow-y-auto hidden bg-white" id="imsakiye-tablo-kapsayici">
-                    <table class="w-full text-xs text-left text-slate-600">
-                        <thead class="text-xs text-emerald-800 bg-emerald-50/80 backdrop-blur-sm sticky top-0 shadow-sm border-b border-emerald-100">
-                            <tr><th class="p-3">Tarih</th><th class="p-3 font-bold">İmsak</th><th class="p-3">Güneş</th><th class="p-3">Öğle</th><th class="p-3">İkindi</th><th class="p-3 font-bold">Akşam</th><th class="p-3">Yatsı</th></tr>
-                        </thead>
-                        <tbody id="imsakiye-liste" class="divide-y divide-slate-50"></tbody>
-                    </table>
-                </div>
+                <div class="bg-emerald-700 text-white p-5 flex justify-between items-center shadow-md z-10"><h3 class="font-bold text-lg">Aylık İmsakiye</h3><button onclick="imsakiyeModalKapat()" class="text-white text-2xl leading-none">&times;</button></div>
+                <div id="imsakiye-yukleniyor" class="text-center py-12 bg-slate-50"><span class="text-4xl animate-spin mb-3 block">⏳</span><span class="font-medium text-slate-500">Takvim yükleniyor...</span></div>
+                <div class="overflow-x-auto overflow-y-auto hidden bg-white" id="imsakiye-tablo-kapsayici"><table class="w-full text-xs text-left text-slate-600"><thead class="text-xs text-emerald-800 bg-emerald-50/80 backdrop-blur-sm sticky top-0 shadow-sm border-b border-emerald-100"><tr><th class="p-3">Tarih</th><th class="p-3 font-bold">İmsak</th><th class="p-3">Güneş</th><th class="p-3">Öğle</th><th class="p-3">İkindi</th><th class="p-3 font-bold">Akşam</th><th class="p-3">Yatsı</th></tr></thead><tbody id="imsakiye-liste" class="divide-y divide-slate-50"></tbody></table></div>
             </div>
         </div>
 
@@ -512,16 +384,8 @@
                 </div>
                 <div class="p-6 overflow-y-auto bg-slate-50 flex-1">
                     <p id="hicri-modal-aciklama" class="text-sm text-slate-600 mb-6 leading-relaxed bg-white p-4 rounded-xl border border-slate-200 shadow-sm"></p>
-                    
-                    <div class="mb-5">
-                        <h4 class="font-bold text-emerald-800 text-sm mb-3 flex items-center gap-2 border-b border-slate-200 pb-2"><span>✨</span> Tavsiye Edilen İbadetler:</h4>
-                        <div id="hicri-modal-ibadetler" class="text-sm text-slate-700 space-y-2 pl-2"></div>
-                    </div>
-
-                    <div>
-                        <h4 class="font-bold text-emerald-800 text-sm mb-3 flex items-center gap-2 border-b border-slate-200 pb-2"><span>🤲</span> Okunacak Dualar (Okunuşu):</h4>
-                        <div id="hicri-modal-dualar" class="text-sm text-slate-700 space-y-3 pl-2"></div>
-                    </div>
+                    <div class="mb-5"><h4 class="font-bold text-emerald-800 text-sm mb-3 flex items-center gap-2 border-b border-slate-200 pb-2"><span>✨</span> Tavsiye Edilen İbadetler:</h4><div id="hicri-modal-ibadetler" class="text-sm text-slate-700 space-y-2 pl-2"></div></div>
+                    <div><h4 class="font-bold text-emerald-800 text-sm mb-3 flex items-center gap-2 border-b border-slate-200 pb-2"><span>🤲</span> Okunacak Dualar (Okunuşu):</h4><div id="hicri-modal-dualar" class="text-sm text-slate-700 space-y-3 pl-2"></div></div>
                 </div>
             </div>
         </div>
@@ -548,92 +412,37 @@
 
         <div id="modal-kaza-ayar" class="hidden absolute inset-0 bg-slate-900/60 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 backdrop-blur-sm">
             <div class="bg-white rounded-t-3xl sm:rounded-3xl shadow-2xl w-full max-w-sm flex flex-col overflow-hidden max-h-[90vh] animate-[slideUp_0.3s_ease-out]">
-                <div class="bg-slate-50 border-b border-slate-100 p-5 flex justify-between items-center">
-                    <h3 class="font-extrabold text-lg text-slate-800">Kazaları Ayarla</h3>
-                    <button onclick="kazaTopluAyarModalKapat()" class="w-8 h-8 bg-white border border-slate-200 rounded-full text-slate-500 font-bold">&times;</button>
-                </div>
+                <div class="bg-slate-50 border-b border-slate-100 p-5 flex justify-between items-center"><h3 class="font-extrabold text-lg text-slate-800">Kazaları Ayarla</h3><button onclick="kazaTopluAyarModalKapat()" class="w-8 h-8 bg-white border border-slate-200 rounded-full text-slate-500 font-bold">&times;</button></div>
                 <div class="p-6 overflow-y-auto">
-                    <div class="mb-5 bg-emerald-50 p-4 rounded-xl border border-emerald-100">
-                        <div class="flex justify-between items-center mb-2">
-                            <h4 class="text-xs font-bold text-emerald-800 uppercase">Hızlı Hesaplayıcı</h4>
-                            <button type="button" onclick="window.kazaHesapSifirla()" class="text-[10px] bg-red-100 text-red-600 px-2 py-1 rounded font-bold hover:bg-red-200 transition active:scale-95">Sıfırla</button>
-                        </div>
-                        <div class="flex gap-2 mb-2">
-                            <div class="flex-1">
-                                <label class="text-[10px] text-emerald-600 font-bold">Yıl</label>
-                                <input type="number" id="kaza-hesap-yil" min="0" placeholder="0" class="w-full p-2 bg-white border border-emerald-200 rounded-lg text-center font-bold outline-none focus:border-emerald-500" oninput="window.kazaOtomatikHesapla(false)">
-                            </div>
-                            <div class="flex-1">
-                                <label class="text-[10px] text-emerald-600 font-bold">Ay</label>
-                                <input type="number" id="kaza-hesap-ay" min="0" placeholder="0" class="w-full p-2 bg-white border border-emerald-200 rounded-lg text-center font-bold outline-none focus:border-emerald-500" oninput="window.kazaOtomatikHesapla(false)">
-                            </div>
-                            <div class="flex-1">
-                                <label class="text-[10px] text-emerald-600 font-bold">Gün</label>
-                                <input type="number" id="kaza-hesap-gun" min="0" placeholder="0" class="w-full p-2 bg-white border border-emerald-200 rounded-lg text-center font-bold outline-none focus:border-emerald-500" oninput="window.kazaOtomatikHesapla(false)">
-                            </div>
-                        </div>
-                    </div>
+                    <div class="mb-5 bg-emerald-50 p-4 rounded-xl border border-emerald-100"><div class="flex justify-between items-center mb-2"><h4 class="text-xs font-bold text-emerald-800 uppercase">Hızlı Hesaplayıcı</h4><button type="button" onclick="window.kazaHesapSifirla()" class="text-[10px] bg-red-100 text-red-600 px-2 py-1 rounded font-bold hover:bg-red-200 transition active:scale-95">Sıfırla</button></div><div class="flex gap-2 mb-2"><div class="flex-1"><label class="text-[10px] text-emerald-600 font-bold">Yıl</label><input type="number" id="kaza-hesap-yil" min="0" placeholder="0" class="w-full p-2 bg-white border border-emerald-200 rounded-lg text-center font-bold outline-none focus:border-emerald-500" oninput="window.kazaOtomatikHesapla(false)"></div><div class="flex-1"><label class="text-[10px] text-emerald-600 font-bold">Ay</label><input type="number" id="kaza-hesap-ay" min="0" placeholder="0" class="w-full p-2 bg-white border border-emerald-200 rounded-lg text-center font-bold outline-none focus:border-emerald-500" oninput="window.kazaOtomatikHesapla(false)"></div><div class="flex-1"><label class="text-[10px] text-emerald-600 font-bold">Gün</label><input type="number" id="kaza-hesap-gun" min="0" placeholder="0" class="w-full p-2 bg-white border border-emerald-200 rounded-lg text-center font-bold outline-none focus:border-emerald-500" oninput="window.kazaOtomatikHesapla(false)"></div></div></div>
                     <div class="flex flex-col gap-4" id="kaza-ayar-inputs"></div>
-                    <div class="flex gap-3 mt-8 border-t border-slate-100 pt-5">
-                        <button onclick="kazaTopluAyarModalKapat()" class="flex-1 bg-white border border-slate-200 text-slate-700 py-3.5 rounded-xl font-bold">İptal</button>
-                        <button onclick="kazaTopluKaydet()" class="flex-1 bg-emerald-600 text-white py-3.5 rounded-xl font-bold shadow-md">Kaydet</button>
-                    </div>
+                    <div class="flex gap-3 mt-8 border-t border-slate-100 pt-5"><button onclick="kazaTopluAyarModalKapat()" class="flex-1 bg-white border border-slate-200 text-slate-700 py-3.5 rounded-xl font-bold">İptal</button><button onclick="kazaTopluKaydet()" class="flex-1 bg-emerald-600 text-white py-3.5 rounded-xl font-bold shadow-md">Kaydet</button></div>
                 </div>
             </div>
         </div>
 
         <div id="modal-yedek" class="hidden absolute inset-0 bg-slate-900/60 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 backdrop-blur-sm transition-opacity">
             <div class="bg-white rounded-t-3xl sm:rounded-3xl shadow-2xl w-full max-w-sm flex flex-col overflow-hidden max-h-[95vh] animate-[slideUp_0.3s_ease-out]">
-                <div class="bg-slate-800 text-white p-5 flex justify-between items-center">
-                    <h3 class="font-bold text-lg">Ayarlar & Yedekleme</h3>
-                    <button onclick="yedekModalKapat()" class="text-white text-2xl leading-none">&times;</button>
-                </div>
+                <div class="bg-slate-800 text-white p-5 flex justify-between items-center"><h3 class="font-bold text-lg">Ayarlar & Yedekleme</h3><button onclick="yedekModalKapat()" class="text-white text-2xl leading-none">&times;</button></div>
                 <div class="p-6 text-center overflow-y-auto bg-slate-50">
                     <button onclick="yedekIndir()" class="w-full bg-emerald-600 text-white font-bold py-3.5 rounded-xl shadow-md mb-3 flex items-center justify-center gap-2"><span>⬇️</span> Dosyaya İndir</button>
-                    <div class="relative">
-                        <input type="file" id="yedek-dosya-secici" accept=".json" class="hidden" onchange="dosyadanYedekOku(event)">
-                        <button onclick="document.getElementById('yedek-dosya-secici').click()" class="w-full bg-blue-600 text-white font-bold py-3.5 rounded-xl shadow-md flex items-center justify-center gap-2"><span>⬆️</span> Geri Yükle</button>
-                    </div>
-
+                    <div class="relative"><input type="file" id="yedek-dosya-secici" accept=".json" class="hidden" onchange="dosyadanYedekOku(event)"><button onclick="document.getElementById('yedek-dosya-secici').click()" class="w-full bg-blue-600 text-white font-bold py-3.5 rounded-xl shadow-md flex items-center justify-center gap-2"><span>⬆️</span> Geri Yükle</button></div>
                     <div class="mt-8 pt-6 border-t border-slate-200 text-left">
                         <h4 class="font-extrabold text-slate-800 text-sm flex items-center gap-2 mb-3"><span class="text-xl">☁️</span> Bulut Senkronizasyonu</h4>
                         <div id="cloud-offline-warning" class="bg-amber-50 text-amber-800 p-4 rounded-xl text-xs border border-amber-200 hidden">Bağlantı Yok</div>
                         <div id="cloud-auth-section" class="hidden">
-                            <div id="auth-logged-out" class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
-                                <form onsubmit="bulutGirisYap(event)" class="flex flex-col">
-                                    <input type="email" id="auth-email" name="email" autocomplete="email" placeholder="E-posta adresiniz" class="w-full p-3 text-sm bg-slate-50 border border-slate-200 rounded-lg mb-3 outline-none focus:border-emerald-500" required>
-                                    <input type="password" id="auth-pass" name="password" autocomplete="current-password" placeholder="Şifreniz" class="w-full p-3 text-sm bg-slate-50 border border-slate-200 rounded-lg mb-4 outline-none focus:border-emerald-500" required>
-                                    <button type="submit" id="btn-auth-submit" class="w-full bg-slate-800 text-white font-bold py-3 rounded-lg shadow-md active:scale-95 text-sm transition-transform">Giriş Yap / Kayıt Ol</button>
-                                </form>
-                            </div>
-                            <div id="auth-logged-in" class="hidden text-center bg-white p-4 rounded-xl border border-emerald-100 shadow-sm">
-                                <div class="text-3xl mb-2">✅</div>
-                                <div class="font-bold text-slate-800 text-sm mb-1 truncate px-2" id="auth-user-email">ornek@email.com</div>
-                                <div class="text-xs text-emerald-600 font-medium mb-4">Bulut eşitlemesi aktif</div>
-                                <button onclick="bulutCikisYap()" class="w-full bg-red-50 text-red-600 border border-red-100 font-bold py-2.5 rounded-lg active:scale-95 text-sm">Çıkış Yap</button>
-                            </div>
+                            <div id="auth-logged-out" class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm"><form onsubmit="bulutGirisYap(event)" class="flex flex-col"><input type="email" id="auth-email" name="email" autocomplete="email" placeholder="E-posta adresiniz" class="w-full p-3 text-sm bg-slate-50 border border-slate-200 rounded-lg mb-3 outline-none focus:border-emerald-500" required><input type="password" id="auth-pass" name="password" autocomplete="current-password" placeholder="Şifreniz" class="w-full p-3 text-sm bg-slate-50 border border-slate-200 rounded-lg mb-4 outline-none focus:border-emerald-500" required><button type="submit" id="btn-auth-submit" class="w-full bg-slate-800 text-white font-bold py-3 rounded-lg shadow-md active:scale-95 text-sm transition-transform">Giriş Yap / Kayıt Ol</button></form></div>
+                            <div id="auth-logged-in" class="hidden text-center bg-white p-4 rounded-xl border border-emerald-100 shadow-sm"><div class="text-3xl mb-2">✅</div><div class="font-bold text-slate-800 text-sm mb-1 truncate px-2" id="auth-user-email">ornek@email.com</div><div class="text-xs text-emerald-600 font-medium mb-4">Bulut eşitlemesi aktif</div><button onclick="bulutCikisYap()" class="w-full bg-red-50 text-red-600 border border-red-100 font-bold py-2.5 rounded-lg active:scale-95 text-sm">Çıkış Yap</button></div>
                         </div>
                     </div>
-
-                    <div class="mt-6 pt-5 border-t border-slate-200">
-                        <button onclick="infoModalAc()" class="w-full bg-slate-200 text-slate-700 font-bold py-3 rounded-xl hover:bg-slate-300 transition text-sm flex items-center justify-center gap-2">
-                            <span>📄</span> KVKK, Gizlilik ve Künye
-                        </button>
-                    </div>
+                    <div class="mt-6 pt-5 border-t border-slate-200"><button onclick="infoModalAc()" class="w-full bg-slate-200 text-slate-700 font-bold py-3 rounded-xl hover:bg-slate-300 transition text-sm flex items-center justify-center gap-2"><span>📄</span> KVKK, Gizlilik ve Künye</button></div>
                 </div>
             </div>
         </div>
 
         <div id="modal-kible" class="hidden absolute inset-0 bg-slate-900 z-50 flex flex-col items-center justify-start p-6">
-            <div class="w-full flex justify-between items-center mt-2 mb-6">
-                <h3 class="font-extrabold text-2xl text-white tracking-tight">Kıble Pusulası</h3>
-                <button onclick="kibleModalKapat()" class="w-10 h-10 bg-white/10 backdrop-blur-md rounded-full text-white flex items-center justify-center font-bold text-xl border border-white/20">&times;</button>
-            </div>
-            
-            <div id="kible-uyari" class="bg-blue-500/20 backdrop-blur-md text-blue-100 p-4 rounded-2xl text-sm mb-8 w-full max-w-sm text-center border border-blue-400/30 shadow-lg transition-all duration-300">
-                Lütfen telefonunuzu düz tutun.
-            </div>
-
+            <div class="w-full flex justify-between items-center mt-2 mb-6"><h3 class="font-extrabold text-2xl text-white tracking-tight">Kıble Pusulası</h3><button onclick="kibleModalKapat()" class="w-10 h-10 bg-white/10 backdrop-blur-md rounded-full text-white flex items-center justify-center font-bold text-xl border border-white/20">&times;</button></div>
+            <div id="kible-uyari" class="bg-blue-500/20 backdrop-blur-md text-blue-100 p-4 rounded-2xl text-sm mb-8 w-full max-w-sm text-center border border-blue-400/30 shadow-lg transition-all duration-300">Lütfen telefonunuzu düz tutun.</div>
             <div class="relative w-80 h-80 mb-10 flex justify-center items-center">
                 <div class="absolute -top-8 text-gold-400 text-3xl z-40 drop-shadow-[0_0_10px_rgba(251,191,36,0.8)] animate-pulse">▼</div>
                 <div id="pusula-kadran" class="compass-needle absolute w-full h-full rounded-full border-[6px] border-emerald-500/30 bg-slate-800/80 backdrop-blur-xl shadow-[0_0_50px_rgba(16,185,129,0.15)] overflow-hidden transition-all duration-300" style="transform: rotate(0deg);">
@@ -650,19 +459,11 @@
                     <div class="absolute inset-0 flex flex-col items-center py-1" style="transform: rotate(270deg);"><span class="text-slate-300 font-bold text-xl mt-1 rotate-90">B</span><span class="text-[10px] text-slate-500 rotate-90">270°</span></div>
                     <div class="absolute inset-0 flex flex-col items-center py-2" style="transform: rotate(300deg);"><span class="text-slate-500 font-bold text-[10px] mt-3 rotate-90">300°</span></div>
                     <div class="absolute inset-0 flex flex-col items-center py-2" style="transform: rotate(330deg);"><span class="text-slate-500 font-bold text-[10px] mt-3 rotate-90">330°</span></div>
-                    
-                    <div id="pusula-igne" class="compass-needle absolute inset-0 flex flex-col items-center justify-start z-30" style="transform: rotate(0deg);">
-                        <div id="mekke-ikon" class="mekke-anim text-[3.5rem] z-40 mt-8 drop-shadow-2xl" style="filter: drop-shadow(0 0 15px rgba(251,191,36,0.6)); transform: rotate(0deg);">🕋</div>
-                        <div class="w-2 h-20 bg-gradient-to-b from-gold-400 to-transparent -mt-2 rounded-full relative shadow-lg"></div>
-                    </div>
+                    <div id="pusula-igne" class="compass-needle absolute inset-0 flex flex-col items-center justify-start z-30" style="transform: rotate(0deg);"><div id="mekke-ikon" class="mekke-anim text-[3.5rem] z-40 mt-8 drop-shadow-2xl" style="filter: drop-shadow(0 0 15px rgba(251,191,36,0.6)); transform: rotate(0deg);">🕋</div><div class="w-2 h-20 bg-gradient-to-b from-gold-400 to-transparent -mt-2 rounded-full relative shadow-lg"></div></div>
                     <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-4 h-4 bg-slate-800 border-4 border-emerald-500 rounded-full z-40 shadow-xl"></div>
                 </div>
             </div>
-            <div class="text-center w-full max-w-sm mt-auto mb-10">
-                <div class="text-gold-400 font-mono text-5xl font-black mb-2 drop-shadow-lg" id="kible-aci-metni">--°</div>
-                <p class="text-slate-400 text-sm mb-8 font-medium" id="kible-detay-metni">Hesaplanıyor...</p>
-                <button onclick="kibleyiBul()" class="bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-extrabold py-4 px-10 rounded-full shadow-[0_10px_20px_rgba(16,185,129,0.3)] active:scale-95 transition-all text-lg w-full" id="btn-kible-baslat">Kıbleyi Bul</button>
-            </div>
+            <div class="text-center w-full max-w-sm mt-auto mb-10"><div class="text-gold-400 font-mono text-5xl font-black mb-2 drop-shadow-lg" id="kible-aci-metni">--°</div><p class="text-slate-400 text-sm mb-8 font-medium" id="kible-detay-metni">Hesaplanıyor...</p><button onclick="kibleyiBul()" class="bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-extrabold py-4 px-10 rounded-full shadow-[0_10px_20px_rgba(16,185,129,0.3)] active:scale-95 transition-all text-lg w-full" id="btn-kible-baslat">Kıbleyi Bul</button></div>
         </div>
 
         <div id="modal-onay" class="hidden absolute inset-0 bg-slate-900/60 z-[70] flex items-center justify-center p-4 backdrop-blur-sm"><div class="bg-white rounded-3xl shadow-2xl w-full max-w-[280px] flex flex-col overflow-hidden text-center p-6 animate-[slideUp_0.2s_ease-out]"><div class="text-5xl mb-4 mt-2 drop-shadow-sm" id="onay-ikon">⚠️</div><h3 id="onay-baslik" class="font-extrabold text-xl text-slate-800 mb-2 tracking-tight">Onay</h3><p id="onay-metin" class="text-slate-500 mb-6 text-sm font-medium">Emin misiniz?</p><div class="flex flex-col gap-2"><button id="btn-onay-evet" class="w-full bg-red-500 text-white py-3.5 rounded-xl font-bold shadow-md active:scale-95">Evet</button><button onclick="window.onayIptal()" class="w-full bg-white text-slate-600 py-3.5 rounded-xl font-bold border border-slate-200 active:scale-95">İptal</button></div></div></div>
@@ -687,7 +488,6 @@
 
         window.xssKoru = (str) => { return str ? String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;') : ""; };
 
-        // YENİ VERSİYON (3): GÜVENLİ VE ONARICI VERİTABANI BAŞLATMASI
         const idb = {
             db: null,
             init: function() { 
@@ -777,7 +577,6 @@
             try {
                 await idb.init();
                 
-                // Verileri Güvenli Olarak Çek veya Kurtar
                 try {
                     const yerelDB = await idb.get('dbData'); 
                     if(yerelDB) {
@@ -809,7 +608,6 @@
 
                 if(freeHedef > 0) document.getElementById('input-serbest-hedef').value = freeHedef;
 
-                // Arayüzü Başlat
                 window.saatiBaslat(); 
                 window.zikirSeciciDoldur(); 
                 window.zikirModDegistir(zikirMode, false); 
@@ -821,7 +619,6 @@
                 
                 setTimeout(() => { window.vakitleriGetir(); }, 1000);
 
-                // Firebase Bağlantısı
                 try {
                     let fConfig = null;
                     if (GITHUB_FIREBASE_CONFIG) { fConfig = GITHUB_FIREBASE_CONFIG; appId = fConfig.projectId || 'hazine-pro'; } 
@@ -857,7 +654,6 @@
                     if (!window.localStorage.getItem('hazine_policy_accepted')) window.infoModalAc();
                 }
             } catch (error) {
-                // EĞER HER ŞEY ÇÖKERSE BİLE YÜKLEME EKRANINI KALDIR VE ÇALIŞTIR (Güvenli Açılış)
                 document.getElementById('loading-screen').classList.add('hidden');
                 console.warn("Veri uyumsuzluğu atlandı.");
             }
@@ -1308,31 +1104,9 @@
                 if(data.code === 200) {
                     window.namazVakitleri = data.data.timings; window.sehirLat = data.data.meta.latitude; window.sehirLon = data.data.meta.longitude;
                     const grid = document.getElementById('vakit-grid'); grid.innerHTML = "";
-                    
-                    const simdi = new Date(); const simdiDakika = (simdi.getHours() * 60) + simdi.getMinutes();
-                    const parseTime = (timeStr) => { const [h, m] = timeStr.split(':').map(Number); return h * 60 + m; };
-                    
-                    let aktifVakitId = 'Isha'; 
-                    const vakitDakikalar = {
-                        Fajr: parseTime(window.namazVakitleri.Fajr), Sunrise: parseTime(window.namazVakitleri.Sunrise),
-                        Dhuhr: parseTime(window.namazVakitleri.Dhuhr), Asr: parseTime(window.namazVakitleri.Asr),
-                        Maghrib: parseTime(window.namazVakitleri.Maghrib), Isha: parseTime(window.namazVakitleri.Isha)
-                    };
-                    
-                    if (simdiDakika >= vakitDakikalar.Fajr && simdiDakika < vakitDakikalar.Sunrise) aktifVakitId = 'Fajr';
-                    else if (simdiDakika >= vakitDakikalar.Sunrise && simdiDakika < vakitDakikalar.Dhuhr) aktifVakitId = 'Sunrise';
-                    else if (simdiDakika >= vakitDakikalar.Dhuhr && simdiDakika < vakitDakikalar.Asr) aktifVakitId = 'Dhuhr';
-                    else if (simdiDakika >= vakitDakikalar.Asr && simdiDakika < vakitDakikalar.Maghrib) aktifVakitId = 'Asr';
-                    else if (simdiDakika >= vakitDakikalar.Maghrib && simdiDakika < vakitDakikalar.Isha) aktifVakitId = 'Maghrib';
-
                     [{ id: 'Fajr', i: '🌌', n: 'İmsak' }, { id: 'Sunrise', i: '🌅', n: 'Güneş' }, { id: 'Dhuhr', i: '☀️', n: 'Öğle' }, { id: 'Asr', i: '🌤️', n: 'İkindi' }, { id: 'Maghrib', i: '🌆', n: 'Akşam' }, { id: 'Isha', i: '🌃', n: 'Yatsı' }].forEach(v => {
-                        const isAktif = v.id === aktifVakitId;
-                        const aktifClass = isAktif ? "vakit-aktif" : "";
-                        const textClass = isAktif ? "text-emerald-800" : "text-slate-800";
-                        
-                        grid.innerHTML += `<div class="bg-white p-5 rounded-3xl shadow-sm border border-slate-100 flex flex-col items-center justify-center text-center transition-colors duration-500 ${aktifClass}"><div class="text-3xl mb-2 drop-shadow-sm">${v.i}</div><div class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">${v.n}</div><div class="text-2xl font-black ${textClass} mt-1">${window.namazVakitleri[v.id]}</div></div>`;
+                        grid.innerHTML += `<div class="bg-white p-5 rounded-3xl shadow-sm border border-slate-100 flex flex-col items-center justify-center text-center group hover:bg-emerald-50 transition-colors"><div class="text-3xl mb-2 drop-shadow-sm group-hover:scale-110 transition-transform">${v.i}</div><div class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">${v.n}</div><div class="text-2xl font-black text-slate-800 mt-1">${window.namazVakitleri[v.id]}</div></div>`;
                     });
-                    
                     document.getElementById('vakit-yukleniyor').classList.add('hidden'); grid.classList.remove('hidden'); document.getElementById('sonraki-vakit-karti').classList.remove('hidden');
                     window.kerahatKontrol(); window.nafileNamazlariHesapla(); window.sonrakiVaktiHesapla();
                 } else throw new Error();
@@ -1444,26 +1218,37 @@
 
             const metin = zikir.okunus;
 
-            // Fallback (Yedek) Bulut Ses Motoru (APK Webview için)
+            // YENİ: Bulut Tabanlı Yedek Ses Motoru (Google Translate API)
             const bulutSesMotoru = (text) => {
                 window.toastGoster("Bulut ses motoru başlatılıyor...", "info");
+                
+                // Metinleri 150 karakterlik küçük parçalara böl (API kısıtlaması için)
                 const chunkSize = 150;
                 const chunks = text.match(new RegExp('.{1,' + chunkSize + '}(\\s|$)|.{1,' + chunkSize + '}', 'g'));
+                
                 if(!chunks) return;
+                
                 let i = 0;
                 const playNext = () => {
                     if (i >= chunks.length) return;
+                    
                     const url = `https://translate.google.com/translate_tts?ie=UTF-8&tl=tr-TR&client=tw-ob&q=${encodeURIComponent(chunks[i])}`;
                     const audio = new Audio(url);
-                    audio.onended = () => { i++; playNext(); };
+                    
+                    audio.onended = () => {
+                        i++;
+                        playNext();
+                    };
+                    
                     audio.play().catch(e => {
                         if(i === 0) window.toastGoster("Cihaz ses çalmayı reddetti.", "error");
                     });
                 };
+                
                 playNext();
             };
 
-            // 1. Native TTS Denemesi
+            // Önce yerel ses motorunu dene
             if ('speechSynthesis' in window && window.speechSynthesis) {
                 try { 
                     window.speechSynthesis.cancel(); 
@@ -1478,11 +1263,11 @@
                         if(turkishVoices.length > 0) oku.voice = turkishVoices[0];
                         
                         oku.onerror = (e) => { 
-                            // Native TTS hata verirse bulut motorunu devreye sok
-                            bulutSesMotoru(metin);
+                            // Yerel hata verirse Buluta geç
+                            bulutSesMotoru(metin); 
                         }; 
                         
-                        // Eğer ses motorları hiç yüklenmemişse (APK içi hata)
+                        // Eğer cihazda ses paketi yoksa Buluta geç
                         if(voices.length === 0) {
                             setTimeout(() => {
                                 if(window.speechSynthesis.getVoices().length === 0) bulutSesMotoru(metin);
@@ -1493,44 +1278,40 @@
                     }, 50); 
                     return; 
                 } catch (e) {
-                    bulutSesMotoru(metin); 
+                    bulutSesMotoru(metin);
                     return;
                 }
             }
             
-            // Eğer Native TTS hiç yoksa direkt Bulut motoruna geç
+            // Tarayıcı desteklemiyorsa direkt Buluta geç
             bulutSesMotoru(metin);
         };
 
         window.toastGoster = (mesaj, tip="info") => {
             const toast = document.getElementById('toast');
+            if(!toast) return;
             document.getElementById('toast-icon').innerText = tip === "success" ? "✅" : tip === "error" ? "❌" : "ℹ️";
             document.getElementById('toast-msg').innerText = mesaj;
             toast.classList.remove('opacity-0', 'translate-y-2');
             setTimeout(() => { toast.classList.add('opacity-0', 'translate-y-2'); }, 2500);
         };
 
-        // Webview/APK Yukarı Çekince Yenileme (Pull-to-Refresh) Engelleme
+        // GÜVENLİ Scroll (Kaydırma) İşlemleri 
         let baslangicY = 0;
-        document.addEventListener('touchstart', (e) => {
-            baslangicY = e.touches[0].pageY;
-        }, { passive: true });
-
+        document.addEventListener('touchstart', (e) => { baslangicY = e.touches[0].pageY; }, { passive: true });
         document.addEventListener('touchmove', (e) => {
             const y = e.touches[0].pageY;
             const scrollAlani = document.getElementById('main-scroll');
-            if (y > baslangicY && scrollAlani.scrollTop <= 0) {
+            if (scrollAlani && y > baslangicY && scrollAlani.scrollTop <= 0) {
                 e.preventDefault();
             }
         }, { passive: false });
 
-        // Yukarı Çık Butonu Görünürlük ve Tıklama Mantığı
         const mainScrollEl = document.getElementById('main-scroll');
-        const btnYukariCik = document.getElementById('btn-yukari-cik');
-
         if (mainScrollEl) {
             mainScrollEl.addEventListener('scroll', () => {
-                if (!btnYukariCik) return; 
+                const btnYukariCik = document.getElementById('btn-yukari-cik');
+                if (!btnYukariCik) return; // Buton yoksa çökmeyi önleyen GÜVENLİK kilidi
                 if (mainScrollEl.scrollTop > 300) {
                     btnYukariCik.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-4');
                     btnYukariCik.classList.add('opacity-100', 'pointer-events-auto', 'translate-y-0');
@@ -1542,9 +1323,8 @@
         }
 
         window.yukariCik = () => {
-            if (mainScrollEl) {
-                mainScrollEl.scrollTo({ top: 0, behavior: 'smooth' });
-            }
+            const ms = document.getElementById('main-scroll');
+            if (ms) ms.scrollTo({ top: 0, behavior: 'smooth' });
         };
     </script>
 </body>
