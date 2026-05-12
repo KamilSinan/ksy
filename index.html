@@ -80,7 +80,6 @@
 
         .text-gradient { background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 
-        /* YENİ: Işıklı Vakit Efekti */
         .vakit-aktif {
             animation: pulse-emerald 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
             border-color: #10b981 !important;
@@ -287,7 +286,7 @@
             <!-- 4. VAKİTLER VE PUSULA -->
             <div id="view-vakitler" class="tab-content flex-col px-5 pt-6 pb-28">
                 
-                <!-- YENİ EKLENEN: HİCRİ AY BİLGİSİ -->
+                <!-- HİCRİ AY BİLGİSİ -->
                 <button onclick="hicriBilgiModalAc()" class="w-full mb-4 bg-gradient-to-r from-emerald-800 to-teal-800 text-white p-3 rounded-xl shadow-md flex items-center justify-between group active:scale-95 transition-transform border border-emerald-600">
                     <div class="flex items-center gap-2">
                         <span class="text-2xl drop-shadow">🌙</span>
@@ -299,7 +298,7 @@
                     <span class="text-emerald-300 group-hover:translate-x-1 transition-transform">→</span>
                 </button>
 
-                <!-- YENİ EKLENEN: YAKLAŞAN DİNİ GÜN UYARISI -->
+                <!-- YAKLAŞAN DİNİ GÜN UYARISI -->
                 <div id="yaklasan-dinigun-banner" class="hidden w-full mb-4 bg-gradient-to-r from-yellow-100 to-amber-100 border border-yellow-300 p-3 rounded-xl shadow-sm">
                     <div class="flex items-start gap-2">
                         <span class="text-xl">🕌</span>
@@ -612,19 +611,24 @@
             try {
                 let fConfig = null;
                 if (GITHUB_FIREBASE_CONFIG) { fConfig = GITHUB_FIREBASE_CONFIG; appId = fConfig.projectId || 'hazine-pro'; } 
-                
+                else if (typeof __firebase_config !== 'undefined') { fConfig = JSON.parse(__firebase_config); appId = typeof __app_id !== 'undefined' ? __app_id : 'hazine-pro'; }
+
                 if (fConfig) {
                     document.getElementById('cloud-offline-warning').classList.add('hidden');
                     document.getElementById('cloud-auth-section').classList.remove('hidden');
                     
                     const app = initializeApp(fConfig); auth = getAuth(app); firestoreDb = getFirestore(app);
                     try { await setPersistence(auth, browserLocalPersistence); } catch(err) { console.error("Kalıcı oturum hatası:", err); }
+
+                    if (!GITHUB_FIREBASE_CONFIG && typeof __initial_auth_token !== 'undefined' && __initial_auth_token) { await signInWithCustomToken(auth, __initial_auth_token).catch(()=>{}); } 
+                    else if (!GITHUB_FIREBASE_CONFIG) { await signInAnonymously(auth).catch(()=>{}); }
                     
                     onAuthStateChanged(auth, async (u) => {
                         currentUser = u;
                         if (u) {
                             isCloudConnected = true;
-                            document.getElementById('auth-logged-out').classList.add('hidden'); document.getElementById('auth-logged-in').classList.remove('hidden'); document.getElementById('auth-user-email').innerText = u.email;
+                            if (!u.isAnonymous) { document.getElementById('auth-logged-out').classList.add('hidden'); document.getElementById('auth-logged-in').classList.remove('hidden'); document.getElementById('auth-user-email').innerText = u.email; } 
+                            else { document.getElementById('auth-logged-out').classList.remove('hidden'); document.getElementById('auth-logged-in').classList.add('hidden'); }
                             await loadFromCloud();
                         } else {
                             isCloudConnected = false; document.getElementById('auth-logged-out').classList.remove('hidden'); document.getElementById('auth-logged-in').classList.add('hidden');
@@ -655,7 +659,7 @@
                 }
                 if(freeHedef > 0) document.getElementById('input-serbest-hedef').value = freeHedef;
                 const duaCol = await getDocs(collection(firestoreDb, 'artifacts', appId, 'users', currentUser.uid, 'dualar'));
-                if (!duaCol.empty) { dbData = duaCol.docs.map(d => d.data()); }
+                if (!duaCol.empty) { dbData = duaCol.docs.map(d => d.data()); } else { for (const d of dbData) { await setDoc(doc(firestoreDb, 'artifacts', appId, 'users', currentUser.uid, 'dualar', d.id), d); } }
                 const kayitCol = await getDocs(collection(firestoreDb, 'artifacts', appId, 'users', currentUser.uid, 'kayitlar'));
                 if (!kayitCol.empty) { kayitlar = kayitCol.docs.map(d => d.data()).sort((a,b) => b.id - a.id); }
                 await idb.set('dbData', JSON.stringify(dbData)); await idb.set('kayitlar', JSON.stringify(kayitlar)); await saveLocalState();
