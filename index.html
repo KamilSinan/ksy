@@ -1234,7 +1234,78 @@
         window.infoModalAc = () => { document.getElementById('modal-info').classList.remove('hidden'); }; window.infoModalKapat = () => { window.localStorage.setItem('hazine_policy_accepted', 'true'); document.getElementById('modal-info').classList.add('hidden'); };
         window.konumMetinleriniGuncelle = () => { document.getElementById('header-konum').innerText = `${sehir}, ${ulke}`; document.getElementById('vakit-konum-metni').innerHTML = `<span class="font-bold text-slate-700">${sehir}</span>, ${ulke}`; };
         window.konumModalAc = () => { document.getElementById('input-ulke').value = ulke; document.getElementById('input-sehir').value = sehir; document.getElementById('modal-konum').classList.remove('hidden'); }; window.konumModalKapat = () => { document.getElementById('modal-konum').classList.add('hidden'); };
-        window.otomatikKonumBul = async (event) => { const btn = event.target; const eskiMetin = btn.innerText; btn.innerText = "⏳ Bulunuyor..."; btn.disabled = true; try { const res = await fetch('https://ipapi.co/json/'); if(!res.ok) throw new Error(); const data = await res.json(); if(data && data.country_name) { document.getElementById('input-ulke').value = data.country_name; if(data.city) document.getElementById('input-sehir').value = data.city; window.toastGoster("Tespit edildi.", "success"); } } catch(e) { window.toastGoster("Bulunamadı.", "error"); } finally { btn.innerText = eskiMetin; btn.disabled = false; } };
+        
+        window.otomatikKonumBul = async (event) => { 
+            const btn = event.target; 
+            const eskiMetin = btn.innerText; 
+            btn.innerText = "⏳ Bulunuyor..."; 
+            btn.disabled = true; 
+            
+            // API'lerden gelen "Ankara İli", "Istanbul Province" gibi gereksiz ekleri temizler
+            const temizleSehir = (s) => s ? s.replace(/ (İli|Province|State|Vilayeti|Büyükşehir Belediyesi)/gi, '').trim() : "";
+
+            const ipTabanliKonumBul = async () => {
+                try {
+                    // 1. IP Alternatifi: BigDataCloud (İl/Province tespitinde çok daha başarılıdır)
+                    const res = await fetch('https://api.bigdatacloud.net/data/reverse-geocode-client');
+                    if (res.ok) {
+                        const data = await res.json();
+                        if (data.countryName && (data.principalSubdivision || data.city)) {
+                            document.getElementById('input-ulke').value = data.countryName === "Turkey" ? "Türkiye" : data.countryName;
+                            // Sadece küçük ilçe değil, bağlı bulunulan ana ili (Örn: Ankara) alır.
+                            document.getElementById('input-sehir').value = temizleSehir(data.principalSubdivision || data.city);
+                            window.toastGoster("Konum başarıyla tespit edildi.", "success");
+                            return;
+                        }
+                    }
+                    
+                    // 2. IP Alternatifi: ipapi.co (Yedek)
+                    const res2 = await fetch('https://ipapi.co/json/'); 
+                    const data2 = await res2.json(); 
+                    if(data2 && data2.country_name) { 
+                        document.getElementById('input-ulke').value = data2.country_name === "Turkey" ? "Türkiye" : data2.country_name; 
+                        document.getElementById('input-sehir').value = temizleSehir(data2.region || data2.city);
+                        window.toastGoster("Konum tespit edildi.", "success"); 
+                    }
+                } catch(e) { 
+                    window.toastGoster("Konum bulunamadı.", "error"); 
+                } finally {
+                    btn.innerText = eskiMetin; 
+                    btn.disabled = false;
+                }
+            };
+
+            // Ana Hedef: GPS (En kesin sonucu verir)
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(async (position) => {
+                    const lat = position.coords.latitude;
+                    const lon = position.coords.longitude;
+                    try {
+                        const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&zoom=10&addressdetails=1`);
+                        const data = await res.json();
+                        if (data && data.address) {
+                            // Namaz vakitleri için "province" (İl) bilgisi ilçeden daha güvenilirdir.
+                            const city = data.address.province || data.address.state || data.address.city || data.address.town;
+                            const country = data.address.country;
+                            
+                            if (country) document.getElementById('input-ulke').value = country === "Turkey" ? "Türkiye" : country;
+                            if (city) document.getElementById('input-sehir').value = temizleSehir(city);
+                            
+                            window.toastGoster("GPS ile tam konum bulundu.", "success");
+                            btn.innerText = eskiMetin; 
+                            btn.disabled = false;
+                        } else throw new Error();
+                    } catch (err) {
+                        ipTabanliKonumBul(); // Nominatim çuvallarsa IP'ye geç
+                    }
+                }, (err) => {
+                    ipTabanliKonumBul(); // Kullanıcı GPS izni vermezse IP'ye geç
+                }, { timeout: 8000 });
+            } else {
+                ipTabanliKonumBul(); // Tarayıcıda GPS yoksa doğrudan IP'ye geç
+            }
+        };
+
         window.konumKaydet = () => { const yU = document.getElementById('input-ulke').value.trim(); const yS = document.getElementById('input-sehir').value.trim(); if(!yU || !yS) return window.toastGoster("Boş olamaz!", "error"); ulke = yU; sehir = yS; saveLocalState(); syncToCloud(); window.konumMetinleriniGuncelle(); window.konumModalKapat(); window.vakitleriGetir(); };
 
         window.uyariModalAc = () => { document.getElementById('uyari-aktif').checked = uyariAyarlari.aktif; document.getElementById('uyari-dakika').value = uyariAyarlari.dakika; document.getElementById('modal-uyari').classList.remove('hidden'); };
