@@ -1020,7 +1020,18 @@
                 if(freeHedef > 0) document.getElementById('input-serbest-hedef').value = freeHedef;
                 
                 const duaCol = await window.fb.getDocs(window.fb.collection(firestoreDb, 'artifacts', appId, 'users', currentUser.uid, 'dualar'));
-                if (!duaCol.empty) { dbData = duaCol.docs.map(d => d.data()); } else { for (const d of dbData) { await window.fb.setDoc(window.fb.doc(firestoreDb, 'artifacts', appId, 'users', currentUser.uid, 'dualar', d.id), d); } }
+                if (!duaCol.empty) { 
+                    dbData = duaCol.docs.map(d => d.data()); 
+                    // YENİ EKLENEN: Buluttan veri çektikten sonra eksik olan "Varsayılan Duaları" da buluta ekle
+                    for (const vd of varsayilanDB) {
+                        if (!dbData.find(d => String(d.id) === String(vd.id))) {
+                            dbData.push(vd);
+                            await window.fb.setDoc(window.fb.doc(firestoreDb, 'artifacts', appId, 'users', currentUser.uid, 'dualar', String(vd.id)), vd);
+                        }
+                    }
+                } else { 
+                    for (const d of dbData) { await window.fb.setDoc(window.fb.doc(firestoreDb, 'artifacts', appId, 'users', currentUser.uid, 'dualar', d.id), d); } 
+                }
                 
                 const kayitCol = await window.fb.getDocs(window.fb.collection(firestoreDb, 'artifacts', appId, 'users', currentUser.uid, 'kayitlar'));
                 if (!kayitCol.empty) { kayitlar = kayitCol.docs.map(d => d.data()).sort((a,b) => b.id - a.id); }
@@ -1208,7 +1219,7 @@
 
         window.yedekModalAc = () => { document.getElementById('modal-yedek').classList.remove('hidden'); }; window.yedekModalKapat = () => { document.getElementById('modal-yedek').classList.add('hidden'); };
         window.yedekIndir = () => { const dataObj = { dbData, kayitlar, state: { sayac, aktifZikirId, zikirMode, freeSayac, freeHedef, ulke, sehir, kazaDurumu } }; const blob = new Blob([JSON.stringify(dataObj, null, 2)], { type: 'application/json' }); const link = document.createElement("a"); link.href = URL.createObjectURL(blob); link.download = "Dijital_Hazine_Yedek.json"; link.click(); window.toastGoster("Yedek indirildi.", "success"); window.yedekModalKapat(); };
-        window.dosyadanYedekOku = (event) => { const file = event.target.files[0]; if(!file) return; const reader = new FileReader(); reader.onload = async (e) => { try { const data = JSON.parse(e.target.result); if(data.dbData) { dbData = data.dbData; kayitlar = data.kayitlar || []; if(data.state) { sayac = data.state.sayac || 0; aktifZikirId = data.state.aktifZikirId || dbData[0].id; zikirMode = data.state.zikirMode || 'kutuphane'; freeSayac = data.state.freeSayac || 0; freeHedef = data.state.freeHedef || 0; ulke = data.state.ulke || "Turkey"; sehir = data.state.sehir || "Ankara"; kazaDurumu = data.state.kazaDurumu || kazaDurumu; } if(freeHedef > 0) document.getElementById('input-serbest-hedef').value = freeHedef; await idb.set('dbData', JSON.stringify(dbData)); await idb.set('kayitlar', JSON.stringify(kayitlar)); await saveLocalState(); syncToCloud(); window.zikirSeciciDoldur(); window.zikirModDegistir(zikirMode, false); window.kutuphaneListele(); window.kazaEkraniGuncelle(); window.raporlariListele(); window.konumMetinleriniGuncelle(); window.toastGoster("Yedek yüklendi!", "success"); window.yedekModalKapat(); } } catch(err) { window.toastGoster("Bozuk yedek.", "error"); } }; reader.readAsText(file); };
+        window.dosyadanYedekOku = (event) => { const file = event.target.files[0]; if(!file) return; const reader = new FileReader(); reader.onload = async (e) => { try { const data = JSON.parse(e.target.result); if(data.dbData) { dbData = data.dbData; kayitlar = data.kayitlar || []; if(data.state) { sayac = data.state.sayac || 0; aktifZikirId = data.state.aktifZikirId || dbData[0].id; zikirMode = data.state.zikirMode || 'kutuphane'; freeSayac = data.state.freeSayac || 0; freeHedef = data.state.freeHedef || 0; ulke = data.state.ulke || "Turkey"; sehir = data.state.sehir || "Ankara"; kazaDurumu = data.state.kazaDurumu || kazaDurumu; } if(freeHedef > 0) document.getElementById('input-serbest-hedef').value = freeHedef; await idb.set('dbData', JSON.stringify(dbData)); await idb.set('kayitlar', JSON.stringify(kayitlar)); await saveLocalState(); await window.syncAllToCloud(); window.zikirSeciciDoldur(); window.zikirModDegistir(zikirMode, false); window.kutuphaneListele(); window.kazaEkraniGuncelle(); window.raporlariListele(); window.konumMetinleriniGuncelle(); window.toastGoster("Yedek yüklendi ve buluta eşitlendi!", "success"); window.yedekModalKapat(); } } catch(err) { window.toastGoster("Bozuk yedek.", "error"); } }; reader.readAsText(file); };
 
         window.infoModalAc = () => { document.getElementById('modal-info').classList.remove('hidden'); }; window.infoModalKapat = () => { window.localStorage.setItem('hazine_policy_accepted', 'true'); document.getElementById('modal-info').classList.add('hidden'); };
         
