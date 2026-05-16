@@ -30,15 +30,21 @@
     </script>
 
     <style>
+        /* Webview Aşağı Çekince Yenileme (Pull-to-refresh) Engelleme */
         html, body {
             overscroll-behavior-y: none !important;
             overscroll-behavior: none !important;
             touch-action: pan-x pan-y;
             background-color: #e2e8f0;
         }
-        #main-scroll { overscroll-behavior-y: contain !important; }
+
+        #main-scroll {
+            overscroll-behavior-y: contain !important; 
+        }
+
         .no-select { user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; }
         .nav-container { padding-bottom: env(safe-area-inset-bottom); }
+        
         ::-webkit-scrollbar { width: 4px; }
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
@@ -60,6 +66,7 @@
 
         .compass-needle { transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1); }
         .mekke-anim { transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.3s ease; }
+
         .glass-panel { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
         .glass-dark { background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); }
 
@@ -84,6 +91,7 @@
             0%, 100% { box-shadow: 0 0 0px rgba(16, 185, 129, 0); } 
             50% { box-shadow: 0 0 20px rgba(16, 185, 129, 0.8), inset 0 0 10px rgba(16, 185, 129, 0.3); } 
         }
+
     </style>
 </head>
 <body class="text-slate-800 h-[100dvh] w-full flex justify-center overflow-hidden antialiased selection:bg-emerald-200">
@@ -103,7 +111,10 @@
     <script>
         setTimeout(function() {
             var loader = document.getElementById('loading-screen');
-            if (loader && !loader.classList.contains('hidden')) { loader.classList.add('hidden'); console.warn("Yükleme ekranı atlandı."); }
+            if (loader && !loader.classList.contains('hidden')) {
+                loader.classList.add('hidden');
+                console.warn("Ağ gecikmesi saptandı. Yükleme ekranı atlandı.");
+            }
         }, 3000);
     </script>
 
@@ -114,7 +125,7 @@
                 <h3 class="font-extrabold text-lg flex items-center gap-2"><span>📜</span> Uygulama Hakkında</h3>
                 <button onclick="window.infoModalKapat()" class="w-8 h-8 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center text-xl font-bold transition">&times;</button>
             </div>
-            <div class="p-6 overflow-y-auto flex-1 text-slate-600 text-sm space-y-6 bg-slate-50">
+            <div class="p-6 overflow-y-auto flex-1 text-slate-600 text-sm space-y-6 bg-slate-50 overscroll-contain">
                 <div class="text-center mb-2">
                     <div class="text-5xl mb-2 drop-shadow-sm">🕌</div>
                     <h2 class="font-black text-2xl text-emerald-800 tracking-tight">Dijital Hazine</h2>
@@ -124,14 +135,14 @@
                     <h4 class="font-bold text-emerald-800 text-base mb-2 border-b border-slate-100 pb-2 flex items-center gap-2"><span>📌</span> Künye</h4>
                     <ul class="space-y-1 mt-2">
                         <li><strong>Geliştirici:</strong> Martenzit</li>
-                        <li><strong>Sürüm:</strong> 3.5.0 (PWA / Web App)</li>
+                        <li><strong>Sürüm:</strong> 3.1.0 (PWA / Web App)</li>
                         <li><strong>Altyapı:</strong> Google Firebase & IndexedDB</li>
                     </ul>
                 </div>
                 <div class="bg-white p-4 rounded-2xl border border-slate-100 shadow-sm">
                     <h4 class="font-bold text-emerald-800 text-base mb-2 border-b border-slate-100 pb-2 flex items-center gap-2"><span>🛡️</span> KVKK Aydınlatma Metni</h4>
                     <p class="mt-2 text-justify leading-relaxed">
-                        6698 sayılı Kişisel Verilerin Korunması Kanunu ("KVKK") uyarınca, "Dijital Hazine" uygulaması içerisindeki kişisel kullanım verileriniz (okuduğunuz dualar, zikir hedefleri ve kaza namazı bilgileriniz) kural olarak <strong>sadece kendi cihazınızın yerel hafızasında (çevrimdışı olarak)</strong> barındırılır.
+                        6698 sayılı Kişisel Verilerin Korunması Kanunu ("KVKK") uyarınca, "Dijital Hazine" uygulaması içerisindeki kişisel kullanım verileriniz (okuduğunuz dualar, zikir hedefleri ve kaza namazı bilgileriniz) kural olarak <strong>sadece kendi cihazınızın yerel hafızasında (çevrimdışı olarak)</strong> barındırılır. Cihaz dışına istemsiz hiçbir veri aktarımı yapılmaz.
                     </p>
                 </div>
                 <div class="bg-white p-4 rounded-2xl border border-slate-100 shadow-sm mb-4">
@@ -139,9 +150,9 @@
                     <p class="mt-2 mb-2">Uygulamamız mahremiyetinize en üst düzeyde önem verir:</p>
                     <ul class="list-disc pl-5 space-y-2 text-justify leading-relaxed">
                         <li><strong>Yerel Depolama:</strong> Verileriniz cihazınızda (IndexedDB) tutulur.</li>
-                        <li><strong>Bulut Senkronizasyonu:</strong> İsteğe bağlıdır. Google Firebase sunucularına şifreli olarak aktarılır.</li>
-                        <li><strong>Üçüncü Partiler:</strong> Verileriniz hiçbir reklam kurumuyla paylaşılmaz.</li>
-                        <li><strong>Konum Bilgisi:</strong> Sadece namaz vakti ve kıble hesaplaması için anlık kullanılır.</li>
+                        <li><strong>Bulut Senkronizasyonu (İsteğe Bağlı):</strong> Yalnızca kendi isteğinizle ayarlar bölümünden kayıt olursanız, verileriniz eşitleme amacıyla <strong>Google Firebase</strong> sunucularına şifreli olarak aktarılır. Şifreleriniz Google standartlarında korunur ve bizim tarafımızdan görülemez.</li>
+                        <li><strong>Üçüncü Partiler:</strong> Verileriniz hiçbir reklam, pazarlama veya üçüncü şahıs kurumuyla paylaşılmaz.</li>
+                        <li><strong>Konum Bilgisi:</strong> Pusula ve namaz vakti hesaplamaları için istenen anlık GPS konumu doğrudan cihazınızda işlenir, sunucularımızda izlenmez veya kaydedilmez.</li>
                     </ul>
                 </div>
             </div>
@@ -158,6 +169,7 @@
         
         <!-- Premium Header -->
         <div class="bg-gradient-to-r from-emerald-900 to-emerald-800 text-white pt-5 pb-6 px-5 shadow-lg z-20 flex-none relative overflow-hidden rounded-b-[2rem]">
+            <!-- Süsleme -->
             <div class="absolute -right-10 -top-10 w-32 h-32 bg-emerald-700 rounded-full mix-blend-multiply filter blur-2xl opacity-50"></div>
             <div class="absolute -left-10 -bottom-10 w-32 h-32 bg-gold-500 rounded-full mix-blend-multiply filter blur-2xl opacity-20"></div>
             
@@ -190,19 +202,16 @@
                 <div class="w-full flex-none mb-5 relative">
                     <h3 class="text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-2 ml-1 flex items-center gap-1"><span>✨</span> Günün Hazineleri <span class="text-[8px] opacity-70 normal-case ml-auto">👉 Kaydırın</span></h3>
                     <div class="flex overflow-x-auto snap-x snap-mandatory gap-3 pb-2 scrollbar-hide" id="gunun-icerikleri-container">
-                        <!-- Ayet -->
                         <div class="snap-center shrink-0 w-[85%] bg-gradient-to-br from-emerald-50 to-teal-50 border border-emerald-100 p-4 rounded-2xl shadow-sm relative overflow-hidden">
                             <div class="absolute -right-3 -top-3 text-5xl opacity-10">📖</div>
                             <div class="text-[10px] font-bold text-emerald-600 uppercase tracking-widest mb-1.5">Günün Ayeti</div>
                             <p class="text-[13px] text-slate-700 font-medium leading-relaxed italic" id="gunluk-ayet">Yükleniyor...</p>
                         </div>
-                        <!-- Hadis -->
                         <div class="snap-center shrink-0 w-[85%] bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-100 p-4 rounded-2xl shadow-sm relative overflow-hidden">
                             <div class="absolute -right-3 -top-3 text-5xl opacity-10">💬</div>
                             <div class="text-[10px] font-bold text-blue-600 uppercase tracking-widest mb-1.5">Günün Hadisi</div>
                             <p class="text-[13px] text-slate-700 font-medium leading-relaxed italic" id="gunluk-hadis">Yükleniyor...</p>
                         </div>
-                        <!-- Dua -->
                         <div class="snap-center shrink-0 w-[85%] bg-gradient-to-br from-amber-50 to-orange-50 border border-amber-100 p-4 rounded-2xl shadow-sm relative overflow-hidden">
                             <div class="absolute -right-3 -top-3 text-5xl opacity-10">🤲</div>
                             <div class="text-[10px] font-bold text-amber-600 uppercase tracking-widest mb-1.5">Günün Duası</div>
@@ -220,8 +229,7 @@
                 <!-- Kütüphane Modu Seçicisi -->
                 <div id="kutuphane-secici-container" class="w-full mb-2">
                     <div class="relative">
-                        <select id="zikir-secici" onchange="window.zikirSec(this.value)" class="w-full pl-4 pr-10 py-4 bg-white border border-slate-200 rounded-2xl shadow-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none text-slate-800 font-bold appearance-none transition-shadow">
-                        </select>
+                        <select id="zikir-secici" onchange="window.zikirSec(this.value)" class="w-full pl-4 pr-10 py-4 bg-white border border-slate-200 rounded-2xl shadow-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none text-slate-800 font-bold appearance-none transition-shadow"></select>
                         <div class="absolute right-4 top-1/2 transform -translate-y-1/2 pointer-events-none text-slate-400 text-lg">▼</div>
                     </div>
                 </div>
@@ -320,13 +328,13 @@
                 <div class="flex justify-between items-center mb-6">
                     <h2 class="text-2xl font-extrabold text-slate-800 tracking-tight">Kazalarım</h2>
                     <button onclick="window.kazaTopluAyarModalAc()" class="bg-white text-emerald-700 px-3 py-2 rounded-xl text-xs font-bold hover:bg-emerald-50 shadow-sm transition active:scale-95 border border-emerald-200 flex items-center gap-1">
-                        <span>⚙️</span> Ayarla
+                        <span>⚙️</span> Ayarlar
                     </button>
                 </div>
                 
                 <div id="kaza-kerahat-banner" class="hidden"></div>
                 
-                <p class="text-sm text-slate-500 mb-6 leading-relaxed bg-white p-4 rounded-2xl border border-slate-100 shadow-sm">Geçmişe dönük kaza namazlarınızı buradan takip edin. Kıldıkça <b class="text-red-500">eksi (-)</b> butonuna basarak borcunuzu azaltın. Hata yaparsanız <b class="text-emerald-500">artı (+)</b> ile geri alabilirsiniz.</p>
+                <p class="text-sm text-slate-500 mb-6 leading-relaxed bg-white p-4 rounded-2xl border border-slate-100 shadow-sm">Kaza borçlarınızı buradan takip edin. Kıldıkça <b>eksi (-)</b> butonuna basarak borcunuzu azaltın.</p>
                 
                 <div id="kaza-listesi" class="grid gap-3"></div>
             </div>
@@ -410,7 +418,6 @@
                     </button>
                 </div>
                 
-                <!-- İSTATİSTİK PANO KARTI -->
                 <div class="grid grid-cols-2 gap-3 mb-6" id="rapor-ozet-karti">
                     <div class="bg-gradient-to-br from-emerald-500 to-emerald-600 p-4 rounded-2xl text-white shadow-md relative overflow-hidden">
                         <div class="absolute -right-2 -bottom-4 text-5xl opacity-10">📿</div>
@@ -434,7 +441,7 @@
                 <h3 class="text-sm font-bold text-slate-500 uppercase tracking-wider mb-3">Son Kayıtlar</h3>
                 <div id="kayit-listesi" class="flex flex-col gap-3"></div>
                 
-                <button onclick="window.kayitlariTemizle()" class="mt-8 w-full bg-white text-red-500 py-3.5 rounded-2xl font-bold border border-red-100 hover:bg-red-50 transition shadow-sm flex items-center justify-center gap-2">
+                <button onclick="window.kayitlariTemizle()" class="mt-8 w-full bg-white text-red-500 py-3.5 rounded-2xl font-bold border border-red-100 hover:bg-red-50 transition shadow-sm flex items-center justify-center gap-2 active:scale-95">
                     <span class="text-lg">🗑️</span> Tüm Geçmişi Sil
                 </button>
             </div>
@@ -477,21 +484,21 @@
 
         <!-- MODALLAR -->
         <!-- CRUD MODAL -->
-        <div id="modal-crud" class="hidden absolute inset-0 bg-slate-900/60 z-[70] flex items-end sm:items-center justify-center p-0 sm:p-4 backdrop-blur-sm transition-opacity">
+        <div id="modal-crud" class="hidden absolute inset-0 bg-slate-900/60 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 backdrop-blur-sm transition-opacity">
             <div class="bg-white rounded-t-3xl sm:rounded-3xl shadow-2xl w-full max-w-md max-h-[90vh] flex flex-col overflow-hidden animate-[slideUp_0.3s_ease-out]">
                 <div class="bg-slate-50 border-b border-slate-100 p-5 flex justify-between items-center relative">
                     <h3 id="modal-baslik" class="font-extrabold text-lg text-slate-800">Yeni İçerik Ekle</h3>
                     <button onclick="window.modalKapat()" class="w-8 h-8 bg-white border border-slate-200 rounded-full text-slate-500 flex items-center justify-center font-bold hover:bg-slate-100">&times;</button>
                 </div>
-                <div class="p-5 overflow-y-auto flex-1">
+                <div class="p-5 overflow-y-auto flex-1 overscroll-contain">
                     <form id="crud-form" onsubmit="window.kaydiKaydet(event)" class="flex flex-col gap-4">
                         <input type="hidden" id="crud-id">
-                        <div><label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">Kategori</label><input type="text" id="crud-kategori" required placeholder="Örn: Sabah Duaları" class="w-full p-3.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-emerald-500 outline-none transition-all text-sm font-medium"></div>
-                        <div><label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">Başlık</label><input type="text" id="crud-baslik" required placeholder="Örn: Ayetel Kürsi" class="w-full p-3.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-emerald-500 outline-none transition-all text-sm font-medium"></div>
-                        <div><label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">Hedef Sayı (Opsiyonel)</label><input type="number" id="crud-hedef" placeholder="Örn: 33 veya 99" class="w-full p-3.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-emerald-500 outline-none transition-all text-sm font-medium"></div>
-                        <div><label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">Arapça Metin</label><textarea id="crud-arapca" dir="rtl" rows="2" class="arabic-text w-full p-3.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-emerald-500 outline-none transition-all text-lg"></textarea></div>
-                        <div><label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">Okunuşu</label><textarea id="crud-okunus" rows="2" class="w-full p-3.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-emerald-500 outline-none transition-all text-sm font-medium"></textarea></div>
-                        <div><label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">Meali</label><textarea id="crud-meal" rows="2" class="w-full p-3.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-emerald-500 outline-none transition-all text-sm font-medium"></textarea></div>
+                        <div><label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">Kategori</label><input type="text" id="crud-kategori" required placeholder="Örn: Sabah Duaları" class="w-full p-3.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:bg-white outline-none transition-all text-sm font-medium"></div>
+                        <div><label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">Başlık</label><input type="text" id="crud-baslik" required placeholder="Örn: Ayetel Kürsi" class="w-full p-3.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:bg-white outline-none transition-all text-sm font-medium"></div>
+                        <div><label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">Hedef Sayı (Opsiyonel)</label><input type="number" id="crud-hedef" placeholder="Örn: 33 veya 99" class="w-full p-3.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:bg-white outline-none transition-all text-sm font-medium"></div>
+                        <div><label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">Arapça Metin</label><textarea id="crud-arapca" dir="rtl" rows="2" class="arabic-text w-full p-3.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:bg-white outline-none transition-all text-lg"></textarea></div>
+                        <div><label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">Okunuşu</label><textarea id="crud-okunus" rows="2" class="w-full p-3.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:bg-white outline-none transition-all text-sm font-medium"></textarea></div>
+                        <div><label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">Meali</label><textarea id="crud-meal" rows="2" class="w-full p-3.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:bg-white outline-none transition-all text-sm font-medium"></textarea></div>
                         <div class="flex gap-3 mt-4 pt-4 border-t border-slate-100">
                             <button type="button" onclick="window.modalKapat()" class="flex-1 bg-white border border-slate-200 text-slate-700 py-3.5 rounded-xl font-bold hover:bg-slate-50 transition active:scale-95">İptal</button>
                             <button type="submit" class="flex-1 bg-emerald-600 text-white py-3.5 rounded-xl font-bold hover:bg-emerald-700 shadow-md transition active:scale-95">Kaydet</button>
@@ -502,7 +509,7 @@
         </div>
 
         <!-- KONUM SEÇİM MODALI -->
-        <div id="modal-konum" class="hidden absolute inset-0 bg-slate-900/60 z-[70] flex items-end sm:items-center justify-center p-0 sm:p-4 backdrop-blur-sm">
+        <div id="modal-konum" class="hidden absolute inset-0 bg-slate-900/60 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 backdrop-blur-sm">
             <div class="bg-white rounded-t-3xl sm:rounded-3xl shadow-2xl w-full max-w-sm flex flex-col overflow-hidden animate-[slideUp_0.3s_ease-out]">
                 <div class="bg-slate-50 border-b border-slate-100 p-5 flex justify-between items-center relative">
                     <h3 class="font-extrabold text-lg text-slate-800">Konum Ayarları</h3>
@@ -513,12 +520,12 @@
                         <div>
                             <div class="flex justify-between items-center mb-1.5">
                                 <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider">Ülke</label>
-                                <button onclick="window.otomatikKonumBul(event)" type="button" class="text-[10px] bg-emerald-50 text-emerald-700 px-2.5 py-1 rounded-md border border-emerald-200 font-bold active:scale-95">🌍 GPS ile Bul</button>
+                                <button onclick="window.otomatikKonumBulGPS(event)" type="button" class="text-[10px] bg-emerald-50 text-emerald-700 px-2.5 py-1 rounded-md border border-emerald-200 font-bold active:scale-95 flex items-center gap-1"><span>🌍</span> GPS Otomatik Bul</button>
                             </div>
                             <input type="text" id="input-ulke" class="w-full p-3.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-emerald-500 outline-none font-medium">
                         </div>
                         <div>
-                            <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">Şehir (İl)</label>
+                            <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">Şehir (Sadece Ana İl)</label>
                             <input type="text" id="input-sehir" class="w-full p-3.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-emerald-500 outline-none font-medium">
                         </div>
                     </div>
@@ -531,14 +538,14 @@
         </div>
 
         <!-- UYARI AYARLARI MODALI -->
-        <div id="modal-uyari" class="hidden absolute inset-0 bg-slate-900/60 z-[70] flex items-end sm:items-center justify-center p-0 sm:p-4 backdrop-blur-sm">
+        <div id="modal-uyari" class="hidden absolute inset-0 bg-slate-900/60 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 backdrop-blur-sm">
             <div class="bg-white rounded-t-3xl sm:rounded-3xl shadow-2xl w-full max-w-sm flex flex-col overflow-hidden animate-[slideUp_0.3s_ease-out]">
                 <div class="bg-slate-50 border-b border-slate-100 p-5 flex justify-between items-center relative">
                     <h3 class="font-extrabold text-lg text-slate-800">Bildirim Ayarları</h3>
                     <button onclick="window.uyariModalKapat()" class="w-8 h-8 bg-white border border-slate-200 rounded-full text-slate-500 flex items-center justify-center font-bold hover:bg-slate-100">&times;</button>
                 </div>
                 <div class="p-6">
-                    <p class="text-xs text-slate-500 mb-6">Namaz vakitleri yaklaşırken size uygulama açıkken haber verilir.</p>
+                    <p class="text-xs text-slate-500 mb-6">Namaz vakitleri yaklaşırken size uygulama açıkken veya masaüstündeyken haber verilir. <br><br><b>Not:</b> Arka planda tam çalışabilmesi için ekran kilidi açıldığında uyaracak şekilde güncellenmiştir.</p>
                     <div class="flex flex-col gap-5">
                         <label class="flex items-center justify-between">
                             <span class="text-sm font-bold text-slate-700">Erken Uyarı Sistemi Aktif</span>
@@ -561,113 +568,33 @@
             </div>
         </div>
 
-        <!-- EZAN UYARI MODALI (YENİ - BÜYÜK VE SESLİ) -->
-        <div id="modal-ezan-uyari" class="hidden absolute inset-0 bg-slate-900/80 z-[100] flex items-center justify-center p-4 backdrop-blur-md">
-            <div class="bg-white rounded-3xl shadow-2xl w-full max-w-[300px] flex flex-col overflow-hidden text-center p-8 animate-[slideUp_0.3s_ease-out] relative">
-                <div class="absolute -right-10 -top-10 text-8xl opacity-10 animate-pulse">🕌</div>
-                <div class="text-6xl mb-4 drop-shadow-md animate-bounce" id="ezan-uyari-ikon">🕌</div>
-                <h3 class="font-black text-2xl text-slate-800 mb-2 tracking-tight">Namaz Vakti!</h3>
-                <p id="ezan-uyari-metin" class="text-slate-600 mb-8 font-medium text-sm leading-relaxed">Vaktin girmesine çok az kaldı. Hazırlık yapabilirsiniz.</p>
-                <button onclick="window.ezanUyariKapat()" class="w-full bg-emerald-600 text-white py-4 rounded-2xl font-black shadow-[0_10px_20px_rgba(16,185,129,0.3)] active:scale-95 transition-all text-lg">Tamam (Kapat)</button>
-            </div>
-        </div>
-
-        <!-- DİNİ GÜNLER MODALI -->
-        <div id="modal-dinigunler" class="hidden absolute inset-0 bg-slate-900/60 z-[70] flex items-end sm:items-center justify-center p-0 sm:p-4 backdrop-blur-sm">
-            <div class="bg-white rounded-t-3xl sm:rounded-3xl shadow-2xl w-full max-w-sm flex flex-col overflow-hidden max-h-[85vh] animate-[slideUp_0.3s_ease-out]">
-                <div class="bg-blue-700 text-white p-5 flex justify-between items-center shadow-md z-10">
-                    <h3 class="font-bold text-lg">Dini Günler</h3>
-                    <div class="flex items-center gap-3">
-                        <select id="dini-gunler-yil-secici" class="bg-blue-800 text-white text-sm font-bold py-1.5 px-3 rounded-lg border border-blue-600 outline-none" onchange="window.diniGunlerYiliDegisti(this.value)"></select>
-                        <button onclick="window.diniGunlerModalKapat()" class="text-white text-2xl leading-none">&times;</button>
-                    </div>
-                </div>
-                <div class="p-0 overflow-y-auto bg-slate-50">
-                    <ul id="dini-gunler-listesi" class="text-sm text-slate-700 divide-y divide-slate-100"></ul>
-                </div>
-            </div>
-        </div>
-
-        <!-- İMSAKİYE MODALI -->
-        <div id="modal-imsakiye" class="hidden absolute inset-0 bg-slate-900/60 z-[70] flex items-end sm:items-center justify-center p-0 sm:p-4 backdrop-blur-sm">
-            <div class="bg-white rounded-t-3xl sm:rounded-3xl shadow-2xl w-full max-w-md flex flex-col overflow-hidden max-h-[90vh] animate-[slideUp_0.3s_ease-out]">
-                <div class="bg-emerald-700 text-white p-5 flex justify-between items-center shadow-md z-10">
-                    <h3 class="font-bold text-lg">Aylık İmsakiye</h3>
-                    <button onclick="window.imsakiyeModalKapat()" class="text-white text-2xl leading-none">&times;</button>
-                </div>
-                <div id="imsakiye-yukleniyor" class="text-center py-12 bg-slate-50">
-                    <span class="text-4xl animate-spin mb-3 block">⏳</span><span class="font-medium text-slate-500">Takvim yükleniyor...</span>
-                </div>
-                <div class="overflow-x-auto overflow-y-auto hidden bg-white" id="imsakiye-tablo-kapsayici">
-                    <table class="w-full text-xs text-left text-slate-600">
-                        <thead class="text-xs text-emerald-800 bg-emerald-50/80 backdrop-blur-sm sticky top-0 shadow-sm border-b border-emerald-100">
-                            <tr><th class="p-3">Tarih</th><th class="p-3 font-bold">İmsak</th><th class="p-3">Güneş</th><th class="p-3">Öğle</th><th class="p-3">İkindi</th><th class="p-3 font-bold">Akşam</th><th class="p-3">Yatsı</th></tr>
-                        </thead>
-                        <tbody id="imsakiye-liste" class="divide-y divide-slate-50"></tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-
-        <!-- HİCRİ BİLGİ MODALI -->
-        <div id="modal-hicribilgi" class="hidden absolute inset-0 bg-slate-900/60 z-[75] flex items-end sm:items-center justify-center p-0 sm:p-4 backdrop-blur-sm">
-            <div class="bg-white rounded-t-3xl sm:rounded-3xl shadow-2xl w-full max-w-md flex flex-col overflow-hidden max-h-[90vh] animate-[slideUp_0.3s_ease-out]">
-                <div class="bg-gradient-to-r from-emerald-800 to-emerald-900 text-white p-5 flex justify-between items-center shadow-md z-10 shrink-0">
-                    <div>
-                        <span class="text-[10px] bg-white/20 px-2.5 py-1 rounded-md font-bold uppercase tracking-widest border border-white/10">Hicri Ay</span>
-                        <h3 id="hicri-modal-ay-adi" class="font-extrabold text-xl leading-none mt-2 text-gold-400">Ay Adı</h3>
-                    </div>
-                    <button onclick="document.getElementById('modal-hicribilgi').classList.add('hidden')" class="w-8 h-8 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center text-xl font-bold transition">&times;</button>
-                </div>
-                <div class="p-6 overflow-y-auto bg-slate-50 flex-1">
-                    <p id="hicri-modal-aciklama" class="text-sm text-slate-600 mb-6 leading-relaxed bg-white p-4 rounded-xl border border-slate-200 shadow-sm"></p>
-                    <div class="mb-5">
-                        <h4 class="font-bold text-emerald-800 text-sm mb-3 flex items-center gap-2 border-b border-slate-200 pb-2"><span>✨</span> Tavsiye Edilen İbadetler:</h4>
-                        <div id="hicri-modal-ibadetler" class="text-sm text-slate-700 space-y-2 pl-2"></div>
-                    </div>
-                    <div>
-                        <h4 class="font-bold text-emerald-800 text-sm mb-3 flex items-center gap-2 border-b border-slate-200 pb-2"><span>🤲</span> Okunacak Dualar:</h4>
-                        <div id="hicri-modal-dualar" class="text-sm text-slate-700 space-y-3 pl-2"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- AŞR-I ŞERİF MODALI -->
-        <div id="modal-asriserif" class="hidden absolute inset-0 bg-slate-900/60 z-[75] flex items-end sm:items-center justify-center p-0 sm:p-4 backdrop-blur-sm">
-            <div class="bg-white rounded-t-3xl sm:rounded-3xl shadow-2xl w-full max-w-md flex flex-col overflow-hidden max-h-[90vh] animate-[slideUp_0.3s_ease-out]">
-                <div class="bg-gradient-to-r from-emerald-800 to-emerald-900 text-white p-5 flex justify-between items-center shadow-md z-10 shrink-0">
-                    <div>
-                        <span id="asr-vakit" class="text-[10px] bg-white/20 px-2.5 py-1 rounded-md font-bold uppercase tracking-widest border border-white/10">Vakit</span>
-                        <h3 id="asr-baslik" class="font-extrabold text-xl leading-none mt-2 text-gold-400">Başlık</h3>
-                    </div>
-                    <button onclick="window.asriSerifModalKapat()" class="w-8 h-8 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center text-xl font-bold transition">&times;</button>
-                </div>
-                <div class="p-6 overflow-y-auto bg-slate-50 flex-1">
-                    <p id="asr-arapca" class="font-arabic text-[1.8rem] text-slate-900 mb-8 leading-[3.5rem] text-right drop-shadow-sm" dir="rtl"></p>
-                    <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
-                        <h4 class="font-bold text-emerald-800 text-sm mb-3 flex items-center gap-2 border-b border-slate-100 pb-2"><span>🗣️</span> Okunuşu</h4>
-                        <p id="asr-okunus" class="text-[13px] text-slate-600 leading-relaxed text-justify font-medium" dir="ltr"></p>
-                    </div>
-                </div>
+        <!-- YENİ EZAN UYARI MODALI (EKRANIN ORTASINDA ÇIKAN BÜYÜK UYARI) -->
+        <div id="modal-ezan-uyari" class="hidden absolute inset-0 bg-slate-900/80 z-[200] flex items-center justify-center p-4 backdrop-blur-md">
+            <div class="bg-white rounded-3xl shadow-[0_0_50px_rgba(16,185,129,0.3)] w-full max-w-[300px] flex flex-col overflow-hidden text-center p-8 animate-[slideUp_0.3s_ease-out]">
+                <div class="text-6xl mb-4 drop-shadow-md animate-pulse">🕌</div>
+                <h3 class="font-black text-2xl text-emerald-800 mb-2 tracking-tight">Namaz Vakti!</h3>
+                <p id="ezan-uyari-metin" class="text-slate-600 mb-8 font-medium">Vakte az kaldı. Hazırlık yapabilirsiniz.</p>
+                <button onclick="window.ezanUyariKapat()" class="w-full bg-emerald-600 text-white py-4 rounded-2xl font-black text-lg shadow-lg active:scale-95 transition-transform flex items-center justify-center gap-2">
+                    Tamam (Kapat)
+                </button>
             </div>
         </div>
 
         <!-- KAZA TOPLU AYAR MODALI -->
-        <div id="modal-kaza-ayar" class="hidden absolute inset-0 bg-slate-900/60 z-[70] flex items-end sm:items-center justify-center p-0 sm:p-4 backdrop-blur-sm">
+        <div id="modal-kaza-ayar" class="hidden absolute inset-0 bg-slate-900/60 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 backdrop-blur-sm transition-opacity">
             <div class="bg-white rounded-t-3xl sm:rounded-3xl shadow-2xl w-full max-w-sm flex flex-col overflow-hidden max-h-[90vh] animate-[slideUp_0.3s_ease-out]">
-                <div class="bg-slate-50 border-b border-slate-100 p-5 flex justify-between items-center">
+                <div class="bg-slate-50 border-b border-slate-100 p-5 flex justify-between items-center relative">
                     <h3 class="font-extrabold text-lg text-slate-800">Kazaları Ayarla</h3>
                     <button onclick="window.kazaTopluAyarModalKapat()" class="w-8 h-8 bg-white border border-slate-200 rounded-full text-slate-500 font-bold">&times;</button>
                 </div>
-                <div class="p-6 overflow-y-auto">
+                <div class="p-6 overflow-y-auto overscroll-contain" style="-webkit-overflow-scrolling: touch;">
                     
-                    <!-- HIZLI YIL EKLEME MODÜLÜ -->
+                    <!-- YENİ: Hızlı Yıl Ekleme -->
                     <div class="mb-5 bg-blue-50 p-4 rounded-xl border border-blue-100">
                         <h4 class="text-xs font-bold text-blue-800 uppercase mb-3 text-center border-b border-blue-200 pb-2">Hızlı Yıl Ekleme</h4>
-                        <div class="flex gap-2">
-                            <input type="number" id="kaza-hizli-yil" placeholder="Örn: 1" min="1" class="w-2/3 p-3 bg-white border border-blue-200 rounded-lg text-center font-bold outline-none focus:ring-2 focus:ring-blue-500 text-slate-700">
-                            <button type="button" onclick="window.kazaHizliYilEkle()" class="w-1/3 bg-blue-600 text-white font-bold rounded-lg shadow-sm active:scale-95 transition-transform text-xs">Ekle</button>
+                        <div class="flex items-center gap-2">
+                            <input type="number" id="kaza-hizli-yil" placeholder="Yıl Girin (Örn: 2)" class="w-full p-3 bg-white border border-blue-200 rounded-lg text-center font-bold outline-none focus:ring-2 focus:ring-blue-500 text-slate-700">
+                            <button onclick="window.kazaHizliYilEkle()" class="bg-blue-600 text-white font-bold px-4 py-3 rounded-lg active:scale-95 whitespace-nowrap shadow-sm">Ekle +</button>
                         </div>
                     </div>
 
@@ -682,41 +609,134 @@
                                     <option value="kadin">Kadın</option>
                                 </select>
                             </div>
+                            
                             <div class="flex items-center justify-between">
-                                <label class="text-xs font-bold text-emerald-700 w-1/2">Ergenliğe Giriş:</label>
+                                <label class="text-xs font-bold text-emerald-700 w-1/2">Ergenliğe Giriş Yaşınız:</label>
                                 <input type="number" id="kaza-ergenlik-yas" min="9" max="20" placeholder="Örn: 13" class="w-1/2 p-2 bg-white border border-emerald-200 rounded-lg text-center font-bold outline-none focus:ring-2 focus:ring-emerald-500 text-slate-700">
                             </div>
+
                             <div class="flex items-center justify-between">
-                                <label class="text-xs font-bold text-emerald-700 w-1/2">Namaza Başlama:</label>
+                                <label class="text-xs font-bold text-emerald-700 w-1/2">Düzenli Namaza Başlama Yaşınız:</label>
                                 <input type="number" id="kaza-baslama-yas" min="9" max="100" placeholder="Örn: 25" class="w-1/2 p-2 bg-white border border-emerald-200 rounded-lg text-center font-bold outline-none focus:ring-2 focus:ring-emerald-500 text-slate-700">
                             </div>
+
                             <div id="kaza-ozel-gun-kapsayici" class="flex items-center justify-between hidden">
-                                <label class="text-xs font-bold text-emerald-700 w-1/2 leading-tight">Aylık Özel Gün (Ort.):</label>
+                                <label class="text-xs font-bold text-emerald-700 w-1/2 leading-tight">Aylık Özel Gün Sayısı (Ortalama):</label>
                                 <input type="number" id="kaza-ozel-gun" min="0" max="15" value="6" class="w-1/2 p-2 bg-white border border-emerald-200 rounded-lg text-center font-bold outline-none focus:ring-2 focus:ring-emerald-500 text-slate-700">
                             </div>
+
                             <div id="kaza-hesap-sonuc" class="text-emerald-700 font-medium text-center text-sm mt-3 hidden bg-emerald-100 p-3 rounded-xl border border-emerald-200 shadow-inner"></div>
-                            <button onclick="window.kazaDetayliHesapla()" class="w-full mt-2 bg-emerald-600 text-white text-xs font-bold py-3 rounded-lg active:scale-95 transition-transform shadow-sm">Hesapla ve Ekle</button>
+
+                            <button onclick="window.kazaDetayliHesapla()" class="w-full mt-2 bg-emerald-600 text-white text-xs font-bold py-3 rounded-lg active:scale-95 transition-transform shadow-sm">Hesapla ve Borca Ekle</button>
                         </div>
                     </div>
 
                     <div class="text-center text-xs font-bold text-slate-400 mb-3 uppercase">Veya Doğrudan Gün Sayısı Girin</div>
+
                     <div class="flex flex-col gap-4" id="kaza-ayar-inputs"></div>
-                    <div class="flex gap-3 mt-8 border-t border-slate-100 pt-5">
-                        <button onclick="window.kazaTopluAyarModalKapat()" class="flex-1 bg-white border border-slate-200 text-slate-700 py-3.5 rounded-xl font-bold">İptal</button>
-                        <button onclick="window.kazaTopluKaydet()" class="flex-1 bg-emerald-600 text-white py-3.5 rounded-xl font-bold shadow-md">Kaydet</button>
+                    
+                    <div class="flex flex-col gap-3 mt-8 border-t border-slate-100 pt-5">
+                        <div class="flex gap-3">
+                            <button onclick="window.kazaTopluAyarModalKapat()" class="flex-1 bg-white border border-slate-200 text-slate-700 py-3.5 rounded-xl font-bold active:scale-95 transition-transform">İptal</button>
+                            <button onclick="window.kazaTopluKaydet()" class="flex-1 bg-emerald-600 text-white py-3.5 rounded-xl font-bold shadow-md active:scale-95 transition-transform">Kaydet</button>
+                        </div>
+                        <button onclick="window.kazaHesapSifirla()" class="w-full bg-red-50 border border-red-200 text-red-600 py-3.5 rounded-xl font-bold active:scale-95 transition-transform flex items-center justify-center gap-2 mt-2">
+                            <span>🗑️</span> Tüm Kazaları Sıfırla
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- DİNİ GÜNLER MODALI -->
+        <div id="modal-dinigunler" class="hidden absolute inset-0 bg-slate-900/60 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 backdrop-blur-sm">
+            <div class="bg-white rounded-t-3xl sm:rounded-3xl shadow-2xl w-full max-w-sm flex flex-col overflow-hidden max-h-[85vh] animate-[slideUp_0.3s_ease-out]">
+                <div class="bg-blue-700 text-white p-5 flex justify-between items-center shadow-md z-10">
+                    <h3 class="font-bold text-lg">Dini Günler</h3>
+                    <div class="flex items-center gap-3">
+                        <select id="dini-gunler-yil-secici" class="bg-blue-800 text-white text-sm font-bold py-1.5 px-3 rounded-lg border border-blue-600 outline-none" onchange="window.diniGunlerYiliDegisti(this.value)"></select>
+                        <button onclick="window.diniGunlerModalKapat()" class="text-white text-2xl leading-none">&times;</button>
+                    </div>
+                </div>
+                <div class="p-0 overflow-y-auto bg-slate-50 overscroll-contain">
+                    <ul id="dini-gunler-listesi" class="text-sm text-slate-700 divide-y divide-slate-100"></ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- İMSAKİYE MODALI -->
+        <div id="modal-imsakiye" class="hidden absolute inset-0 bg-slate-900/60 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 backdrop-blur-sm">
+            <div class="bg-white rounded-t-3xl sm:rounded-3xl shadow-2xl w-full max-w-md flex flex-col overflow-hidden max-h-[90vh] animate-[slideUp_0.3s_ease-out]">
+                <div class="bg-emerald-700 text-white p-5 flex justify-between items-center shadow-md z-10">
+                    <h3 class="font-bold text-lg">Aylık İmsakiye</h3>
+                    <button onclick="window.imsakiyeModalKapat()" class="text-white text-2xl leading-none">&times;</button>
+                </div>
+                <div id="imsakiye-yukleniyor" class="text-center py-12 bg-slate-50">
+                    <span class="text-4xl animate-spin mb-3 block">⏳</span><span class="font-medium text-slate-500">Takvim yükleniyor...</span>
+                </div>
+                <div class="overflow-x-auto overflow-y-auto hidden bg-white overscroll-contain" id="imsakiye-tablo-kapsayici">
+                    <table class="w-full text-xs text-left text-slate-600">
+                        <thead class="text-xs text-emerald-800 bg-emerald-50/80 backdrop-blur-sm sticky top-0 shadow-sm border-b border-emerald-100">
+                            <tr><th class="p-3">Tarih</th><th class="p-3 font-bold">İmsak</th><th class="p-3">Güneş</th><th class="p-3">Öğle</th><th class="p-3">İkindi</th><th class="p-3 font-bold">Akşam</th><th class="p-3">Yatsı</th></tr>
+                        </thead>
+                        <tbody id="imsakiye-liste" class="divide-y divide-slate-50"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- HİCRİ BİLGİ MODALI -->
+        <div id="modal-hicribilgi" class="hidden absolute inset-0 bg-slate-900/60 z-[65] flex items-end sm:items-center justify-center p-0 sm:p-4 backdrop-blur-sm">
+            <div class="bg-white rounded-t-3xl sm:rounded-3xl shadow-2xl w-full max-w-md flex flex-col overflow-hidden max-h-[90vh] animate-[slideUp_0.3s_ease-out]">
+                <div class="bg-gradient-to-r from-emerald-800 to-emerald-900 text-white p-5 flex justify-between items-center shadow-md z-10 shrink-0">
+                    <div>
+                        <span class="text-[10px] bg-white/20 px-2.5 py-1 rounded-md font-bold uppercase tracking-widest border border-white/10">Hicri Ay</span>
+                        <h3 id="hicri-modal-ay-adi" class="font-extrabold text-xl leading-none mt-2 text-gold-400">Ay Adı</h3>
+                    </div>
+                    <button onclick="document.getElementById('modal-hicribilgi').classList.add('hidden')" class="w-8 h-8 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center text-xl font-bold transition">&times;</button>
+                </div>
+                <div class="p-6 overflow-y-auto bg-slate-50 flex-1 overscroll-contain">
+                    <p id="hicri-modal-aciklama" class="text-sm text-slate-600 mb-6 leading-relaxed bg-white p-4 rounded-xl border border-slate-200 shadow-sm"></p>
+                    <div class="mb-5">
+                        <h4 class="font-bold text-emerald-800 text-sm mb-3 flex items-center gap-2 border-b border-slate-200 pb-2"><span>✨</span> Tavsiye Edilen İbadetler:</h4>
+                        <div id="hicri-modal-ibadetler" class="text-sm text-slate-700 space-y-2 pl-2"></div>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-emerald-800 text-sm mb-3 flex items-center gap-2 border-b border-slate-200 pb-2"><span>🤲</span> Okunacak Dualar (Okunuşu):</h4>
+                        <div id="hicri-modal-dualar" class="text-sm text-slate-700 space-y-3 pl-2"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- AŞR-I ŞERİF MODALI -->
+        <div id="modal-asriserif" class="hidden absolute inset-0 bg-slate-900/60 z-[65] flex items-end sm:items-center justify-center p-0 sm:p-4 backdrop-blur-sm">
+            <div class="bg-white rounded-t-3xl sm:rounded-3xl shadow-2xl w-full max-w-md flex flex-col overflow-hidden max-h-[90vh] animate-[slideUp_0.3s_ease-out]">
+                <div class="bg-gradient-to-r from-emerald-800 to-emerald-900 text-white p-5 flex justify-between items-center shadow-md z-10 shrink-0">
+                    <div>
+                        <span id="asr-vakit" class="text-[10px] bg-white/20 px-2.5 py-1 rounded-md font-bold uppercase tracking-widest border border-white/10">Vakit</span>
+                        <h3 id="asr-baslik" class="font-extrabold text-xl leading-none mt-2 text-gold-400">Başlık</h3>
+                    </div>
+                    <button onclick="window.asriSerifModalKapat()" class="w-8 h-8 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center text-xl font-bold transition">&times;</button>
+                </div>
+                <div class="p-6 overflow-y-auto bg-slate-50 flex-1 overscroll-contain">
+                    <p id="asr-arapca" class="font-arabic text-[1.8rem] text-slate-900 mb-8 leading-[3.5rem] text-right drop-shadow-sm" dir="rtl"></p>
+                    <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
+                        <h4 class="font-bold text-emerald-800 text-sm mb-3 flex items-center gap-2 border-b border-slate-100 pb-2"><span>🗣️</span> Okunuşu</h4>
+                        <p id="asr-okunus" class="text-[13px] text-slate-600 leading-relaxed text-justify font-medium" dir="ltr"></p>
                     </div>
                 </div>
             </div>
         </div>
 
         <!-- YEDEKLEME VE BULUT MODALI -->
-        <div id="modal-yedek" class="hidden absolute inset-0 bg-slate-900/60 z-[70] flex items-end sm:items-center justify-center p-0 sm:p-4 backdrop-blur-sm transition-opacity">
+        <div id="modal-yedek" class="hidden absolute inset-0 bg-slate-900/60 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 backdrop-blur-sm transition-opacity">
             <div class="bg-white rounded-t-3xl sm:rounded-3xl shadow-2xl w-full max-w-sm flex flex-col overflow-hidden max-h-[95vh] animate-[slideUp_0.3s_ease-out]">
                 <div class="bg-slate-800 text-white p-5 flex justify-between items-center">
                     <h3 class="font-bold text-lg">Ayarlar & Yedekleme</h3>
                     <button onclick="window.yedekModalKapat()" class="text-white text-2xl leading-none">&times;</button>
                 </div>
-                <div class="p-6 text-center overflow-y-auto bg-slate-50">
+                <div class="p-6 text-center overflow-y-auto bg-slate-50 overscroll-contain">
                     <button onclick="window.yedekIndir()" class="w-full bg-emerald-600 text-white font-bold py-3.5 rounded-xl shadow-md mb-3 flex items-center justify-center gap-2"><span>⬇️</span> Dosyaya İndir</button>
                     <div class="relative">
                         <input type="file" id="yedek-dosya-secici" accept=".json" class="hidden" onchange="window.dosyadanYedekOku(event)">
@@ -742,6 +762,7 @@
                             </div>
                         </div>
                     </div>
+
                     <div class="mt-6 pt-5 border-t border-slate-200">
                         <button onclick="window.infoModalAc()" class="w-full bg-slate-200 text-slate-700 font-bold py-3 rounded-xl hover:bg-slate-300 transition text-sm flex items-center justify-center gap-2">
                             <span>📄</span> KVKK, Gizlilik ve Künye
@@ -752,7 +773,7 @@
         </div>
 
         <!-- KIBLE PUSULASI MODALI -->
-        <div id="modal-kible" class="hidden absolute inset-0 bg-slate-900 z-[70] flex flex-col items-center justify-start p-6">
+        <div id="modal-kible" class="hidden absolute inset-0 bg-slate-900 z-50 flex flex-col items-center justify-start p-6">
             <div class="w-full flex justify-between items-center mt-2 mb-6">
                 <h3 class="font-extrabold text-2xl text-white tracking-tight">Kıble Pusulası</h3>
                 <button onclick="window.kibleModalKapat()" class="w-10 h-10 bg-white/10 backdrop-blur-md rounded-full text-white flex items-center justify-center font-bold text-xl border border-white/20">&times;</button>
@@ -764,6 +785,7 @@
 
             <div class="relative w-80 h-80 mb-10 flex justify-center items-center">
                 <div class="absolute -top-8 text-gold-400 text-3xl z-40 drop-shadow-[0_0_10px_rgba(251,191,36,0.8)] animate-pulse">▼</div>
+                
                 <div id="pusula-kadran" class="compass-needle absolute w-full h-full rounded-full border-[6px] border-emerald-500/30 bg-slate-800/80 backdrop-blur-xl shadow-[0_0_50px_rgba(16,185,129,0.15)] overflow-hidden transition-all duration-300" style="transform: rotate(0deg);">
                     <div class="absolute inset-0 flex flex-col items-center justify-start z-10 opacity-80"><div class="w-1.5 h-12 bg-red-500 mt-6 rounded-b-full"></div></div>
                     <div class="absolute inset-0 flex flex-col items-center py-1"><span class="text-emerald-400 font-bold text-xl mt-1">K</span><span class="text-[10px] text-emerald-400/50">0°</span></div>
@@ -786,6 +808,7 @@
                     <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-4 h-4 bg-slate-800 border-4 border-emerald-500 rounded-full z-40 shadow-xl"></div>
                 </div>
             </div>
+
             <div class="text-center w-full max-w-sm mt-auto mb-10">
                 <div class="text-gold-400 font-mono text-5xl font-black mb-2 drop-shadow-lg" id="kible-aci-metni">--°</div>
                 <p class="text-slate-400 text-sm mb-8 font-medium" id="kible-detay-metni">Hesaplanıyor...</p>
@@ -796,7 +819,7 @@
         </div>
 
         <!-- ONAY MODALI -->
-        <div id="modal-onay" class="hidden absolute inset-0 bg-slate-900/60 z-[80] flex items-center justify-center p-4 backdrop-blur-sm">
+        <div id="modal-onay" class="hidden absolute inset-0 bg-slate-900/60 z-[70] flex items-center justify-center p-4 backdrop-blur-sm">
             <div class="bg-white rounded-3xl shadow-2xl w-full max-w-[280px] flex flex-col overflow-hidden text-center p-6 animate-[slideUp_0.2s_ease-out]">
                 <div class="text-5xl mb-4 mt-2 drop-shadow-sm" id="onay-ikon">⚠️</div>
                 <h3 id="onay-baslik" class="font-extrabold text-xl text-slate-800 mb-2 tracking-tight">Onay</h3>
@@ -810,9 +833,11 @@
 
     </div>
 
-    <!-- JAVASCRIPT -->
+    <!-- JAVASCRIPT: Tamamen Güvenli Asenkron Onarım Sistemi -->
     <script type="module">
-        window.xssKoru = (str) => { return str ? String(str).replace(/</g, '&lt;').replace(/>/g, '&gt;') : ""; };
+        window.xssKoru = (str) => { 
+            return str ? String(str).replace(/</g, '&lt;').replace(/>/g, '&gt;') : ""; 
+        };
 
         const GITHUB_FIREBASE_CONFIG = {
             apiKey: "AIzaSyCsIHOJqn-6HfjvzLTkLO69In6UtLaaawY",
@@ -869,6 +894,7 @@
 
         let dbData = []; let kayitlar = []; let zikirMode = 'kutuphane'; let aktifZikirId = "1"; let sayac = 0; let freeSayac = 0; let freeHedef = 0; let ulke = "Turkey"; let sehir = "Ankara";
         const kazaVakitBilgileri = [ { id: 'sabah', ad: 'Sabah' }, { id: 'ogle', ad: 'Öğle' }, { id: 'ikindi', ad: 'İkindi' }, { id: 'aksam', ad: 'Akşam' }, { id: 'yatsi', ad: 'Yatsı' }, { id: 'vitir', ad: 'Vitir' } ];
+        
         let kazaDurumu = { sabah: 0, ogle: 0, ikindi: 0, aksam: 0, yatsi: 0, vitir: 0 };
         let kazaMaksimum = { sabah: 0, ogle: 0, ikindi: 0, aksam: 0, yatsi: 0, vitir: 0 };
         
@@ -876,7 +902,7 @@
         let zikirBaslangicZamani = null;
         let zikirTimer = null;
         let audioCtx = null;
-        window.sonUyariTarihi = null; // Arka plan bildirim tekrarını engeller
+        let alarmUyariVerildiMi = false;
 
         window.fb = null;
         let isCloudConnected = false; let auth, firestoreDb, currentUser, appId;
@@ -915,9 +941,15 @@
         };
 
         window.gununIceriginiYukle = () => {
-            const gun = new Date().getDate(); const index = gun % gunlukIceriklerDB.length; const icerik = gunlukIceriklerDB[index];
-            const ayetEl = document.getElementById('gunluk-ayet'); const hadisEl = document.getElementById('gunluk-hadis'); const duaEl = document.getElementById('gunluk-dua');
-            if (ayetEl) ayetEl.innerText = icerik.ayet; if (hadisEl) hadisEl.innerText = icerik.hadis; if (duaEl) duaEl.innerText = icerik.dua;
+            const gun = new Date().getDate();
+            const index = gun % gunlukIceriklerDB.length;
+            const icerik = gunlukIceriklerDB[index];
+            const ayetEl = document.getElementById('gunluk-ayet');
+            const hadisEl = document.getElementById('gunluk-hadis');
+            const duaEl = document.getElementById('gunluk-dua');
+            if (ayetEl) ayetEl.innerText = icerik.ayet;
+            if (hadisEl) hadisEl.innerText = icerik.hadis;
+            if (duaEl) duaEl.innerText = icerik.dua;
         };
 
         function veritabaniYukle() {
@@ -926,7 +958,9 @@
                 if (data) {
                     const parsed = JSON.parse(data);
                     if (Array.isArray(parsed) && parsed.length > 0) {
-                        return parsed.filter(d => d !== null && typeof d === 'object' && d.id).map(item => ({ id: String(item.id || Date.now()), kategori: String(item.kategori || "Genel"), baslik: String(item.baslik || "İsimsiz"), hedef: parseInt(item.hedef) || 0, arapca: String(item.arapca || ""), okunus: String(item.okunus || ""), meal: String(item.meal || "") }));
+                        return parsed.filter(d => d !== null && typeof d === 'object' && d.id).map(item => ({
+                            id: String(item.id || Date.now()), kategori: String(item.kategori || "Genel"), baslik: String(item.baslik || "İsimsiz"), hedef: parseInt(item.hedef) || 0, arapca: String(item.arapca || ""), okunus: String(item.okunus || ""), meal: String(item.meal || "")
+                        }));
                     }
                 }
             } catch(e) {}
@@ -936,6 +970,7 @@
         window.onload = async () => {
             try {
                 await idb.init();
+                
                 try {
                     const yerelDB = await idb.get('dbData'); 
                     if(yerelDB) {
@@ -954,8 +989,15 @@
                     if (yerelState) {
                         const s = JSON.parse(yerelState);
                         if(s) { 
-                            aktifZikirId = s.aktifZikirId || dbData[0].id; sayac = s.sayac || 0; zikirMode = s.zikirMode || 'kutuphane'; freeSayac = s.freeSayac || 0; freeHedef = s.freeHedef || 0; ulke = s.ulke || "Turkey"; sehir = s.sehir || "Ankara"; kazaDurumu = s.kazaDurumu || kazaDurumu; 
-                            kazaMaksimum = s.kazaMaksimum || JSON.parse(JSON.stringify(s.kazaDurumu || kazaDurumu));
+                            aktifZikirId = s.aktifZikirId || dbData[0].id; 
+                            sayac = s.sayac || 0; 
+                            zikirMode = s.zikirMode || 'kutuphane'; 
+                            freeSayac = s.freeSayac || 0; 
+                            freeHedef = s.freeHedef || 0; 
+                            ulke = s.ulke || "Turkey"; 
+                            sehir = s.sehir || "Ankara"; 
+                            kazaDurumu = s.kazaDurumu || kazaDurumu; 
+                            kazaMaksimum = s.kazaMaksimum || JSON.parse(JSON.stringify(kazaDurumu)); 
                         }
                     } else { aktifZikirId = dbData[0].id; }
                 } catch(e) { aktifZikirId = dbData[0].id; }
@@ -964,14 +1006,26 @@
 
                 if(freeHedef > 0) document.getElementById('input-serbest-hedef').value = freeHedef;
 
-                window.saatiBaslat(); window.zikirSeciciDoldur(); window.zikirModDegistir(zikirMode, false); window.kutuphaneListele(); window.kazaEkraniGuncelle(); window.raporlariListele(); window.konumMetinleriniGuncelle(); window.hicriTakvimGuncelle(); window.gununIceriginiYukle();
+                window.saatiBaslat(); 
+                window.zikirSeciciDoldur(); 
+                window.zikirModDegistir(zikirMode, false); 
+                window.kutuphaneListele(); 
+                window.kazaEkraniGuncelle(); 
+                window.raporlariListele(); 
+                window.konumMetinleriniGuncelle();
+                window.hicriTakvimGuncelle();
+                window.gununIceriginiYukle();
                 setTimeout(() => { window.vakitleriGetir(); }, 1000);
 
-                const loader = document.getElementById('loading-screen'); if (loader) loader.classList.add('hidden');
+                const loader = document.getElementById('loading-screen');
+                if (loader) loader.classList.add('hidden');
+                
                 if (!window.localStorage.getItem('hazine_policy_accepted')) window.infoModalAc();
                 initFirebaseBackground();
+
             } catch (error) {
-                const loader = document.getElementById('loading-screen'); if (loader) loader.classList.add('hidden');
+                const loader = document.getElementById('loading-screen');
+                if (loader) loader.classList.add('hidden');
             }
         };
 
@@ -1011,12 +1065,11 @@
             if(!window.fb) return;
             try {
                 const stateDoc = await window.fb.getDoc(window.fb.doc(firestoreDb, 'artifacts', appId, 'users', currentUser.uid, 'state', 'current'));
-                if (stateDoc.exists()) { const data = stateDoc.data(); sayac = data.sayac || sayac; aktifZikirId = data.aktifZikirId || aktifZikirId; zikirMode = data.zikirMode || zikirMode; freeSayac = data.freeSayac || freeSayac; freeHedef = data.freeHedef || freeHedef; ulke = data.ulke || ulke; sehir = data.sehir || sehir; kazaDurumu = data.kazaDurumu || kazaDurumu; kazaMaksimum = data.kazaMaksimum || JSON.parse(JSON.stringify(data.kazaDurumu || kazaDurumu)); }
+                if (stateDoc.exists()) { const data = stateDoc.data(); sayac = data.sayac || sayac; aktifZikirId = data.aktifZikirId || aktifZikirId; zikirMode = data.zikirMode || zikirMode; freeSayac = data.freeSayac || freeSayac; freeHedef = data.freeHedef || freeHedef; ulke = data.ulke || ulke; sehir = data.sehir || sehir; kazaDurumu = data.kazaDurumu || kazaDurumu; kazaMaksimum = data.kazaMaksimum || JSON.parse(JSON.stringify(kazaDurumu)); }
                 if(freeHedef > 0) document.getElementById('input-serbest-hedef').value = freeHedef;
                 
                 const duaCol = await window.fb.getDocs(window.fb.collection(firestoreDb, 'artifacts', appId, 'users', currentUser.uid, 'dualar'));
-                if (!duaCol.empty) { dbData = duaCol.docs.map(d => d.data()); } 
-                else { for (const d of dbData) { await window.fb.setDoc(window.fb.doc(firestoreDb, 'artifacts', appId, 'users', currentUser.uid, 'dualar', d.id), d); } }
+                if (!duaCol.empty) { dbData = duaCol.docs.map(d => d.data()); } else { for (const d of dbData) { await window.fb.setDoc(window.fb.doc(firestoreDb, 'artifacts', appId, 'users', currentUser.uid, 'dualar', d.id), d); } }
                 
                 const kayitCol = await window.fb.getDocs(window.fb.collection(firestoreDb, 'artifacts', appId, 'users', currentUser.uid, 'kayitlar'));
                 if (!kayitCol.empty) { kayitlar = kayitCol.docs.map(d => d.data()).sort((a,b) => b.id - a.id); }
@@ -1061,6 +1114,7 @@
         };
 
         window.hicriBilgiModalAc = () => { document.getElementById('modal-hicribilgi').classList.remove('hidden'); };
+
         window.asriSerifModalAc = (vakit) => { const data = asriSerifVerileri[vakit]; if(data) { document.getElementById('asr-vakit').innerText = data.vakit; document.getElementById('asr-baslik').innerText = data.baslik; document.getElementById('asr-arapca').innerText = data.arapca; document.getElementById('asr-okunus').innerText = data.okunus; document.getElementById('modal-asriserif').classList.remove('hidden'); } };
         window.asriSerifModalKapat = () => { document.getElementById('modal-asriserif').classList.add('hidden'); };
 
@@ -1168,6 +1222,8 @@
             kazaVakitBilgileri.forEach(v => {
                 const val = kazaDurumu[v.id] || 0; 
                 const maxVal = kazaMaksimum[v.id] || val;
+                let kilinan = maxVal - val;
+                if(kilinan < 0) { kilinan = 0; kazaMaksimum[v.id] = val; }
 
                 let btnEksiCls = val === 0 ? "bg-slate-100 text-slate-300 border-slate-200 cursor-not-allowed opacity-50" : "bg-red-50 border border-red-100 text-red-500 hover:bg-red-100 transition active:scale-95 shadow-sm"; 
                 let disAttr = val === 0 ? "disabled" : "";
@@ -1175,52 +1231,66 @@
                 let btnArtiCls = val >= maxVal ? "bg-slate-100 text-slate-300 border-slate-200 cursor-not-allowed opacity-50" : "bg-emerald-50 border border-emerald-100 text-emerald-600 hover:bg-emerald-100 transition active:scale-95 shadow-sm"; 
                 let disArtiAttr = val >= maxVal ? "disabled" : "";
 
-                listeDiv.innerHTML += `<div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-100 flex items-center justify-between relative overflow-hidden"><div class="absolute left-0 top-0 bottom-0 w-1 bg-slate-200"></div><div class="pl-2"><h4 class="font-extrabold text-slate-700 text-[15px]">${v.ad}</h4><div class="text-xs text-slate-400 mt-0.5 font-medium">Kalan: <span class="text-emerald-600 font-black text-lg ml-1">${val}</span></div></div><div class="flex gap-2"><button onclick="window.kazaDegistir('${v.id}', 1)" ${disArtiAttr} class="w-12 h-12 flex items-center justify-center rounded-xl font-black text-2xl ${btnArtiCls}">+</button><button onclick="window.kazaDegistir('${v.id}', -1)" ${disAttr} class="w-12 h-12 flex items-center justify-center rounded-xl font-black text-2xl ${btnEksiCls}">-</button></div></div>`;
+                listeDiv.innerHTML += `
+                <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-100 flex items-center justify-between relative overflow-hidden">
+                    <div class="absolute left-0 top-0 bottom-0 w-1 bg-slate-200"></div>
+                    <div class="pl-2">
+                        <h4 class="font-extrabold text-slate-700 text-[15px]">${v.ad}</h4>
+                        <div class="text-[11px] text-slate-400 mt-0.5 font-medium flex gap-3 items-center">
+                            <span>Kalan: <span class="text-emerald-600 font-black text-lg ml-0.5">${val}</span></span>
+                            <span class="text-slate-200">|</span>
+                            <span>Kılınan: <span class="text-blue-500 font-black text-lg ml-0.5">${kilinan}</span></span>
+                        </div>
+                    </div>
+                    <div class="flex gap-2">
+                        <button onclick="window.kazaDegistir('${v.id}', 1)" ${disArtiAttr} class="w-12 h-12 flex items-center justify-center rounded-xl font-black text-2xl ${btnArtiCls}">+</button>
+                        <button onclick="window.kazaDegistir('${v.id}', -1)" ${disAttr} class="w-12 h-12 flex items-center justify-center rounded-xl font-black text-2xl ${btnEksiCls}">-</button>
+                    </div>
+                </div>`;
             });
         };
         
         window.kazaDegistir = (vakitId, artis) => { 
             if (!kazaDurumu[vakitId]) kazaDurumu[vakitId] = 0; 
             if (!kazaMaksimum[vakitId]) kazaMaksimum[vakitId] = kazaDurumu[vakitId];
-
-            if (artis < 0 && kazaDurumu[vakitId] === 0) return; 
-            if (artis > 0 && kazaDurumu[vakitId] >= kazaMaksimum[vakitId]) { window.toastGoster("Maksimum limite ulaştınız. Artı butonu geri almak içindir.", "info"); return; }
-            
+            if (artis < 0 && kazaDurumu[vakitId] <= 0) return; 
+            if (artis > 0 && kazaDurumu[vakitId] >= kazaMaksimum[vakitId]) {
+                window.toastGoster("Tavan limite ulaştınız. Sadece yanlışları düzeltebilirsiniz.", "info"); return;
+            }
             kazaDurumu[vakitId] += artis; 
             saveLocalState(); syncToCloud(); window.kazaEkraniGuncelle(); 
             if (navigator.vibrate) navigator.vibrate(20); 
-            if (artis < 0 && kazaDurumu[vakitId] >= 0) window.toastGoster("Allah kabul etsin.", "success"); 
-            else if (artis > 0) window.toastGoster("Geri alındı (+1).", "info"); 
+            if (artis < 0) window.toastGoster("Allah kabul etsin.", "success"); 
         };
         
         window.kazaTopluAyarModalAc = () => { const div = document.getElementById('kaza-ayar-inputs'); div.innerHTML = ""; kazaVakitBilgileri.forEach(v => { const val = kazaDurumu[v.id] || 0; div.innerHTML += `<div class="flex justify-between items-center border-b border-slate-100 pb-3 mb-2"><label class="text-sm font-bold text-slate-600 w-1/2">${v.ad}</label><input type="number" id="input-kaza-${v.id}" value="${val}" min="0" class="w-1/2 p-2 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-emerald-500 outline-none text-center font-bold text-emerald-800"></div>`; }); document.getElementById('kaza-hesap-sonuc').classList.add('hidden'); document.getElementById('modal-kaza-ayar').classList.remove('hidden'); };
         window.kazaTopluAyarModalKapat = () => { document.getElementById('modal-kaza-ayar').classList.add('hidden'); };
         
+        window.kazaHizliYilEkle = () => {
+            const yilInput = document.getElementById('kaza-hizli-yil'); const yil = parseInt(yilInput.value);
+            if (!yil || yil <= 0) return window.toastGoster("Lütfen geçerli bir yıl girin.", "error");
+            const gunSayisi = yil * 365;
+            kazaVakitBilgileri.forEach(v => { 
+                if(!kazaDurumu[v.id]) kazaDurumu[v.id] = 0; 
+                if(!kazaMaksimum[v.id]) kazaMaksimum[v.id] = kazaDurumu[v.id];
+                kazaDurumu[v.id] += gunSayisi; 
+                kazaMaksimum[v.id] += gunSayisi;
+                const el = document.getElementById(`input-kaza-${v.id}`); if(el) el.value = kazaDurumu[v.id];
+            });
+            yilInput.value = ""; saveLocalState(); syncToCloud(); window.kazaEkraniGuncelle();
+            window.toastGoster(`${yil} Yıl (${gunSayisi} gün) borca eklendi ve kaydedildi.`, "success");
+        };
+
         window.kazaTopluKaydet = () => { 
             kazaVakitBilgileri.forEach(v => { 
                 const el = document.getElementById(`input-kaza-${v.id}`); 
                 if(el) { 
-                    kazaDurumu[v.id] = parseInt(el.value) || 0; 
-                    if(kazaDurumu[v.id] < 0) kazaDurumu[v.id] = 0; 
-                    kazaMaksimum[v.id] = kazaDurumu[v.id]; // Doğrudan girilen yeni sayıyı tavan limit olarak kaydet
+                    const yeniVal = parseInt(el.value) || 0; 
+                    kazaDurumu[v.id] = yeniVal < 0 ? 0 : yeniVal; 
+                    kazaMaksimum[v.id] = kazaDurumu[v.id]; 
                 } 
             }); 
             saveLocalState(); syncToCloud(); window.kazaEkraniGuncelle(); window.kazaTopluAyarModalKapat(); window.toastGoster("Güncellendi.", "success"); 
-        };
-
-        window.kazaHizliYilEkle = () => {
-            const yil = parseInt(document.getElementById('kaza-hizli-yil').value);
-            if (!yil || yil <= 0) return window.toastGoster("Geçerli bir yıl girin.", "error");
-            const gun = yil * 365;
-            kazaVakitBilgileri.forEach(v => {
-                kazaDurumu[v.id] = (kazaDurumu[v.id] || 0) + gun;
-                kazaMaksimum[v.id] = kazaDurumu[v.id]; // Tavan limiti yeni toplama eşitle
-                const el = document.getElementById(`input-kaza-${v.id}`);
-                if(el) el.value = kazaDurumu[v.id];
-            });
-            saveLocalState(); syncToCloud(); window.kazaEkraniGuncelle(); window.kazaTopluAyarModalKapat();
-            document.getElementById('kaza-hizli-yil').value = "";
-            window.toastGoster(`${yil} yıllık (${gun} gün) kaza eklendi ve kaydedildi.`, "success");
         };
 
         window.kazaDetayliHesapla = () => {
@@ -1238,82 +1308,87 @@
             if (toplamGun < 0) toplamGun = 0;
 
             kazaVakitBilgileri.forEach(v => { 
-                const el = document.getElementById(`input-kaza-${v.id}`); 
-                if(el) el.value = toplamGun; 
-                kazaDurumu[v.id] = toplamGun;
-                kazaMaksimum[v.id] = toplamGun; // Tavan limiti belirle
+                if(!kazaDurumu[v.id]) kazaDurumu[v.id] = 0; 
+                if(!kazaMaksimum[v.id]) kazaMaksimum[v.id] = kazaDurumu[v.id];
+                kazaDurumu[v.id] += toplamGun;
+                kazaMaksimum[v.id] += toplamGun;
+                const el = document.getElementById(`input-kaza-${v.id}`); if(el) el.value = kazaDurumu[v.id]; 
             });
             
+            saveLocalState(); syncToCloud(); window.kazaEkraniGuncelle();
+
             if(elSonuc) {
                 elSonuc.classList.remove('hidden');
-                elSonuc.innerHTML = `Hesaplandı:<br><span class="text-lg block my-1">${yilFark} Yıllık</span> Toplam <b>${toplamGun} Gün</b> borcunuz bulundu.`;
+                elSonuc.innerHTML = `Hesaplandı:<br><span class="text-lg block my-1">${yilFark} Yıllık</span> Toplam <b>${toplamGun} Gün</b> borcunuza eklendi.`;
             }
-            saveLocalState(); syncToCloud(); window.kazaEkraniGuncelle();
-            window.toastGoster(`Hesaplandı ve Eklendi: ${yilFark} yıl (${toplamGun} gün).`, "success");
+            window.toastGoster(`Hesaplandı ve borca eklendi.`, "success");
         };
+
         window.cinsiyetDegisti = (val) => { const ozelGunDiv = document.getElementById('kaza-ozel-gun-kapsayici'); if(val === 'kadin') { ozelGunDiv.classList.remove('hidden'); } else { ozelGunDiv.classList.add('hidden'); } };
+        
+        window.kazaHesapSifirla = () => { 
+            window.onayIste("Sıfırlama Onayı", "Tüm kaza borçlarınız ve kıldığınız miktarlar tamamen sıfırlanacak. Emin misiniz?", "⚠️", () => {
+                document.getElementById('kaza-ergenlik-yas').value = ""; 
+                document.getElementById('kaza-baslama-yas').value = ""; 
+                document.getElementById('kaza-ozel-gun').value = "6"; 
+                document.getElementById('kaza-cinsiyet').value = "erkek"; 
+                window.cinsiyetDegisti("erkek"); 
+                kazaVakitBilgileri.forEach(v => { 
+                    const el = document.getElementById(`input-kaza-${v.id}`); 
+                    if(el) el.value = 0; 
+                    kazaDurumu[v.id] = 0;
+                    kazaMaksimum[v.id] = 0;
+                }); 
+                document.getElementById('kaza-hesap-sonuc').classList.add('hidden'); 
+                saveLocalState(); syncToCloud(); window.kazaEkraniGuncelle(); window.kazaTopluAyarModalKapat();
+                window.toastGoster("Tüm kazalar sıfırlandı.", "info"); 
+            });
+        };
 
         window.yedekModalAc = () => { document.getElementById('modal-yedek').classList.remove('hidden'); }; window.yedekModalKapat = () => { document.getElementById('modal-yedek').classList.add('hidden'); };
         window.yedekIndir = () => { const dataObj = { dbData, kayitlar, state: { sayac, aktifZikirId, zikirMode, freeSayac, freeHedef, ulke, sehir, kazaDurumu, kazaMaksimum } }; const blob = new Blob([JSON.stringify(dataObj, null, 2)], { type: 'application/json' }); const link = document.createElement("a"); link.href = URL.createObjectURL(blob); link.download = "Dijital_Hazine_Yedek.json"; link.click(); window.toastGoster("Yedek indirildi.", "success"); window.yedekModalKapat(); };
-        window.dosyadanYedekOku = (event) => { const file = event.target.files[0]; if(!file) return; const reader = new FileReader(); reader.onload = async (e) => { try { const data = JSON.parse(e.target.result); if(data.dbData) { dbData = data.dbData; kayitlar = data.kayitlar || []; if(data.state) { sayac = data.state.sayac || 0; aktifZikirId = data.state.aktifZikirId || dbData[0].id; zikirMode = data.state.zikirMode || 'kutuphane'; freeSayac = data.state.freeSayac || 0; freeHedef = data.state.freeHedef || 0; ulke = data.state.ulke || "Turkey"; sehir = data.state.sehir || "Ankara"; kazaDurumu = data.state.kazaDurumu || kazaDurumu; kazaMaksimum = data.state.kazaMaksimum || JSON.parse(JSON.stringify(data.state.kazaDurumu || kazaDurumu)); } if(freeHedef > 0) document.getElementById('input-serbest-hedef').value = freeHedef; await idb.set('dbData', JSON.stringify(dbData)); await idb.set('kayitlar', JSON.stringify(kayitlar)); await saveLocalState(); window.syncAllToCloud(); window.zikirSeciciDoldur(); window.zikirModDegistir(zikirMode, false); window.kutuphaneListele(); window.kazaEkraniGuncelle(); window.raporlariListele(); window.konumMetinleriniGuncelle(); window.toastGoster("Yedek yüklendi!", "success"); window.yedekModalKapat(); } } catch(err) { window.toastGoster("Bozuk yedek.", "error"); } }; reader.readAsText(file); };
+        window.dosyadanYedekOku = (event) => { const file = event.target.files[0]; if(!file) return; const reader = new FileReader(); reader.onload = async (e) => { try { const data = JSON.parse(e.target.result); if(data.dbData) { dbData = data.dbData; kayitlar = data.kayitlar || []; if(data.state) { sayac = data.state.sayac || 0; aktifZikirId = data.state.aktifZikirId || dbData[0].id; zikirMode = data.state.zikirMode || 'kutuphane'; freeSayac = data.state.freeSayac || 0; freeHedef = data.state.freeHedef || 0; ulke = data.state.ulke || "Turkey"; sehir = data.state.sehir || "Ankara"; kazaDurumu = data.state.kazaDurumu || kazaDurumu; kazaMaksimum = data.state.kazaMaksimum || JSON.parse(JSON.stringify(kazaDurumu)); } if(freeHedef > 0) document.getElementById('input-serbest-hedef').value = freeHedef; await idb.set('dbData', JSON.stringify(dbData)); await idb.set('kayitlar', JSON.stringify(kayitlar)); await saveLocalState(); window.syncAllToCloud(); window.zikirSeciciDoldur(); window.zikirModDegistir(zikirMode, false); window.kutuphaneListele(); window.kazaEkraniGuncelle(); window.raporlariListele(); window.konumMetinleriniGuncelle(); window.toastGoster("Yedek yüklendi!", "success"); window.yedekModalKapat(); } } catch(err) { window.toastGoster("Bozuk yedek.", "error"); } }; reader.readAsText(file); };
 
         window.infoModalAc = () => { document.getElementById('modal-info').classList.remove('hidden'); }; window.infoModalKapat = () => { window.localStorage.setItem('hazine_policy_accepted', 'true'); document.getElementById('modal-info').classList.add('hidden'); };
         window.konumMetinleriniGuncelle = () => { document.getElementById('header-konum').innerText = `${sehir}, ${ulke}`; document.getElementById('vakit-konum-metni').innerHTML = `<span class="font-bold text-slate-700">${sehir}</span>, ${ulke}`; };
         window.konumModalAc = () => { document.getElementById('input-ulke').value = ulke; document.getElementById('input-sehir').value = sehir; document.getElementById('modal-konum').classList.remove('hidden'); }; window.konumModalKapat = () => { document.getElementById('modal-konum').classList.add('hidden'); };
         
-        window.otomatikKonumBul = async (event) => { 
-            const btn = event.target; const eskiMetin = btn.innerText; btn.innerText = "⏳ Bulunuyor..."; btn.disabled = true; 
-            const fallbackIP = async () => {
-                try { 
-                    const res = await fetch('https://api.bigdatacloud.net/data/reverse-geocode-client'); 
-                    const data = await res.json(); 
-                    if(data && data.principalSubdivision) { 
-                        let il = data.principalSubdivision.replace(' Province', '').replace(' İli', '');
-                        document.getElementById('input-ulke').value = data.countryName || 'Turkey'; 
-                        document.getElementById('input-sehir').value = il; 
-                        window.toastGoster("Konum bulundu.", "success"); 
-                    } else { throw new Error(); }
-                } catch(e) { window.toastGoster("Bulunamadı.", "error"); } 
+        window.otomatikKonumBulGPS = async (event) => { 
+            const btn = event.target; const eskiMetin = btn.innerText; btn.innerText = "⏳ Uydu Bekleniyor..."; btn.disabled = true; 
+            const fallbackIP = async () => { try { const res = await fetch('https://api.bigdatacloud.net/data/reverse-geocode-client'); const data = await res.json(); if(data && data.countryName) { document.getElementById('input-ulke').value = data.countryName; if(data.principalSubdivision) { let s=data.principalSubdivision; s=s.replace(' Province','').replace(' İli',''); document.getElementById('input-sehir').value = s; } window.toastGoster("Ağ üzerinden tespit edildi.", "success"); } } catch(e) { window.toastGoster("Bulunamadı.", "error"); } finally { btn.innerText = eskiMetin; btn.disabled = false; } };
+            if (!navigator.geolocation) { return fallbackIP(); }
+            navigator.geolocation.getCurrentPosition(async (pos) => {
+                const lat = pos.coords.latitude; const lon = pos.coords.longitude;
+                try {
+                    const res = await fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=tr`);
+                    const data = await res.json();
+                    if(data && data.countryName) { document.getElementById('input-ulke').value = data.countryName; if(data.principalSubdivision) { let s=data.principalSubdivision; s=s.replace(' Province','').replace(' İli',''); document.getElementById('input-sehir').value = s; } window.toastGoster("GPS ile tam isabet!", "success"); }
+                } catch(e) { fallbackIP(); }
                 finally { btn.innerText = eskiMetin; btn.disabled = false; }
-            };
-
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(async (pos) => {
-                    try {
-                        const lat = pos.coords.latitude, lon = pos.coords.longitude;
-                        const res = await fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=tr`);
-                        const data = await res.json();
-                        let il = data.principalSubdivision.replace(' Province', '').replace(' İli', '');
-                        document.getElementById('input-ulke').value = data.countryName || 'Turkey'; 
-                        document.getElementById('input-sehir').value = il; 
-                        window.toastGoster("GPS ile kesin konum bulundu.", "success"); 
-                        btn.innerText = eskiMetin; btn.disabled = false;
-                    } catch(e) { fallbackIP(); }
-                }, () => { fallbackIP(); }, {timeout: 5000});
-            } else { fallbackIP(); }
+            }, (err) => { fallbackIP(); }, { enableHighAccuracy: false, timeout: 5000, maximumAge: 0 });
         };
         
         window.konumKaydet = () => { const yU = document.getElementById('input-ulke').value.trim(); const yS = document.getElementById('input-sehir').value.trim(); if(!yU || !yS) return window.toastGoster("Boş olamaz!", "error"); ulke = yU; sehir = yS; saveLocalState(); syncToCloud(); window.konumMetinleriniGuncelle(); window.konumModalKapat(); window.vakitleriGetir(); };
 
         window.uyariModalAc = () => { document.getElementById('uyari-aktif').checked = uyariAyarlari.aktif; document.getElementById('uyari-dakika').value = uyariAyarlari.dakika; document.getElementById('modal-uyari').classList.remove('hidden'); };
         window.uyariModalKapat = () => { document.getElementById('modal-uyari').classList.add('hidden'); };
-        window.uyariKaydet = () => { uyariAyarlari.aktif = document.getElementById('uyari-aktif').checked; uyariAyarlari.dakika = parseInt(document.getElementById('uyari-dakika').value) || 15; window.localStorage.setItem('hazine_uyari_ayar', JSON.stringify(uyariAyarlari)); window.toastGoster("Uyarı ayarları kaydedildi.", "success"); window.uyariModalKapat(); window.sonUyariTarihi = null; };
+        window.uyariKaydet = () => { uyariAyarlari.aktif = document.getElementById('uyari-aktif').checked; uyariAyarlari.dakika = parseInt(document.getElementById('uyari-dakika').value) || 15; window.localStorage.setItem('hazine_uyari_ayar', JSON.stringify(uyariAyarlari)); window.toastGoster("Uyarı ayarları kaydedildi.", "success"); window.uyariModalKapat(); };
         
-        window.ezanUyariAc = (metin) => {
-            const m = document.getElementById('modal-ezan-uyari');
-            document.getElementById('ezan-uyari-metin').innerText = metin;
-            m.classList.remove('hidden');
-            if(navigator.vibrate) navigator.vibrate([300, 100, 300, 100, 300]);
-            try {
-                if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-                if (audioCtx.state === 'suspended') audioCtx.resume();
-                const osc = audioCtx.createOscillator();
-                const gain = audioCtx.createGain();
-                osc.connect(gain); gain.connect(audioCtx.destination);
-                osc.type = 'sine'; osc.frequency.setValueAtTime(440, audioCtx.currentTime); osc.frequency.setValueAtTime(660, audioCtx.currentTime + 0.3);
-                gain.gain.setValueAtTime(0.5, audioCtx.currentTime); gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 1.5);
-                osc.start(); osc.stop(audioCtx.currentTime + 1.5);
-            } catch(e) {}
+        window.ezanUyariAc = () => { 
+            const mod = document.getElementById('modal-ezan-uyari'); 
+            if(mod.classList.contains('hidden')) { 
+                mod.classList.remove('hidden'); 
+                if(navigator.vibrate) navigator.vibrate([300, 100, 300, 100, 300]); 
+                if (!audioCtx) { const AudioContext = window.AudioContext || window.webkitAudioContext; if(AudioContext) audioCtx = new AudioContext(); }
+                if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
+                if (audioCtx) {
+                    const osc = audioCtx.createOscillator(); const gainNode = audioCtx.createGain();
+                    osc.connect(gainNode); gainNode.connect(audioCtx.destination);
+                    osc.type = 'triangle'; osc.frequency.setValueAtTime(440, audioCtx.currentTime); osc.frequency.setValueAtTime(880, audioCtx.currentTime + 0.5);
+                    gainNode.gain.setValueAtTime(0.2, audioCtx.currentTime); gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 1.5);
+                    osc.start(); osc.stop(audioCtx.currentTime + 1.5);
+                }
+            } 
         };
         window.ezanUyariKapat = () => { document.getElementById('modal-ezan-uyari').classList.add('hidden'); };
 
@@ -1344,32 +1419,18 @@
 
         window.sonrakiVaktiHesapla = () => {
             if(!window.namazVakitleri) return; if(window.vakitTimer) clearInterval(window.vakitTimer);
-            const parseTime = (timeStr) => { const [h, m] = timeStr.split(':').map(Number); return h * 60 + m; };
             window.vakitTimer = setInterval(() => {
                 const s = new Date(); const simdiDakika = (s.getHours() * 60) + s.getMinutes(); let bulundu = false;
-                for (let v of ['Fajr', 'Sunrise', 'Dhuhr', 'Asr', 'Maghrib', 'Isha']) { 
-                    const vakitDakika = parseTime(window.namazVakitleri[v]); 
-                    if (vakitDakika > simdiDakika) { 
-                        const fark = vakitDakika - simdiDakika; 
-                        document.getElementById('kalan-sure').innerText = `${Math.floor(fark / 60)}s ${fark % 60}d`; 
-                        bulundu = true; 
-                        
-                        // Uyarı Sistemi
-                        if (uyariAyarlari.aktif && fark <= uyariAyarlari.dakika) {
-                            const bugunStr = `${s.getDate()}-${s.getMonth()}-${v}`;
-                            if (window.sonUyariTarihi !== bugunStr) {
-                                window.ezanUyariAc(`Sonraki vakte ${fark} dakika veya daha az kaldı. Hazırlık yapabilirsiniz.`);
-                                window.sonUyariTarihi = bugunStr;
-                            }
-                        }
-                        break; 
-                    } 
-                }
+                for (let v of ['Fajr', 'Sunrise', 'Dhuhr', 'Asr', 'Maghrib', 'Isha']) { const vakitDakika = (parseInt(window.namazVakitleri[v].split(':')[0]) * 60) + parseInt(window.namazVakitleri[v].split(':')[1]); if (vakitDakika > simdiDakika) { const fark = vakitDakika - simdiDakika; document.getElementById('kalan-sure').innerText = `${Math.floor(fark / 60)}s ${fark % 60}d`; bulundu = true; break; } }
                 if(!bulundu) document.getElementById('kalan-sure').innerText = "Bekleniyor";
-                if(s.getSeconds() === 0) { 
-                    window.kerahatKontrol(); window.nafileNamazlariHesapla(); 
-                    if(s.getMinutes() === 0) window.vakitleriGetir(); 
+                if(s.getSeconds() === 0 || s.getSeconds() === 30) {
+                    let suAnkiVakitFarki = -1;
+                    for (let v of ['Fajr', 'Sunrise', 'Dhuhr', 'Asr', 'Maghrib', 'Isha']) { const vDakika = (parseInt(window.namazVakitleri[v].split(':')[0]) * 60) + parseInt(window.namazVakitleri[v].split(':')[1]); if (vDakika > simdiDakika) { suAnkiVakitFarki = vDakika - simdiDakika; break; } }
+                    if (uyariAyarlari.aktif && suAnkiVakitFarki >= 0 && suAnkiVakitFarki <= uyariAyarlari.dakika) {
+                        if (!alarmUyariVerildiMi) { window.ezanUyariAc(); alarmUyariVerildiMi = true; }
+                    } else { alarmUyariVerildiMi = false; }
                 }
+                if(s.getSeconds() === 0) { window.kerahatKontrol(); window.nafileNamazlariHesapla(); if(s.getMinutes() === 0) window.vakitleriGetir(); }
             }, 1000); 
         };
 
@@ -1410,18 +1471,36 @@
 
         window.raporlariListele = () => {
             const liste = document.getElementById('kayit-listesi'); liste.innerHTML = ""; 
-            let toplamZikirSayisi = 0; let zikirFrekans = {};
+            
+            let toplamZikirSayisi = 0;
+            let zikirFrekans = {};
+            
             if(kayitlar.length === 0) { 
-                document.getElementById('stat-toplam-zikir').innerText = "0"; document.getElementById('stat-kayit-sayisi').innerText = "0"; document.getElementById('stat-en-cok-okunan').innerText = "-";
-                liste.innerHTML = `<p class="text-center text-slate-400 py-8 font-medium">Kayıt bulunamadı.</p>`; return; 
+                document.getElementById('stat-toplam-zikir').innerText = "0";
+                document.getElementById('stat-kayit-sayisi').innerText = "0";
+                document.getElementById('stat-en-cok-okunan').innerText = "-";
+                liste.innerHTML = `<p class="text-center text-slate-400 py-8 font-medium">Kayıt bulunamadı.</p>`; 
+                return; 
             } 
+            
             kayitlar.forEach(k => { 
-                toplamZikirSayisi += parseInt(k.sayi) || 0; zikirFrekans[k.baslik] = (zikirFrekans[k.baslik] || 0) + (parseInt(k.sayi) || 0);
+                toplamZikirSayisi += parseInt(k.sayi) || 0;
+                zikirFrekans[k.baslik] = (zikirFrekans[k.baslik] || 0) + (parseInt(k.sayi) || 0);
                 liste.innerHTML += `<div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-100 flex justify-between items-center"><div><h4 class="font-bold text-slate-800 text-sm mb-1">${window.xssKoru(k.baslik)}</h4><p class="text-[10px] font-medium text-slate-400">${window.xssKoru(k.tarih)}</p></div><div class="bg-emerald-50 border border-emerald-100 text-emerald-700 font-bold px-3 py-1.5 rounded-xl text-sm">${k.sayi}</div></div>`; 
             });
-            let enCokOkunanZikir = "-", maxSayi = 0;
-            for(let baslik in zikirFrekans) { if(zikirFrekans[baslik] > maxSayi) { maxSayi = zikirFrekans[baslik]; enCokOkunanZikir = baslik; } }
-            document.getElementById('stat-toplam-zikir').innerText = toplamZikirSayisi.toLocaleString('tr-TR'); document.getElementById('stat-kayit-sayisi').innerText = kayitlar.length.toLocaleString('tr-TR'); document.getElementById('stat-en-cok-okunan').innerText = enCokOkunanZikir;
+
+            let enCokOkunanZikir = "-";
+            let maxSayi = 0;
+            for(let baslik in zikirFrekans) {
+                if(zikirFrekans[baslik] > maxSayi) {
+                    maxSayi = zikirFrekans[baslik];
+                    enCokOkunanZikir = baslik;
+                }
+            }
+
+            document.getElementById('stat-toplam-zikir').innerText = toplamZikirSayisi.toLocaleString('tr-TR');
+            document.getElementById('stat-kayit-sayisi').innerText = kayitlar.length.toLocaleString('tr-TR');
+            document.getElementById('stat-en-cok-okunan').innerText = enCokOkunanZikir;
         };
 
         window.kayitlariTemizle = async () => { window.onayIste("Geçmişi Temizle", "Tüm kayıt geçmişiniz silinecek. Emin misiniz?", "⚠️", async () => { kayitlar = []; await idb.remove('kayitlar'); if (isCloudConnected && currentUser && window.fb) { const sn = await window.fb.getDocs(window.fb.collection(firestoreDb, 'artifacts', appId, 'users', currentUser.uid, 'kayitlar')); sn.forEach(d => window.fb.deleteDoc(d.ref)); } window.raporlariListele(); window.toastGoster("Geçmiş temizlendi", "info"); }); };
@@ -1430,7 +1509,13 @@
 
         let baslangicY = 0;
         document.addEventListener('touchstart', (e) => { baslangicY = e.touches[0].pageY; }, { passive: true });
-        document.addEventListener('touchmove', (e) => { const y = e.touches[0].pageY; const scrollAlani = document.getElementById('main-scroll'); if (scrollAlani && y > baslangicY && scrollAlani.scrollTop <= 0) { e.preventDefault(); } }, { passive: false });
+        document.addEventListener('touchmove', (e) => { 
+            // Modal içindeki overscroll-contain ayarlanmış nesneleri serbest bırak (Kilitlenmeyi engeller)
+            if (e.target.closest('.overscroll-contain')) return;
+            const y = e.touches[0].pageY; 
+            const scrollAlani = document.getElementById('main-scroll'); 
+            if (scrollAlani && y > baslangicY && scrollAlani.scrollTop <= 0) { e.preventDefault(); } 
+        }, { passive: false });
 
         const mainScrollEl = document.getElementById('main-scroll');
         if (mainScrollEl) {
