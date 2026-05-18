@@ -13,6 +13,7 @@
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='112' fill='%23064e3b'/%3E%3Cpath d='M256 128C189.7 128 176 224 176 224h160s-13.7-96-80-96zM152 224v128h208V224H152zM240 352v-48a16 16 0 0 1 32 0v48h-32zM384 160h-16v192h16V160zM144 160h-16v192h16V160zM144 160l-8-32l-8 32h16zM384 160l-8-32l-8 32h16zM112 352h288v32H112v-32z' fill='%23fbbf24'/%3E%3C/svg%3E">
     <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='112' fill='%23064e3b'/%3E%3Cpath d='M256 128C189.7 128 176 224 176 224h160s-13.7-96-80-96zM152 224v128h208V224H152zM240 352v-48a16 16 0 0 1 32 0v48h-32zM384 160h-16v192h16V160zM144 160h-16v192h16V160zM144 160l-8-32l-8 32h16zM384 160l-8-32l-8 32h16zM112 352h288v32H112v-32z' fill='%23fbbf24'/%3E%3C/svg%3E">
 
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -108,6 +109,7 @@
         </div>
     </div>
     
+    <!-- Yükleme Ekranı İçin Acil Durum Kalkanı -->
     <script>
         setTimeout(function() {
             var loader = document.getElementById('loading-screen');
@@ -129,20 +131,20 @@
                 <div class="text-center mb-2">
                     <div class="text-5xl mb-2 drop-shadow-sm">🕌</div>
                     <h2 class="font-black text-2xl text-emerald-800 tracking-tight">Dijital Hazine</h2>
-                    <p class="text-xs text-emerald-600 font-bold tracking-widest uppercase mt-1">Nihai Sürüm</p>
+                    <p class="text-xs text-emerald-600 font-bold tracking-widest uppercase mt-1">Premium</p>
                 </div>
                 <div class="bg-white p-4 rounded-2xl border border-slate-100 shadow-sm">
                     <h4 class="font-bold text-emerald-800 text-base mb-2 border-b border-slate-100 pb-2 flex items-center gap-2"><span>📌</span> Künye</h4>
                     <ul class="space-y-1 mt-2">
                         <li><strong>Geliştirici:</strong> Martenzit</li>
-                        <li><strong>Sürüm:</strong> 4.0.0 (PWA / Web App)</li>
+                        <li><strong>Sürüm:</strong> 4.0.0 (Nihai PWA)</li>
                         <li><strong>Altyapı:</strong> Google Firebase & IndexedDB</li>
                     </ul>
                 </div>
                 <div class="bg-white p-4 rounded-2xl border border-slate-100 shadow-sm">
                     <h4 class="font-bold text-emerald-800 text-base mb-2 border-b border-slate-100 pb-2 flex items-center gap-2"><span>🛡️</span> KVKK Aydınlatma Metni</h4>
                     <p class="mt-2 text-justify leading-relaxed">
-                        6698 sayılı Kişisel Verilerin Korunması Kanunu ("KVKK") uyarınca, "Dijital Hazine" uygulaması içerisindeki kişisel kullanım verileriniz kural olarak <strong>sadece kendi cihazınızın yerel hafızasında (çevrimdışı olarak)</strong> barındırılır. Cihaz dışına istemsiz hiçbir veri aktarımı yapılmaz.
+                        6698 sayılı Kişisel Verilerin Korunması Kanunu ("KVKK") uyarınca, "Dijital Hazine" uygulaması içerisindeki kişisel kullanım verileriniz (okuduğunuz dualar, zikir hedefleri ve kaza namazı bilgileriniz) kural olarak <strong>sadece kendi cihazınızın yerel hafızasında (çevrimdışı olarak)</strong> barındırılır. Cihaz dışına istemsiz hiçbir veri aktarımı yapılmaz.
                     </p>
                 </div>
                 <div class="bg-white p-4 rounded-2xl border border-slate-100 shadow-sm mb-4">
@@ -150,8 +152,9 @@
                     <p class="mt-2 mb-2">Uygulamamız mahremiyetinize en üst düzeyde önem verir:</p>
                     <ul class="list-disc pl-5 space-y-2 text-justify leading-relaxed">
                         <li><strong>Yerel Depolama:</strong> Verileriniz cihazınızda (IndexedDB) tutulur.</li>
-                        <li><strong>Bulut Senkronizasyonu (İsteğe Bağlı):</strong> Yalnızca kendi isteğinizle ayarlar bölümünden kayıt olursanız, verileriniz eşitleme amacıyla Google Firebase sunucularına şifreli aktarılır.</li>
-                        <li><strong>Konum Bilgisi:</strong> Pusula ve namaz vakti hesaplamaları için istenen anlık GPS konumu doğrudan cihazınızda işlenir, izlenmez veya kaydedilmez.</li>
+                        <li><strong>Bulut Senkronizasyonu (İsteğe Bağlı):</strong> Yalnızca kendi isteğinizle ayarlar bölümünden kayıt olursanız, verileriniz eşitleme amacıyla <strong>Google Firebase</strong> sunucularına şifreli olarak aktarılır. Şifreleriniz Google standartlarında korunur ve bizim tarafımızdan görülemez.</li>
+                        <li><strong>Üçüncü Partiler:</strong> Verileriniz hiçbir reklam, pazarlama veya üçüncü şahıs kurumuyla paylaşılmaz.</li>
+                        <li><strong>Konum Bilgisi:</strong> Pusula ve namaz vakti hesaplamaları için istenen anlık GPS konumu doğrudan cihazınızda işlenir, sunucularımızda izlenmez veya kaydedilmez.</li>
                     </ul>
                 </div>
             </div>
@@ -201,16 +204,19 @@
                 <div class="w-full flex-none mb-5 relative">
                     <h3 class="text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-2 ml-1 flex items-center gap-1"><span>✨</span> Günün Hazineleri <span class="text-[8px] opacity-70 normal-case ml-auto">👉 Kaydırın</span></h3>
                     <div class="flex overflow-x-auto snap-x snap-mandatory gap-3 pb-2 scrollbar-hide" id="gunun-icerikleri-container">
+                        <!-- Ayet -->
                         <div class="snap-center shrink-0 w-[85%] bg-gradient-to-br from-emerald-50 to-teal-50 border border-emerald-100 p-4 rounded-2xl shadow-sm relative overflow-hidden">
                             <div class="absolute -right-3 -top-3 text-5xl opacity-10">📖</div>
                             <div class="text-[10px] font-bold text-emerald-600 uppercase tracking-widest mb-1.5">Günün Ayeti</div>
                             <p class="text-[13px] text-slate-700 font-medium leading-relaxed italic" id="gunluk-ayet">Yükleniyor...</p>
                         </div>
+                        <!-- Hadis -->
                         <div class="snap-center shrink-0 w-[85%] bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-100 p-4 rounded-2xl shadow-sm relative overflow-hidden">
                             <div class="absolute -right-3 -top-3 text-5xl opacity-10">💬</div>
                             <div class="text-[10px] font-bold text-blue-600 uppercase tracking-widest mb-1.5">Günün Hadisi</div>
                             <p class="text-[13px] text-slate-700 font-medium leading-relaxed italic" id="gunluk-hadis">Yükleniyor...</p>
                         </div>
+                        <!-- Dua -->
                         <div class="snap-center shrink-0 w-[85%] bg-gradient-to-br from-amber-50 to-orange-50 border border-amber-100 p-4 rounded-2xl shadow-sm relative overflow-hidden">
                             <div class="absolute -right-3 -top-3 text-5xl opacity-10">🤲</div>
                             <div class="text-[10px] font-bold text-amber-600 uppercase tracking-widest mb-1.5">Günün Duası</div>
@@ -274,14 +280,14 @@
                     </div>
                 </div>
 
-                <!-- DİJİTAL SAYAÇ EKRANI (ZARİF KÜÇÜLTÜLMÜŞ SÜRÜM) -->
+                <!-- DİJİTAL SAYAÇ EKRANI -->
                 <div class="relative w-full flex justify-center mb-8 mt-2">
                     <div id="z-sayac" class="text-[3.5rem] leading-none font-black text-slate-800 w-full py-5 rounded-3xl bg-white border border-slate-100 shadow-[0_8px_30px_-10px_rgba(0,0,0,0.08),inset_0_-4px_10px_rgba(0,0,0,0.02)] text-center no-select transition-all duration-300 font-mono tracking-tighter z-10 relative overflow-hidden">
                         0
                     </div>
                 </div>
 
-                <!-- DEV 3D ZİKİR BUTONU (ZARİF KÜÇÜLTÜLMÜŞ SÜRÜM) -->
+                <!-- DEV 3D ZİKİR BUTONU -->
                 <div class="flex-1 w-full flex items-center justify-center mb-6 mt-auto">
                     <button onclick="window.zikirArtir()" class="relative w-36 h-36 rounded-full bg-gradient-to-b from-emerald-400 to-emerald-700 btn-3d flex items-center justify-center group outline-none no-select touch-manipulation">
                         <div class="absolute inset-[-10px] rounded-full border-2 border-emerald-500/20 group-active:scale-95 transition-transform"></div>
@@ -900,7 +906,6 @@
         let kazaDurumu = { sabah: 0, ogle: 0, ikindi: 0, aksam: 0, yatsi: 0, vitir: 0 };
         let kazaMaksimum = { sabah: 0, ogle: 0, ikindi: 0, aksam: 0, yatsi: 0, vitir: 0 };
         
-        // EKSİK OLAN KONUM VERİTABANI
         const konumVerisi = {
             "Turkey": ["Adana", "Adiyaman", "Afyonkarahisar", "Ağrı", "Amasya", "Ankara", "Antalya", "Artvin", "Aydın", "Balıkesir", "Bilecik", "Bingöl", "Bitlis", "Bolu", "Burdur", "Bursa", "Çanakkale", "Çankırı", "Çorum", "Denizli", "Diyarbakır", "Edirne", "Elazığ", "Erzincan", "Erzurum", "Eskişehir", "Gaziantep", "Giresun", "Gümüşhane", "Hakkari", "Hatay", "Isparta", "Mersin", "Istanbul", "Izmir", "Kars", "Kastamonu", "Kayseri", "Kırklareli", "Kırşehir", "Kocaeli", "Konya", "Kütahya", "Malatya", "Manisa", "Kahramanmaraş", "Mardin", "Muğla", "Muş", "Nevşehir", "Niğde", "Ordu", "Rize", "Sakarya", "Samsun", "Siirt", "Sinop", "Sivas", "Tekirdağ", "Tokat", "Trabzon", "Tunceli", "Şanlıurfa", "Uşak", "Van", "Yozgat", "Zonguldak", "Aksaray", "Bayburt", "Karaman", "Kırıkkale", "Batman", "Şırnak", "Bartın", "Ardahan", "Iğdır", "Yalova", "Karabük", "Kilis", "Osmaniye", "Düzce"],
             "Germany": ["Berlin", "Munich", "Frankfurt", "Hamburg", "Cologne", "Stuttgart", "Düsseldorf", "Dortmund", "Essen", "Bremen", "Hanover", "Nuremberg"],
@@ -1009,7 +1014,7 @@
                             freeSayac = s.freeSayac || 0; freeHedef = s.freeHedef || 0; 
                             ulke = s.ulke || "Turkey"; sehir = s.sehir || "Ankara"; 
                             kazaDurumu = s.kazaDurumu || kazaDurumu; 
-                            kazaMaksimum = s.kazaMaksimum || kazaMaksimum;
+                            kazaMaksimum = s.kazaMaksimum || s.kazaDurumu || kazaMaksimum;
                         }
                     } else { aktifZikirId = dbData[0].id; }
                 } catch(e) { aktifZikirId = dbData[0].id; }
@@ -1079,7 +1084,7 @@
             if(!window.fb) return;
             try {
                 const stateDoc = await window.fb.getDoc(window.fb.doc(firestoreDb, 'artifacts', appId, 'users', currentUser.uid, 'state', 'current'));
-                if (stateDoc.exists()) { const data = stateDoc.data(); sayac = data.sayac || sayac; aktifZikirId = data.aktifZikirId || aktifZikirId; zikirMode = data.zikirMode || zikirMode; freeSayac = data.freeSayac || freeSayac; freeHedef = data.freeHedef || freeHedef; ulke = data.ulke || ulke; sehir = data.sehir || sehir; kazaDurumu = data.kazaDurumu || kazaDurumu; kazaMaksimum = data.kazaMaksimum || kazaMaksimum; }
+                if (stateDoc.exists()) { const data = stateDoc.data(); sayac = data.sayac || sayac; aktifZikirId = data.aktifZikirId || aktifZikirId; zikirMode = data.zikirMode || zikirMode; freeSayac = data.freeSayac || freeSayac; freeHedef = data.freeHedef || freeHedef; ulke = data.ulke || ulke; sehir = data.sehir || sehir; kazaDurumu = data.kazaDurumu || kazaDurumu; kazaMaksimum = data.kazaMaksimum || data.kazaDurumu || kazaMaksimum; }
                 if(freeHedef > 0) document.getElementById('input-serbest-hedef').value = freeHedef;
                 
                 const duaCol = await window.fb.getDocs(window.fb.collection(firestoreDb, 'artifacts', appId, 'users', currentUser.uid, 'dualar'));
@@ -1251,10 +1256,14 @@
                 listeDiv.innerHTML += `<div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-100 flex items-center justify-between relative overflow-hidden"><div class="absolute left-0 top-0 bottom-0 w-1 bg-slate-200"></div><div class="pl-2"><h4 class="font-extrabold text-slate-700 text-[15px]">${v.ad}</h4><div class="text-xs text-slate-400 mt-0.5 font-medium">Kalan: <span class="text-red-500 font-black text-lg mx-1">${val}</span> | Kılınan: <span class="text-emerald-600 font-black ml-1">${kilinan}</span></div></div><div class="flex gap-2"><button onclick="window.kazaDegistir('${v.id}', 1)" ${disArti} class="w-10 h-10 flex items-center justify-center rounded-xl font-black text-xl transition ${btnArtiCls}">+</button><button onclick="window.kazaDegistir('${v.id}', -1)" ${disEksi} class="w-12 h-12 flex items-center justify-center rounded-xl font-black text-2xl transition ${btnEksiCls}">-</button></div></div>`;
             });
             
-            document.getElementById('kaza-ozet-gun').innerText = `${toplamGun} Gün`;
-            const yil = Math.floor(toplamGun / 365);
-            const ay = Math.floor((toplamGun % 365) / 30);
-            document.getElementById('kaza-ozet-yil').innerText = `${yil} Yıl, ${ay} Ay Kaza Borcu`;
+            const gunEl = document.getElementById('kaza-ozet-gun');
+            const yilEl = document.getElementById('kaza-ozet-yil');
+            if(gunEl) gunEl.innerText = `${toplamGun} Gün`;
+            if(yilEl) {
+                const yil = Math.floor(toplamGun / 365);
+                const ay = Math.floor((toplamGun % 365) / 30);
+                yilEl.innerText = `${yil} Yıl, ${ay} Ay Kaza Borcu`;
+            }
         };
         
         window.kazaDegistir = (vakitId, artis) => { 
@@ -1270,14 +1279,28 @@
             if (artis < 0) window.toastGoster("Allah kabul etsin.", "success"); 
         };
         
-        window.kazaTopluAyarModalAc = () => { const div = document.getElementById('kaza-ayar-inputs'); div.innerHTML = ""; kazaVakitBilgileri.forEach(v => { const val = kazaMaksimum[v.id] || kazaDurumu[v.id] || 0; div.innerHTML += `<div class="flex justify-between items-center border-b border-slate-100 pb-3 mb-2"><label class="text-sm font-bold text-slate-600 w-1/2">${v.ad}</label><input type="number" id="input-kaza-${v.id}" value="${val}" min="0" class="w-1/2 p-2 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-emerald-500 outline-none text-center font-bold text-emerald-800"></div>`; }); document.getElementById('kaza-hesap-sonuc').classList.add('hidden'); document.getElementById('hizli-yil-input').value = ""; document.getElementById('modal-kaza-ayar').classList.remove('hidden'); };
+        window.kazaTopluAyarModalAc = () => { 
+            const div = document.getElementById('kaza-ayar-inputs'); 
+            div.innerHTML = ""; 
+            kazaVakitBilgileri.forEach(v => { 
+                const val = kazaMaksimum[v.id] || kazaDurumu[v.id] || 0; 
+                div.innerHTML += `<div class="flex justify-between items-center border-b border-slate-100 pb-3 mb-2"><label class="text-sm font-bold text-slate-600 w-1/2">${v.ad}</label><input type="number" id="input-kaza-${v.id}" value="${val}" min="0" class="w-1/2 p-2 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-emerald-500 outline-none text-center font-bold text-emerald-800"></div>`; 
+            }); 
+            document.getElementById('kaza-hesap-sonuc').classList.add('hidden'); 
+            document.getElementById('hizli-yil-input').value = ""; 
+            document.getElementById('modal-kaza-ayar').classList.remove('hidden'); 
+        };
+        
         window.kazaTopluAyarModalKapat = () => { document.getElementById('modal-kaza-ayar').classList.add('hidden'); };
         
         window.hizliYilEkle = () => {
             const yil = parseInt(document.getElementById('hizli-yil-input').value) || 0;
             if(yil <= 0) return window.toastGoster("Lütfen geçerli bir yıl girin.", "error");
             const eklenecekGun = yil * 365;
-            kazaVakitBilgileri.forEach(v => { kazaDurumu[v.id] = (kazaDurumu[v.id] || 0) + eklenecekGun; kazaMaksimum[v.id] = (kazaMaksimum[v.id] || 0) + eklenecekGun; });
+            kazaVakitBilgileri.forEach(v => { 
+                kazaDurumu[v.id] = (kazaDurumu[v.id] || 0) + eklenecekGun; 
+                kazaMaksimum[v.id] = (kazaMaksimum[v.id] || 0) + eklenecekGun; 
+            });
             saveLocalState(); syncToCloud(); window.kazaEkraniGuncelle(); window.kazaTopluAyarModalKapat();
             window.toastGoster(`${yil} yıllık kaza borca eklendi!`, "success");
         };
@@ -1296,22 +1319,43 @@
             if (cinsiyet === 'kadin') { eklenecekGun -= (yilFark * 12 * ozelGun); }
             if (eklenecekGun < 0) eklenecekGun = 0;
 
-            kazaVakitBilgileri.forEach(v => { kazaDurumu[v.id] = (kazaDurumu[v.id] || 0) + eklenecekGun; kazaMaksimum[v.id] = (kazaMaksimum[v.id] || 0) + eklenecekGun; });
+            kazaVakitBilgileri.forEach(v => { 
+                kazaDurumu[v.id] = (kazaDurumu[v.id] || 0) + eklenecekGun; 
+                kazaMaksimum[v.id] = (kazaMaksimum[v.id] || 0) + eklenecekGun; 
+            });
             
             saveLocalState(); syncToCloud(); window.kazaEkraniGuncelle();
-            if(elSonuc) { elSonuc.classList.remove('hidden'); elSonuc.innerHTML = `Hesaplandı:<br><span class="text-lg block my-1">${yilFark} Yıllık</span> Toplam <b>${eklenecekGun} Gün</b> borca eklendi.`; }
+            
+            if(elSonuc) { 
+                elSonuc.classList.remove('hidden'); 
+                elSonuc.innerHTML = `Hesaplandı:<br><span class="text-lg block my-1">${yilFark} Yıllık</span> Toplam <b>${eklenecekGun} Gün</b> borca eklendi.`; 
+            }
             window.toastGoster(`Hesaplandı: ${yilFark} yıl (${eklenecekGun} gün eklendi).`, "success");
+            
+            setTimeout(() => {
+                window.kazaTopluAyarModalKapat();
+            }, 1800);
         };
 
         window.cinsiyetDegisti = (val) => { const ozelGunDiv = document.getElementById('kaza-ozel-gun-kapsayici'); if(val === 'kadin') { ozelGunDiv.classList.remove('hidden'); } else { ozelGunDiv.classList.add('hidden'); } };
         
-        window.kazaTopluKaydet = () => { kazaVakitBilgileri.forEach(v => { const el = document.getElementById(`input-kaza-${v.id}`); if(el) { const deger = parseInt(el.value) || 0; kazaDurumu[v.id] = deger; kazaMaksimum[v.id] = deger; } }); saveLocalState(); syncToCloud(); window.kazaEkraniGuncelle(); window.kazaTopluAyarModalKapat(); window.toastGoster("Güncellendi.", "success"); };
+        window.kazaTopluKaydet = () => { 
+            kazaVakitBilgileri.forEach(v => { 
+                const el = document.getElementById(`input-kaza-${v.id}`); 
+                if(el) { 
+                    const deger = parseInt(el.value) || 0; 
+                    kazaDurumu[v.id] = deger; 
+                    kazaMaksimum[v.id] = deger; 
+                } 
+            }); 
+            saveLocalState(); syncToCloud(); window.kazaEkraniGuncelle(); window.kazaTopluAyarModalKapat(); window.toastGoster("Güncellendi.", "success"); 
+        };
         
         window.kazaTamamenSifirla = () => { window.onayIste("Kazaları Sıfırla", "Tüm kaza borçlarınız ve kılınanlar sıfırlanacak. Emin misiniz?", "⚠️", () => { kazaVakitBilgileri.forEach(v => { kazaDurumu[v.id] = 0; kazaMaksimum[v.id] = 0; }); saveLocalState(); syncToCloud(); window.kazaEkraniGuncelle(); document.getElementById('modal-kaza-ayar').classList.add('hidden'); window.toastGoster("Tüm kazalar sıfırlandı.", "info"); }); };
 
         window.yedekModalAc = () => { document.getElementById('modal-yedek').classList.remove('hidden'); }; window.yedekModalKapat = () => { document.getElementById('modal-yedek').classList.add('hidden'); };
         window.yedekIndir = () => { const dataObj = { dbData, kayitlar, state: { sayac, aktifZikirId, zikirMode, freeSayac, freeHedef, ulke, sehir, kazaDurumu, kazaMaksimum } }; const blob = new Blob([JSON.stringify(dataObj, null, 2)], { type: 'application/json' }); const link = document.createElement("a"); link.href = URL.createObjectURL(blob); link.download = "Dijital_Hazine_Yedek.json"; link.click(); window.toastGoster("Yedek indirildi.", "success"); window.yedekModalKapat(); };
-        window.dosyadanYedekOku = (event) => { const file = event.target.files[0]; if(!file) return; const reader = new FileReader(); reader.onload = async (e) => { try { const data = JSON.parse(e.target.result); if(data.dbData) { dbData = data.dbData; kayitlar = data.kayitlar || []; if(data.state) { sayac = data.state.sayac || 0; aktifZikirId = data.state.aktifZikirId || dbData[0].id; zikirMode = data.state.zikirMode || 'kutuphane'; freeSayac = data.state.freeSayac || 0; freeHedef = data.state.freeHedef || 0; ulke = data.state.ulke || "Turkey"; sehir = data.state.sehir || "Ankara"; kazaDurumu = data.state.kazaDurumu || kazaDurumu; kazaMaksimum = data.state.kazaMaksimum || kazaMaksimum; } if(freeHedef > 0) document.getElementById('input-serbest-hedef').value = freeHedef; await idb.set('dbData', JSON.stringify(dbData)); await idb.set('kayitlar', JSON.stringify(kayitlar)); await saveLocalState(); window.syncAllToCloud(); window.zikirSeciciDoldur(); window.zikirModDegistir(zikirMode, false); window.kutuphaneListele(); window.kazaEkraniGuncelle(); window.raporlariListele(); window.konumMetinleriniGuncelle(); window.toastGoster("Yedek yüklendi!", "success"); window.yedekModalKapat(); } } catch(err) { window.toastGoster("Bozuk yedek.", "error"); } }; reader.readAsText(file); };
+        window.dosyadanYedekOku = (event) => { const file = event.target.files[0]; if(!file) return; const reader = new FileReader(); reader.onload = async (e) => { try { const data = JSON.parse(e.target.result); if(data.dbData) { dbData = data.dbData; kayitlar = data.kayitlar || []; if(data.state) { sayac = data.state.sayac || 0; aktifZikirId = data.state.aktifZikirId || dbData[0].id; zikirMode = data.state.zikirMode || 'kutuphane'; freeSayac = data.state.freeSayac || 0; freeHedef = data.state.freeHedef || 0; ulke = data.state.ulke || "Turkey"; sehir = data.state.sehir || "Ankara"; kazaDurumu = data.state.kazaDurumu || kazaDurumu; kazaMaksimum = data.state.kazaMaksimum || data.state.kazaDurumu || kazaMaksimum; } if(freeHedef > 0) document.getElementById('input-serbest-hedef').value = freeHedef; await idb.set('dbData', JSON.stringify(dbData)); await idb.set('kayitlar', JSON.stringify(kayitlar)); await saveLocalState(); window.syncAllToCloud(); window.zikirSeciciDoldur(); window.zikirModDegistir(zikirMode, false); window.kutuphaneListele(); window.kazaEkraniGuncelle(); window.raporlariListele(); window.konumMetinleriniGuncelle(); window.toastGoster("Yedek yüklendi!", "success"); window.yedekModalKapat(); } } catch(err) { window.toastGoster("Bozuk yedek.", "error"); } }; reader.readAsText(file); };
 
         window.infoModalAc = () => { document.getElementById('modal-info').classList.remove('hidden'); }; window.infoModalKapat = () => { window.localStorage.setItem('hazine_policy_accepted', 'true'); document.getElementById('modal-info').classList.add('hidden'); };
         
