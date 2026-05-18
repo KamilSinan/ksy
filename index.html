@@ -127,7 +127,7 @@
                 <h3 class="font-extrabold text-lg flex items-center gap-2"><span>📜</span> Uygulama Hakkında</h3>
                 <button onclick="window.infoModalKapat()" class="w-8 h-8 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center text-xl font-bold transition">&times;</button>
             </div>
-            <div class="p-6 overflow-y-auto flex-1 text-slate-600 text-sm space-y-6 bg-slate-50">
+            <div class="p-6 overflow-y-auto overflow-x-hidden flex-1 text-slate-600 text-sm space-y-6 bg-slate-50">
                 <div class="text-center mb-2">
                     <div class="text-5xl mb-2 drop-shadow-sm">🕌</div>
                     <h2 class="font-black text-2xl text-emerald-800 tracking-tight">Dijital Hazine</h2>
@@ -195,7 +195,7 @@
         </div>
 
         <!-- İÇERİK ALANLARI -->
-        <div class="flex-1 overflow-y-auto relative scroll-smooth pb-6" id="main-scroll">
+        <div class="flex-1 overflow-y-auto overflow-x-hidden relative scroll-smooth pb-6" id="main-scroll">
 
             <!-- 1. ZİKİRMATİK EKRANI -->
             <div id="view-zikirmatik" class="tab-content active flex-col items-center justify-start px-5 pt-5 pb-28 min-h-full">
@@ -504,7 +504,7 @@
                     <h3 id="modal-baslik" class="font-extrabold text-lg text-slate-800">Yeni İçerik Ekle</h3>
                     <button onclick="window.modalKapat()" class="w-8 h-8 bg-white border border-slate-200 rounded-full text-slate-500 flex items-center justify-center font-bold hover:bg-slate-100">&times;</button>
                 </div>
-                <div class="p-5 overflow-y-auto flex-1">
+                <div class="p-5 overflow-y-auto overflow-x-hidden flex-1">
                     <form id="crud-form" onsubmit="window.kaydiKaydet(event)" class="flex flex-col gap-4">
                         <input type="hidden" id="crud-id">
                         <div><label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">Kategori</label><input type="text" id="crud-kategori" required placeholder="Örn: Sabah Duaları" class="w-full p-3.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:bg-white outline-none transition-all text-sm font-medium"></div>
@@ -592,7 +592,7 @@
                         <button onclick="window.diniGunlerModalKapat()" class="text-white text-2xl leading-none">&times;</button>
                     </div>
                 </div>
-                <div class="p-0 overflow-y-auto bg-slate-50">
+                <div class="p-0 overflow-y-auto overflow-x-hidden bg-slate-50">
                     <ul id="dini-gunler-listesi" class="text-sm text-slate-700 divide-y divide-slate-100"></ul>
                 </div>
             </div>
@@ -629,7 +629,7 @@
                     </div>
                     <button onclick="document.getElementById('modal-hicribilgi').classList.add('hidden')" class="w-8 h-8 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center text-xl font-bold transition">&times;</button>
                 </div>
-                <div class="p-6 overflow-y-auto bg-slate-50 flex-1">
+                <div class="p-6 overflow-y-auto overflow-x-hidden bg-slate-50 flex-1">
                     <p id="hicri-modal-aciklama" class="text-sm text-slate-600 mb-6 leading-relaxed bg-white p-4 rounded-xl border border-slate-200 shadow-sm"></p>
                     
                     <div class="mb-5">
@@ -655,7 +655,7 @@
                     </div>
                     <button onclick="window.asriSerifModalKapat()" class="w-8 h-8 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center text-xl font-bold transition">&times;</button>
                 </div>
-                <div class="p-6 overflow-y-auto bg-slate-50 flex-1">
+                <div class="p-6 overflow-y-auto overflow-x-hidden bg-slate-50 flex-1">
                     <p id="asr-arapca" class="font-arabic text-[1.8rem] text-slate-900 mb-8 leading-[3.5rem] text-right drop-shadow-sm" dir="rtl"></p>
                     <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
                         <h4 class="font-bold text-emerald-800 text-sm mb-3 flex items-center gap-2 border-b border-slate-100 pb-2"><span>🗣️</span> Okunuşu</h4>
@@ -672,14 +672,14 @@
                     <h3 class="font-extrabold text-lg text-slate-800">Kazaları Ayarla</h3>
                     <button onclick="window.kazaTopluAyarModalKapat()" class="w-8 h-8 bg-white border border-slate-200 rounded-full text-slate-500 font-bold">&times;</button>
                 </div>
-                <div class="p-6 overflow-y-auto">
+                <div class="p-6 overflow-y-auto overflow-x-hidden">
                     
                     <!-- HIZLI YIL EKLEME -->
                     <div class="mb-5 bg-blue-50 p-4 rounded-xl border border-blue-100">
                         <h4 class="text-xs font-bold text-blue-800 uppercase mb-3 text-center border-b border-blue-200 pb-2">Hızlı Yıl Ekleme</h4>
-                        <div class="flex items-center gap-2">
-                            <input type="number" id="hizli-yil-input" placeholder="Kaç yıllık kaza?" min="1" class="flex-1 p-2 bg-white border border-blue-200 rounded-lg text-center font-bold outline-none focus:ring-2 focus:ring-blue-500 text-slate-700">
-                            <button onclick="window.hizliYilEkle()" class="bg-blue-600 text-white font-bold px-4 py-2 rounded-lg text-xs hover:bg-blue-700 active:scale-95 transition-transform">Ekle ve Kaydet</button>
+                        <div class="flex flex-col gap-2">
+                            <input type="number" id="hizli-yil-input" placeholder="Kaç yıllık kaza eklenecek?" min="1" class="w-full p-3 bg-white border border-blue-200 rounded-lg text-center font-bold outline-none focus:ring-2 focus:ring-blue-500 text-slate-700">
+                            <button onclick="window.hizliYilEkle()" class="w-full bg-blue-600 text-white font-bold px-4 py-3 rounded-lg text-sm hover:bg-blue-700 active:scale-95 transition-transform shadow-sm">Ekle ve Kaydet</button>
                         </div>
                     </div>
 
@@ -687,31 +687,32 @@
                     <div class="mb-5 bg-emerald-50 p-4 rounded-xl border border-emerald-100">
                         <h4 class="text-xs font-bold text-emerald-800 uppercase mb-3 text-center border-b border-emerald-200 pb-2">Akıllı Kaza Hesaplayıcı</h4>
                         <div class="flex flex-col gap-3">
-                            <div class="flex items-center justify-between">
-                                <label class="text-xs font-bold text-emerald-700 w-1/2">Cinsiyetiniz:</label>
-                                <select id="kaza-cinsiyet" onchange="window.cinsiyetDegisti(this.value)" class="w-1/2 p-2 bg-white border border-emerald-200 rounded-lg font-bold text-sm outline-none focus:ring-2 focus:ring-emerald-500 text-slate-700">
+                            <div>
+                                <label class="text-xs font-bold text-emerald-700 block mb-1">Cinsiyetiniz:</label>
+                                <select id="kaza-cinsiyet" onchange="window.cinsiyetDegisti(this.value)" class="w-full p-2.5 bg-white border border-emerald-200 rounded-lg font-bold text-sm outline-none focus:ring-2 focus:ring-emerald-500 text-slate-700">
                                     <option value="erkek">Erkek</option>
                                     <option value="kadin">Kadın</option>
                                 </select>
                             </div>
                             
-                            <div class="flex items-center justify-between">
-                                <label class="text-xs font-bold text-emerald-700 w-1/2">Ergenliğe Giriş Yaşınız:</label>
-                                <input type="number" id="kaza-ergenlik-yas" min="9" max="20" placeholder="Örn: 13" class="w-1/2 p-2 bg-white border border-emerald-200 rounded-lg text-center font-bold outline-none focus:ring-2 focus:ring-emerald-500 text-slate-700">
+                            <div>
+                                <label class="text-xs font-bold text-emerald-700 block mb-1">Ergenliğe Giriş Yaşınız:</label>
+                                <input type="number" id="kaza-ergenlik-yas" min="9" max="20" placeholder="Örn: 13" class="w-full p-2.5 bg-white border border-emerald-200 rounded-lg text-center font-bold outline-none focus:ring-2 focus:ring-emerald-500 text-slate-700">
                             </div>
 
-                            <div class="flex items-center justify-between">
-                                <label class="text-xs font-bold text-emerald-700 w-1/2">Namaza Başlama Yaşınız:</label>
-                                <input type="number" id="kaza-baslama-yas" min="9" max="100" placeholder="Örn: 25" class="w-1/2 p-2 bg-white border border-emerald-200 rounded-lg text-center font-bold outline-none focus:ring-2 focus:ring-emerald-500 text-slate-700">
+                            <div>
+                                <label class="text-xs font-bold text-emerald-700 block mb-1">Namaza Başlama Yaşınız:</label>
+                                <input type="number" id="kaza-baslama-yas" min="9" max="100" placeholder="Örn: 25" class="w-full p-2.5 bg-white border border-emerald-200 rounded-lg text-center font-bold outline-none focus:ring-2 focus:ring-emerald-500 text-slate-700">
                             </div>
 
-                            <div id="kaza-ozel-gun-kapsayici" class="flex items-center justify-between hidden">
-                                <label class="text-xs font-bold text-emerald-700 w-1/2 leading-tight">Aylık Özel Gün Sayısı (Ortalama):</label>
-                                <input type="number" id="kaza-ozel-gun" min="0" max="15" value="6" class="w-1/2 p-2 bg-white border border-emerald-200 rounded-lg text-center font-bold outline-none focus:ring-2 focus:ring-emerald-500 text-slate-700">
+                            <div id="kaza-ozel-gun-kapsayici" class="hidden">
+                                <label class="text-xs font-bold text-emerald-700 block mb-1">Aylık Özel Gün Sayısı (Ortalama):</label>
+                                <input type="number" id="kaza-ozel-gun" min="0" max="15" value="6" class="w-full p-2.5 bg-white border border-emerald-200 rounded-lg text-center font-bold outline-none focus:ring-2 focus:ring-emerald-500 text-slate-700">
                             </div>
 
-                            <div id="kaza-hesap-sonuc" class="text-emerald-700 font-medium text-center text-sm mt-3 hidden bg-emerald-100 p-3 rounded-xl border border-emerald-200 shadow-inner"></div>
-                            <button onclick="window.kazaDetayliHesapla()" class="w-full mt-2 bg-emerald-600 text-white text-xs font-bold py-3 rounded-lg active:scale-95 transition-transform shadow-sm">Hesapla ve Borca Ekle</button>
+                            <div id="kaza-hesap-sonuc" class="text-emerald-700 font-medium text-center text-sm mt-1 hidden bg-emerald-100 p-3 rounded-xl border border-emerald-200 shadow-inner"></div>
+                            
+                            <button onclick="window.kazaDetayliHesapla()" class="w-full mt-1 bg-emerald-600 text-white text-sm font-bold py-3.5 rounded-lg active:scale-95 transition-transform shadow-sm">Hesapla ve Borca Ekle</button>
                         </div>
                     </div>
 
@@ -735,7 +736,7 @@
                     <h3 class="font-bold text-lg">Ayarlar & Yedekleme</h3>
                     <button onclick="window.yedekModalKapat()" class="text-white text-2xl leading-none">&times;</button>
                 </div>
-                <div class="p-6 text-center overflow-y-auto bg-slate-50">
+                <div class="p-6 text-center overflow-y-auto overflow-x-hidden bg-slate-50">
                     <button onclick="window.yedekIndir()" class="w-full bg-emerald-600 text-white font-bold py-3.5 rounded-xl shadow-md mb-3 flex items-center justify-center gap-2"><span>⬇️</span> Dosyaya İndir</button>
                     <div class="relative">
                         <input type="file" id="yedek-dosya-secici" accept=".json" class="hidden" onchange="window.dosyadanYedekOku(event)">
@@ -1592,7 +1593,21 @@
 
         let baslangicY = 0;
         document.addEventListener('touchstart', (e) => { baslangicY = e.touches[0].pageY; }, { passive: true });
-        document.addEventListener('touchmove', (e) => { const y = e.touches[0].pageY; const scrollAlani = document.getElementById('main-scroll'); if (scrollAlani && y > baslangicY && scrollAlani.scrollTop <= 0) { e.preventDefault(); } }, { passive: false });
+        
+        // Düzeltilmiş Scroll Engelleme Mantığı (Touchmove)
+        document.addEventListener('touchmove', (e) => { 
+            const y = e.touches[0].pageY; 
+            
+            // Eğer Modal gibi scroll edilebilir (overflow-y-auto) bir alanın içindeysek engellemeyi durdur.
+            const isModalScroll = e.target.closest('.overflow-y-auto');
+            if (isModalScroll && isModalScroll.id !== 'main-scroll') return; 
+
+            // Sadece ana arka plan aşağı çekildiğinde (pull-to-refresh) engelle
+            const scrollAlani = document.getElementById('main-scroll'); 
+            if (scrollAlani && y > baslangicY && scrollAlani.scrollTop <= 0) { 
+                e.preventDefault(); 
+            } 
+        }, { passive: false });
 
         const mainScrollEl = document.getElementById('main-scroll');
         if (mainScrollEl) {
