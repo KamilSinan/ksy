@@ -939,6 +939,7 @@
             { ayet: "Bilin ki, kalpler ancak Allah'ı anmakla huzur bulur. (Ra'd, 28)", hadis: "İnsanlara merhamet etmeyene Allah merhamet etmez. (Buhârî)", dua: "Allah'ım! Senin sevgini ve seni sevenlerin sevgisini senden dilerim." }
         ];
 
+        // DETAYLANDIRILMIŞ HİCRİ AYLAR VE TAVSİYELER
         const hicriAylarBilgisi = [
             { ad: "Muharrem", aciklama: "Haram aylardandır. İlahi bereketin coştuğu aydır. Aşure günü (10. gün) bu aydadır.", ibadetler: ["Aşure orucu (9-10 veya 10-11. gün)", "Bolca tövbe istiğfar", "Kerbela şehitlerini anma, sadaka verme"], dualar: ["Lâ ilâhe illallah (Mümkün mertebe çok)", "Hasbünallahu ve ni'mel vekîl (Allah bize yeter)", "Sübhanallahi mil'el mîzân ve müntehel ılmi ve mebleğar-rızâ ve zinetel-arş"] },
             { ad: "Safer", aciklama: "Hicri takvimin ikinci ayıdır. Bela ve musibetlerden Allah'a sığınılır.", ibadetler: ["Kaza namazları kılmak", "Bol bol sadaka vermek", "Nafile namazlarla Allah'a sığınmak"], dualar: ["Estağfirullah el-azîm", "Ayetel Kürsi, Felak ve Nas sureleri okumak", "Allahümme salli alâ seyyidinâ Muhammed"] },
@@ -1426,9 +1427,9 @@
                     } catch(e) { window.toastGoster("Harita servisine ulaşılamadı.", "error"); }
                     finally { btn.innerText = eskiMetin; btn.disabled = false; }
                 }, (err) => {
-                    window.toastGoster("Lütfen cihazınızdan Konum (GPS) servisini açın.", "error");
+                    window.toastGoster("GPS sinyali zayıf veya konum kapalı.", "error");
                     btn.innerText = eskiMetin; btn.disabled = false;
-                }, { timeout: 10000 });
+                }, { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 });
             } catch(e) { window.toastGoster("Tarayıcınız konum desteklemiyor.", "error"); btn.innerText = eskiMetin; btn.disabled = false; } 
         };
         
