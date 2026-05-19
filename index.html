@@ -1492,27 +1492,50 @@
         };
 
         window.sonrakiVaktiHesapla = () => {
-            if(!window.namazVakitleri) return; if(window.vakitTimer) clearInterval(window.vakitTimer);
+            if(!window.namazVakitleri) return; 
+            if(window.vakitTimer) clearInterval(window.vakitTimer);
+            
             window.vakitTimer = setInterval(() => {
-                const s = new Date(); const simdiDakika = (s.getHours() * 60) + s.getMinutes(); let bulundu = false;
+                const s = new Date(); 
+                const simdiDakika = (s.getHours() * 60) + s.getMinutes(); 
+                let bulundu = false;
                 const vakitİsimleri = { Fajr: 'İmsak', Sunrise: 'Güneş', Dhuhr: 'Öğle', Asr: 'İkindi', Maghrib: 'Akşam', Isha: 'Yatsı' };
                 
                 for (let v of ['Fajr', 'Sunrise', 'Dhuhr', 'Asr', 'Maghrib', 'Isha']) { 
                     const vakitDakika = (parseInt(window.namazVakitleri[v].split(':')[0]) * 60) + parseInt(window.namazVakitleri[v].split(':')[1]); 
+                    
                     if (vakitDakika > simdiDakika) { 
-                        const fark = vakitDakika - simdiDakika; 
-                        document.getElementById('kalan-sure').innerText = `${Math.floor(fark / 60)}s ${fark % 60}d`; 
+                        const toplamFark = vakitDakika - simdiDakika; 
+                        const kalanSaat = Math.floor(toplamFark / 60);
+                        const kalanDakika = toplamFark % 60;
+                        
+                        document.getElementById('kalan-sure').innerText = `${kalanSaat}s ${kalanDakika}d`; 
                         bulundu = true; 
                         
-                        if (uyariAyarlari.aktif && fark <= uyariAyarlari.dakika) {
-                            window.bildirimGonder("Namaz Vakti Yaklaştı!", `${vakitİsimleri[v]} vaktine ${fark} dakika kaldı. Hazırlık yapabilirsiniz.`, v);
+                        // Yeni Uyarı Mantığı
+                        let siradakiVakitIsmi = vakitİsimleri[v];
+                        
+                        if (kalanSaat === 0) {
+                            if (siradakiVakitIsmi === "Güneş" && kalanDakika <= 15) {
+                                window.bildirimGonder("DİKKAT", "Güneş doğmak üzere! Sabah namazını kılmak için son " + kalanDakika + " dakikanız.", v);
+                            } else if (siradakiVakitIsmi === "Öğle" && kalanDakika <= 45) {
+                                window.bildirimGonder("KERAHAT VAKTİ", "Öğle vaktine " + kalanDakika + " dakika kaldı. Bu sürede hiçbir namaz kılınması uygun değildir.", v);
+                            } else if (siradakiVakitIsmi === "Akşam" && kalanDakika <= 45) {
+                                window.bildirimGonder("KERAHAT VAKTİ", "Akşama " + kalanDakika + " dakika kaldı. Sadece bugünün İkindi farzı kılınabilir.", v);
+                            } else if (["İmsak", "İkindi", "Yatsı"].includes(siradakiVakitIsmi) && kalanDakika <= 15) {
+                                window.bildirimGonder("Namaz Vakti", siradakiVakitIsmi + " vaktine " + kalanDakika + " dakika kaldı. Namaza hazırlanın.", v);
+                            }
                         }
+                        
                         break; 
                     } 
                 }
+                
                 if(!bulundu) document.getElementById('kalan-sure').innerText = "Bekleniyor";
+                
                 if(s.getSeconds() === 0) { 
-                    window.kerahatKontrol(); window.nafileNamazlariHesapla(); 
+                    window.kerahatKontrol(); 
+                    window.nafileNamazlariHesapla(); 
                     if(s.getMinutes() === 0) window.vakitleriGetir(); 
                 }
             }, 1000); 
