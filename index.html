@@ -198,114 +198,132 @@
         <div class="flex-1 overflow-y-auto overflow-x-hidden relative scroll-smooth pb-6" id="main-scroll">
 
             <!-- 1. ZİKİRMATİK EKRANI -->
-            <div id="view-zikirmatik" class="tab-content active flex-col items-center justify-start px-5 pt-5 pb-28 min-h-full">
+            <div id="view-zikirmatik" class="tab-content active flex-col justify-start min-h-full">
                 
-                <!-- GÜNÜN İÇERİKLERİ KARTI -->
-                <div class="w-full flex-none mb-5 relative">
-                    <h3 class="text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-2 ml-1 flex items-center gap-1"><span>✨</span> Günün Hazineleri <span class="text-[8px] opacity-70 normal-case ml-auto">👉 Kaydırın</span></h3>
-                    <div class="flex overflow-x-auto snap-x snap-mandatory gap-3 pb-2 scrollbar-hide" id="gunun-icerikleri-container">
-                        <!-- Ayet -->
-                        <div class="snap-center shrink-0 w-[85%] bg-gradient-to-br from-emerald-50 to-teal-50 border border-emerald-100 p-4 rounded-2xl shadow-sm relative overflow-hidden">
-                            <div class="absolute -right-3 -top-3 text-5xl opacity-10">📖</div>
-                            <div class="text-[10px] font-bold text-emerald-600 uppercase tracking-widest mb-1.5">Günün Ayeti</div>
-                            <p class="text-[13px] text-slate-700 font-medium leading-relaxed italic" id="gunluk-ayet">Yükleniyor...</p>
+                <!-- ÜST İÇERİK (Kaydırılabilir Alan) -->
+                <div class="w-full flex-none px-5 pt-5 pb-4 flex flex-col">
+                    <!-- GÜNÜN İÇERİKLERİ KARTI -->
+                    <div class="w-full mb-5 relative">
+                        <h3 class="text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-2 ml-1 flex items-center gap-1"><span>✨</span> Günün Hazineleri <span class="text-[8px] opacity-70 normal-case ml-auto">👉 Kaydırın</span></h3>
+                        <div class="flex overflow-x-auto snap-x snap-mandatory gap-3 pb-2 scrollbar-hide" id="gunun-icerikleri-container">
+                            <!-- Ayet -->
+                            <div class="snap-center shrink-0 w-[85%] bg-gradient-to-br from-emerald-50 to-teal-50 border border-emerald-100 p-4 rounded-2xl shadow-sm relative overflow-hidden">
+                                <div class="absolute -right-3 -top-3 text-5xl opacity-10">📖</div>
+                                <div class="text-[10px] font-bold text-emerald-600 uppercase tracking-widest mb-1.5">Günün Ayeti</div>
+                                <p class="text-[13px] text-slate-700 font-medium leading-relaxed italic" id="gunluk-ayet">Yükleniyor...</p>
+                            </div>
+                            <!-- Hadis -->
+                            <div class="snap-center shrink-0 w-[85%] bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-100 p-4 rounded-2xl shadow-sm relative overflow-hidden">
+                                <div class="absolute -right-3 -top-3 text-5xl opacity-10">💬</div>
+                                <div class="text-[10px] font-bold text-blue-600 uppercase tracking-widest mb-1.5">Günün Hadisi</div>
+                                <p class="text-[13px] text-slate-700 font-medium leading-relaxed italic" id="gunluk-hadis">Yükleniyor...</p>
+                            </div>
+                            <!-- Dua -->
+                            <div class="snap-center shrink-0 w-[85%] bg-gradient-to-br from-amber-50 to-orange-50 border border-amber-100 p-4 rounded-2xl shadow-sm relative overflow-hidden">
+                                <div class="absolute -right-3 -top-3 text-5xl opacity-10">🤲</div>
+                                <div class="text-[10px] font-bold text-amber-600 uppercase tracking-widest mb-1.5">Günün Duası</div>
+                                <p class="text-[13px] text-slate-700 font-medium leading-relaxed italic" id="gunluk-dua">Yükleniyor...</p>
+                            </div>
                         </div>
-                        <!-- Hadis -->
-                        <div class="snap-center shrink-0 w-[85%] bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-100 p-4 rounded-2xl shadow-sm relative overflow-hidden">
-                            <div class="absolute -right-3 -top-3 text-5xl opacity-10">💬</div>
-                            <div class="text-[10px] font-bold text-blue-600 uppercase tracking-widest mb-1.5">Günün Hadisi</div>
-                            <p class="text-[13px] text-slate-700 font-medium leading-relaxed italic" id="gunluk-hadis">Yükleniyor...</p>
+                    </div>
+
+                    <!-- Mod Seçici -->
+                    <div class="flex bg-slate-200/70 p-1.5 rounded-2xl mb-5 w-full shadow-inner relative">
+                        <button onclick="window.zikirModDegistir('kutuphane')" id="btn-mode-kutuphane" class="flex-1 py-2.5 rounded-xl text-sm font-bold bg-white shadow text-emerald-800 transition-all duration-300">📚 Kütüphane</button>
+                        <button onclick="window.zikirModDegistir('serbest')" id="btn-mode-serbest" class="flex-1 py-2.5 rounded-xl text-sm font-bold text-slate-500 hover:text-slate-700 transition-all duration-300">✨ Serbest</button>
+                    </div>
+
+                    <!-- Kütüphane Modu Seçicisi -->
+                    <div id="kutuphane-secici-container" class="w-full mb-2">
+                        <div class="relative">
+                            <select id="zikir-secici" onchange="window.zikirSec(this.value)" class="w-full pl-4 pr-10 py-4 bg-white border border-slate-200 rounded-2xl shadow-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none text-slate-800 font-bold appearance-none transition-shadow">
+                            </select>
+                            <div class="absolute right-4 top-1/2 transform -translate-y-1/2 pointer-events-none text-slate-400 text-lg">▼</div>
                         </div>
-                        <!-- Dua -->
-                        <div class="snap-center shrink-0 w-[85%] bg-gradient-to-br from-amber-50 to-orange-50 border border-amber-100 p-4 rounded-2xl shadow-sm relative overflow-hidden">
-                            <div class="absolute -right-3 -top-3 text-5xl opacity-10">🤲</div>
-                            <div class="text-[10px] font-bold text-amber-600 uppercase tracking-widest mb-1.5">Günün Duası</div>
-                            <p class="text-[13px] text-slate-700 font-medium leading-relaxed italic" id="gunluk-dua">Yükleniyor...</p>
+                    </div>
+
+                    <!-- Serbest Mod Hedef Girişi -->
+                    <div id="serbest-ayarlar-container" class="w-full mb-2 hidden">
+                        <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200">
+                            <label class="block text-xs font-bold text-slate-400 uppercase mb-2 text-center tracking-wider">Hedef Sayı (Opsiyonel)</label>
+                            <input type="number" id="input-serbest-hedef" placeholder="Limit yok" min="0" class="w-full p-3 bg-slate-50 border border-slate-100 rounded-xl focus:ring-2 focus:ring-emerald-500 outline-none text-slate-800 font-bold text-2xl text-center transition-all" oninput="window.serbestHedefKaydet()">
+                        </div>
+                    </div>
+
+                    <!-- Dua Detay Kartı (OKUNUŞ ODAKLI YENİ TASARIM) -->
+                    <div id="zikir-detay" class="w-full bg-white p-5 rounded-3xl shadow-md border border-slate-100 flex flex-col mb-2 mt-4 relative hidden transition-all">
+                        <div class="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-emerald-500 to-teal-500 text-white text-[10px] font-bold uppercase tracking-widest px-4 py-1.5 rounded-full shadow-md z-10" id="z-kategori">Kategori</div>
+                        
+                        <h2 id="z-baslik" class="text-xl font-extrabold mt-3 mb-5 text-slate-800 text-center">Başlık</h2>
+                        
+                        <!-- Okunuşu Vurgulayan Kutu -->
+                        <div class="bg-emerald-50/80 p-5 rounded-2xl border border-emerald-200 mb-5 shadow-sm">
+                            <div class="text-[11px] font-black text-emerald-700 uppercase tracking-widest mb-3 flex items-center justify-center gap-1.5 opacity-90"><span>🗣️</span> Okunuşu</div>
+                            <p id="z-okunus" class="text-lg md:text-xl text-emerald-950 font-bold leading-relaxed text-center">Okunuşu</p>
+                        </div>
+                        
+                        <p id="z-arapca" class="font-arabic text-3xl text-slate-800 mb-6 no-select leading-relaxed drop-shadow-sm text-center" dir="rtl">Arapça</p>
+                        
+                        <div class="bg-slate-50 p-4 rounded-2xl border border-slate-100">
+                            <div class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1.5 flex items-center justify-center gap-1"><span>📖</span> Anlamı</div>
+                            <p id="z-meal" class="text-sm text-slate-600 italic leading-relaxed text-center">Meali</p>
                         </div>
                     </div>
                 </div>
 
-                <!-- Mod Seçici -->
-                <div class="flex bg-slate-200/70 p-1.5 rounded-2xl mb-6 w-full flex-none shadow-inner relative">
-                    <button onclick="window.zikirModDegistir('kutuphane')" id="btn-mode-kutuphane" class="flex-1 py-2.5 rounded-xl text-sm font-bold bg-white shadow text-emerald-800 transition-all duration-300">📚 Kütüphane</button>
-                    <button onclick="window.zikirModDegistir('serbest')" id="btn-mode-serbest" class="flex-1 py-2.5 rounded-xl text-sm font-bold text-slate-500 hover:text-slate-700 transition-all duration-300">✨ Serbest</button>
-                </div>
-
-                <!-- Kütüphane Modu Seçicisi -->
-                <div id="kutuphane-secici-container" class="w-full mb-2">
-                    <div class="relative">
-                        <select id="zikir-secici" onchange="window.zikirSec(this.value)" class="w-full pl-4 pr-10 py-4 bg-white border border-slate-200 rounded-2xl shadow-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none text-slate-800 font-bold appearance-none transition-shadow">
-                        </select>
-                        <div class="absolute right-4 top-1/2 transform -translate-y-1/2 pointer-events-none text-slate-400 text-lg">▼</div>
-                    </div>
-                </div>
-
-                <!-- Serbest Mod Hedef Girişi -->
-                <div id="serbest-ayarlar-container" class="w-full mb-2 hidden">
-                    <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200">
-                        <label class="block text-xs font-bold text-slate-400 uppercase mb-2 text-center tracking-wider">Hedef Sayı (Opsiyonel)</label>
-                        <input type="number" id="input-serbest-hedef" placeholder="Limit yok" min="0" class="w-full p-3 bg-slate-50 border border-slate-100 rounded-xl focus:ring-2 focus:ring-emerald-500 outline-none text-slate-800 font-bold text-2xl text-center transition-all" oninput="window.serbestHedefKaydet()">
-                    </div>
-                </div>
-
-                <!-- Dua Detay Kartı -->
-                <div id="zikir-detay" class="w-full bg-white p-6 rounded-3xl shadow-lg shadow-slate-200/50 border border-slate-100 text-center mb-6 mt-4 relative hidden transition-all">
-                    <div class="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-emerald-500 to-teal-500 text-white text-[10px] font-bold uppercase tracking-widest px-4 py-1.5 rounded-full shadow-md" id="z-kategori">Kategori</div>
-                    <h2 id="z-baslik" class="text-xl font-bold mt-3 mb-5 text-slate-800">Başlık</h2>
-                    <p id="z-arapca" class="font-arabic text-4xl text-slate-900 mb-5 no-select leading-relaxed drop-shadow-sm" dir="rtl">Arapça</p>
-                    <p id="z-okunus" class="text-sm text-emerald-700 font-semibold mb-4 leading-relaxed bg-emerald-50/50 p-3 rounded-xl border border-emerald-100/50">Okunuşu</p>
-                    <p id="z-meal" class="text-xs text-slate-500 italic bg-slate-50 p-4 rounded-xl leading-relaxed">Meali</p>
-                </div>
-
-                <!-- Ortak Hedef İlerleme Çubuğu -->
-                <div id="hedef-kapsayici" class="w-full mb-6 mt-4 hidden">
-                    <div class="flex justify-between items-end mb-2 px-1">
-                        <div>
-                            <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-0.5">İlerleme</span>
-                            <span id="hedef-metin" class="text-slate-700 font-bold text-lg">0 / 0</span>
+                <!-- ALT KONTROL PANELİ (SABİTLENMİŞ - STICKY) -->
+                <div class="sticky bottom-14 w-full bg-slate-50/95 backdrop-blur-xl border-t border-slate-200/80 px-5 pt-4 pb-4 z-20 rounded-t-[2rem] shadow-[0_-15px_30px_-5px_rgba(0,0,0,0.08)] mt-auto">
+                    
+                    <!-- Ortak Hedef İlerleme Çubuğu -->
+                    <div id="hedef-kapsayici" class="w-full mb-4 hidden">
+                        <div class="flex justify-between items-end mb-1.5 px-1">
+                            <div>
+                                <span class="text-[9px] font-bold text-slate-400 uppercase tracking-wider block">İlerleme</span>
+                                <span id="hedef-metin" class="text-slate-700 font-bold text-sm">0 / 0</span>
+                            </div>
+                            <div class="text-center">
+                                <span id="zikir-suresi" class="text-slate-500 font-bold text-xs bg-slate-100 px-2 py-0.5 rounded border border-slate-200 shadow-inner font-mono">00:00</span>
+                            </div>
+                            <div class="text-right">
+                                <span class="text-[9px] font-bold text-red-400 uppercase tracking-wider block">Kalan</span>
+                                <span id="hedef-kalan" class="text-red-500 font-black text-sm">0</span>
+                            </div>
                         </div>
-                        <div class="text-center">
-                            <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-0.5">Süre</span>
-                            <span id="zikir-suresi" class="text-slate-600 font-bold text-sm bg-white px-2 py-1 rounded-lg border border-slate-200 shadow-sm font-mono">00:00</span>
-                        </div>
-                        <div class="text-right bg-red-50 px-3 py-1 rounded-lg border border-red-100">
-                            <span class="text-[10px] font-bold text-red-500 uppercase tracking-wider block">Kalan</span>
-                            <span id="hedef-kalan" class="text-red-600 font-extrabold text-lg leading-none">0</span>
+                        <div class="w-full bg-slate-200 rounded-full h-2.5 shadow-inner overflow-hidden">
+                            <div id="hedef-bar" class="bg-gradient-to-r from-emerald-400 to-teal-500 h-full rounded-full transition-all duration-500 relative">
+                                <div class="absolute inset-0 bg-white/20 w-full h-full animate-pulse"></div>
+                            </div>
                         </div>
                     </div>
-                    <div class="w-full bg-slate-200 rounded-full h-3.5 shadow-inner overflow-hidden">
-                        <div id="hedef-bar" class="bg-gradient-to-r from-emerald-400 to-teal-500 h-full rounded-full transition-all duration-500 relative">
-                            <div class="absolute inset-0 bg-white/20 w-full h-full animate-pulse"></div>
+
+                    <!-- Kontroller ve Sayaç -->
+                    <div class="flex items-end justify-between gap-3">
+                        
+                        <!-- Sıfırla Butonu -->
+                        <button onclick="window.sayaciSifirla()" class="w-16 h-16 bg-white text-red-500 rounded-2xl border border-slate-200 shadow-sm flex flex-col items-center justify-center gap-1 active:scale-95 group mb-1">
+                            <span class="text-xl group-active:-rotate-180 transition-transform duration-300">↺</span>
+                            <span class="text-[8px] font-bold uppercase tracking-wider">Sıfırla</span>
+                        </button>
+
+                        <!-- Dijital Sayaç ve Dev Oku Butonu (İç İçe Kompakt Tasarım) -->
+                        <div class="flex flex-col items-center flex-1 relative">
+                            <div id="z-sayac" class="text-[2.5rem] leading-none font-black text-slate-800 bg-white border border-slate-100 shadow-[inset_0_-3px_6px_rgba(0,0,0,0.04)] px-5 py-2.5 rounded-2xl text-center no-select transition-all duration-300 font-mono tracking-tighter mb-[-12px] z-10 w-full max-w-[150px]">
+                                0
+                            </div>
+                            <button onclick="window.zikirArtir()" class="relative w-[110px] h-[110px] sm:w-[120px] sm:h-[120px] rounded-full bg-gradient-to-b from-emerald-400 to-emerald-700 btn-3d flex items-center justify-center group outline-none no-select touch-manipulation z-20">
+                                <div class="absolute inset-[-6px] rounded-full border-2 border-emerald-500/20 group-active:scale-95 transition-transform"></div>
+                                <div class="w-[90px] h-[90px] sm:w-[100px] sm:h-[100px] rounded-full bg-gradient-to-br from-emerald-500 to-emerald-800 shadow-inner flex items-center justify-center border-t border-emerald-300/50">
+                                    <span class="text-white font-black text-2xl tracking-widest drop-shadow-md">OKU</span>
+                                </div>
+                            </button>
                         </div>
+
+                        <!-- Kaydet Butonu -->
+                        <button onclick="window.zikriKaydet()" class="w-16 h-16 bg-white text-gold-500 rounded-2xl border border-slate-200 shadow-sm flex flex-col items-center justify-center gap-1 active:scale-95 group mb-1">
+                            <span class="text-xl group-active:scale-110 transition-transform">💾</span>
+                            <span class="text-[8px] font-bold uppercase tracking-wider">Kaydet</span>
+                        </button>
                     </div>
-                </div>
-
-                <!-- DİJİTAL SAYAÇ EKRANI -->
-                <div class="relative w-full flex justify-center mb-8 mt-2">
-                    <div id="z-sayac" class="text-[3.5rem] leading-none font-black text-slate-800 w-full py-5 rounded-3xl bg-white border border-slate-100 shadow-[0_8px_30px_-10px_rgba(0,0,0,0.08),inset_0_-4px_10px_rgba(0,0,0,0.02)] text-center no-select transition-all duration-300 font-mono tracking-tighter z-10 relative overflow-hidden">
-                        0
-                    </div>
-                </div>
-
-                <!-- DEV 3D ZİKİR BUTONU -->
-                <div class="flex-1 w-full flex items-center justify-center mb-6 mt-auto">
-                    <button onclick="window.zikirArtir()" class="relative w-36 h-36 rounded-full bg-gradient-to-b from-emerald-400 to-emerald-700 btn-3d flex items-center justify-center group outline-none no-select touch-manipulation">
-                        <div class="absolute inset-[-10px] rounded-full border-2 border-emerald-500/20 group-active:scale-95 transition-transform"></div>
-                        <div class="absolute inset-[-20px] rounded-full border border-emerald-500/10 group-active:scale-90 transition-transform"></div>
-                        <div class="w-28 h-28 rounded-full bg-gradient-to-br from-emerald-500 to-emerald-800 shadow-inner flex items-center justify-center border-t border-emerald-300/50">
-                            <span class="text-white font-black text-2xl tracking-widest drop-shadow-md">OKU</span>
-                        </div>
-                    </button>
-                </div>
-
-                <!-- Alt Kontroller -->
-                <div class="grid grid-cols-2 gap-3 sm:gap-5 w-full mt-auto mb-2">
-                    <button onclick="window.sayaciSifirla()" class="bg-white text-red-500 font-bold py-3.5 rounded-2xl border border-slate-200 hover:bg-red-50 transition-all shadow-sm flex flex-col items-center gap-1.5 active:scale-95 group">
-                        <span class="text-2xl group-active:-rotate-180 transition-transform duration-300">↺</span> <span class="text-[10px] uppercase tracking-wider">Sıfırla</span>
-                    </button>
-                    <button onclick="window.zikriKaydet()" class="bg-white text-gold-500 font-bold py-3.5 rounded-2xl border border-slate-200 hover:bg-amber-50 transition-all shadow-sm flex flex-col items-center gap-1.5 active:scale-95 group">
-                        <span class="text-2xl group-active:scale-110 transition-transform">💾</span> <span class="text-[10px] uppercase tracking-wider">Kaydet</span>
-                    </button>
                 </div>
             </div>
 
