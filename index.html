@@ -31,7 +31,6 @@
     </script>
 
     <style>
-        /* Webview Aşağı Çekince Yenileme (Pull-to-refresh) Engelleme */
         html, body {
             overscroll-behavior-y: none !important;
             overscroll-behavior: none !important;
@@ -97,6 +96,9 @@
 </head>
 <body class="text-slate-800 h-[100dvh] w-full flex justify-center overflow-hidden antialiased selection:bg-emerald-200">
 
+    <!-- UYARI SESİ (GİZLİ) - Vakitler için kullanılacak -->
+    <audio id="alert-sound" src="https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3" preload="auto"></audio>
+
     <!-- Başlangıç Yükleme Ekranı -->
     <div id="loading-screen" class="absolute inset-0 bg-gradient-to-br from-emerald-900 to-emerald-800 z-[200] flex flex-col items-center justify-center text-white">
         <div class="text-7xl animate-bounce mb-6 drop-shadow-[0_0_15px_rgba(251,191,36,0.5)]">🕌</div>
@@ -109,7 +111,6 @@
         </div>
     </div>
     
-    <!-- Yükleme Ekranı İçin Acil Durum Kalkanı -->
     <script>
         setTimeout(function() {
             var loader = document.getElementById('loading-screen');
@@ -137,22 +138,16 @@
                     <h4 class="font-bold text-emerald-800 text-base mb-2 border-b border-slate-100 pb-2 flex items-center gap-2"><span>📌</span> Künye</h4>
                     <ul class="space-y-1 mt-2">
                         <li><strong>Geliştirici:</strong> Martenzit</li>
-                        <li><strong>Sürüm:</strong> 4.0.0 (Nihai PWA)</li>
+                        <li><strong>Sürüm:</strong> 4.2.0 (Nihai PWA)</li>
                         <li><strong>Altyapı:</strong> Google Firebase & IndexedDB</li>
                     </ul>
-                </div>
-                <div class="bg-white p-4 rounded-2xl border border-slate-100 shadow-sm">
-                    <h4 class="font-bold text-emerald-800 text-base mb-2 border-b border-slate-100 pb-2 flex items-center gap-2"><span>🛡️</span> KVKK Aydınlatma Metni</h4>
-                    <p class="mt-2 text-justify leading-relaxed">
-                        6698 sayılı Kişisel Verilerin Korunması Kanunu ("KVKK") uyarınca, "Dijital Hazine" uygulaması içerisindeki kişisel kullanım verileriniz (okuduğunuz dualar, zikir hedefleri ve kaza namazı bilgileriniz) kural olarak <strong>sadece kendi cihazınızın yerel hafızasında (çevrimdışı olarak)</strong> barındırılır. Cihaz dışına istemsiz hiçbir veri aktarımı yapılmaz.
-                    </p>
                 </div>
                 <div class="bg-white p-4 rounded-2xl border border-slate-100 shadow-sm mb-4">
                     <h4 class="font-bold text-emerald-800 text-base mb-2 border-b border-slate-100 pb-2 flex items-center gap-2"><span>🔒</span> Veri ve Gizlilik Politikası</h4>
                     <p class="mt-2 mb-2">Uygulamamız mahremiyetinize en üst düzeyde önem verir:</p>
                     <ul class="list-disc pl-5 space-y-2 text-justify leading-relaxed">
                         <li><strong>Yerel Depolama:</strong> Verileriniz cihazınızda (IndexedDB) tutulur.</li>
-                        <li><strong>Bulut Senkronizasyonu (İsteğe Bağlı):</strong> Yalnızca kendi isteğinizle ayarlar bölümünden kayıt olursanız, verileriniz eşitleme amacıyla <strong>Google Firebase</strong> sunucularına şifreli olarak aktarılır. Şifreleriniz Google standartlarında korunur ve bizim tarafımızdan görülemez.</li>
+                        <li><strong>Bulut Senkronizasyonu (İsteğe Bağlı):</strong> Yalnızca kendi isteğinizle ayarlar bölümünden kayıt olursanız, verileriniz eşitleme amacıyla <strong>Google Firebase</strong> sunucularına şifreli olarak aktarılır.</li>
                         <li><strong>Üçüncü Partiler:</strong> Verileriniz hiçbir reklam, pazarlama veya üçüncü şahıs kurumuyla paylaşılmaz.</li>
                         <li><strong>Konum Bilgisi:</strong> Pusula ve namaz vakti hesaplamaları için istenen anlık GPS konumu doğrudan cihazınızda işlenir, sunucularımızda izlenmez veya kaydedilmez.</li>
                     </ul>
@@ -202,43 +197,45 @@
                 
                 <!-- ÜST İÇERİK (Kaydırılabilir Alan) -->
                 <div class="w-full flex-none px-5 pt-5 pb-4 flex flex-col">
-                    <!-- GÜNÜN İÇERİKLERİ KARTI -->
-                    <div class="w-full mb-5 relative">
-                        <h3 class="text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-2 ml-1 flex items-center gap-1"><span>✨</span> Günün Hazineleri <span class="text-[8px] opacity-70 normal-case ml-auto">👉 Kaydırın</span></h3>
-                        <div class="flex overflow-x-auto snap-x snap-mandatory gap-3 pb-2 scrollbar-hide" id="gunun-icerikleri-container">
+                    
+                    <!-- GÜNÜN İÇERİKLERİ KARTI (AKORDİYON) -->
+                    <div class="w-full mb-4 bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm transition-all duration-300">
+                        <button onclick="document.getElementById('gunun-icerikleri-container').classList.toggle('hidden'); document.getElementById('gunun-hazineleri-ok').classList.toggle('rotate-180');" class="w-full px-4 py-3.5 flex justify-between items-center bg-gradient-to-r from-emerald-50 to-slate-50 text-emerald-800 font-extrabold text-xs uppercase tracking-wider active:bg-emerald-100 transition-colors">
+                            <span class="flex items-center gap-2 text-sm"><span class="text-lg">✨</span> Günün Hazineleri (Görüntüle)</span>
+                            <span id="gunun-hazineleri-ok" class="transition-transform duration-300 text-slate-400">▼</span>
+                        </button>
+                        <div id="gunun-icerikleri-container" class="hidden p-4 bg-white border-t border-slate-100 flex flex-col gap-3">
                             <!-- Ayet -->
-                            <div class="snap-center shrink-0 w-[85%] bg-gradient-to-br from-emerald-50 to-teal-50 border border-emerald-100 p-4 rounded-2xl shadow-sm relative overflow-hidden">
-                                <div class="absolute -right-3 -top-3 text-5xl opacity-10">📖</div>
-                                <div class="text-[10px] font-bold text-emerald-600 uppercase tracking-widest mb-1.5">Günün Ayeti</div>
-                                <p class="text-[13px] text-slate-700 font-medium leading-relaxed italic" id="gunluk-ayet">Yükleniyor...</p>
+                            <div class="bg-gradient-to-br from-emerald-50 to-teal-50 border border-emerald-100 p-3 rounded-xl shadow-sm relative overflow-hidden">
+                                <div class="text-[10px] font-bold text-emerald-600 uppercase tracking-widest mb-1">📖 Günün Ayeti</div>
+                                <p class="text-xs text-slate-700 font-medium leading-relaxed italic" id="gunluk-ayet">Yükleniyor...</p>
                             </div>
                             <!-- Hadis -->
-                            <div class="snap-center shrink-0 w-[85%] bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-100 p-4 rounded-2xl shadow-sm relative overflow-hidden">
-                                <div class="absolute -right-3 -top-3 text-5xl opacity-10">💬</div>
-                                <div class="text-[10px] font-bold text-blue-600 uppercase tracking-widest mb-1.5">Günün Hadisi</div>
-                                <p class="text-[13px] text-slate-700 font-medium leading-relaxed italic" id="gunluk-hadis">Yükleniyor...</p>
+                            <div class="bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-100 p-3 rounded-xl shadow-sm relative overflow-hidden">
+                                <div class="text-[10px] font-bold text-blue-600 uppercase tracking-widest mb-1">💬 Günün Hadisi</div>
+                                <p class="text-xs text-slate-700 font-medium leading-relaxed italic" id="gunluk-hadis">Yükleniyor...</p>
                             </div>
                             <!-- Dua -->
-                            <div class="snap-center shrink-0 w-[85%] bg-gradient-to-br from-amber-50 to-orange-50 border border-amber-100 p-4 rounded-2xl shadow-sm relative overflow-hidden">
-                                <div class="absolute -right-3 -top-3 text-5xl opacity-10">🤲</div>
-                                <div class="text-[10px] font-bold text-amber-600 uppercase tracking-widest mb-1.5">Günün Duası</div>
-                                <p class="text-[13px] text-slate-700 font-medium leading-relaxed italic" id="gunluk-dua">Yükleniyor...</p>
+                            <div class="bg-gradient-to-br from-amber-50 to-orange-50 border border-amber-100 p-3 rounded-xl shadow-sm relative overflow-hidden">
+                                <div class="text-[10px] font-bold text-amber-600 uppercase tracking-widest mb-1">🤲 Günün Duası</div>
+                                <p class="text-xs text-slate-700 font-medium leading-relaxed italic" id="gunluk-dua">Yükleniyor...</p>
                             </div>
                         </div>
                     </div>
 
                     <!-- Mod Seçici -->
-                    <div class="flex bg-slate-200/70 p-1.5 rounded-2xl mb-5 w-full shadow-inner relative">
+                    <div class="flex bg-slate-200/70 p-1.5 rounded-2xl mb-4 w-full shadow-inner relative">
                         <button onclick="window.zikirModDegistir('kutuphane')" id="btn-mode-kutuphane" class="flex-1 py-2.5 rounded-xl text-sm font-bold bg-white shadow text-emerald-800 transition-all duration-300">📚 Kütüphane</button>
                         <button onclick="window.zikirModDegistir('serbest')" id="btn-mode-serbest" class="flex-1 py-2.5 rounded-xl text-sm font-bold text-slate-500 hover:text-slate-700 transition-all duration-300">✨ Serbest</button>
                     </div>
 
-                    <!-- Kütüphane Modu Seçicisi -->
+                    <!-- Kütüphane Modu Seçicisi (Kategorisiz) -->
                     <div id="kutuphane-secici-container" class="w-full mb-2">
                         <div class="relative">
-                            <select id="zikir-secici" onchange="window.zikirSec(this.value)" class="w-full pl-4 pr-10 py-4 bg-white border border-slate-200 rounded-2xl shadow-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none text-slate-800 font-bold appearance-none transition-shadow">
+                            <select id="zikir-secici" onchange="window.zikirSec(this.value)" class="w-full pl-4 pr-10 py-4 bg-white border border-emerald-200 rounded-2xl shadow-sm focus:ring-2 focus:ring-emerald-500 outline-none text-emerald-900 font-bold appearance-none transition-shadow">
+                                <option value="" disabled selected>Zikir veya Dua Seçiniz...</option>
                             </select>
-                            <div class="absolute right-4 top-1/2 transform -translate-y-1/2 pointer-events-none text-slate-400 text-lg">▼</div>
+                            <div class="absolute right-4 top-1/2 transform -translate-y-1/2 pointer-events-none text-emerald-600 text-lg">▼</div>
                         </div>
                     </div>
 
@@ -246,33 +243,38 @@
                     <div id="serbest-ayarlar-container" class="w-full mb-2 hidden">
                         <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200">
                             <label class="block text-xs font-bold text-slate-400 uppercase mb-2 text-center tracking-wider">Hedef Sayı (Opsiyonel)</label>
-                            <input type="number" id="input-serbest-hedef" placeholder="Limit yok" min="0" class="w-full p-3 bg-slate-50 border border-slate-100 rounded-xl focus:ring-2 focus:ring-emerald-500 outline-none text-slate-800 font-bold text-2xl text-center transition-all" oninput="window.serbestHedefKaydet()">
+                            <input type="number" id="input-serbest-hedef" placeholder="Sınırsız (Limit yok)" min="0" class="w-full p-3 bg-slate-50 border border-slate-100 rounded-xl focus:ring-2 focus:ring-emerald-500 outline-none text-slate-800 font-bold text-2xl text-center transition-all" oninput="window.serbestHedefKaydet()">
                         </div>
                     </div>
 
-                    <!-- Dua Detay Kartı (OKUNUŞ ODAKLI YENİ TASARIM) -->
-                    <div id="zikir-detay" class="w-full bg-white p-5 rounded-3xl shadow-md border border-slate-100 flex flex-col mb-2 mt-4 relative hidden transition-all">
+                    <!-- Dua Detay Kartı (SADECE SEÇİM YAPILDIĞINDA GÖSTERİLECEK) -->
+                    <div id="zikir-detay" class="w-full bg-white p-5 rounded-3xl shadow-md border border-slate-100 flex flex-col mb-2 mt-2 relative hidden transition-all">
                         <div class="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-emerald-500 to-teal-500 text-white text-[10px] font-bold uppercase tracking-widest px-4 py-1.5 rounded-full shadow-md z-10" id="z-kategori">Kategori</div>
                         
-                        <h2 id="z-baslik" class="text-xl font-extrabold mt-3 mb-5 text-slate-800 text-center">Başlık</h2>
+                        <h2 id="z-baslik" class="text-xl font-extrabold mt-3 mb-4 text-slate-800 text-center">Başlık</h2>
                         
-                        <!-- Okunuşu Vurgulayan Kutu -->
-                        <div class="bg-emerald-50/80 p-5 rounded-2xl border border-emerald-200 mb-5 shadow-sm">
-                            <div class="text-[11px] font-black text-emerald-700 uppercase tracking-widest mb-3 flex items-center justify-center gap-1.5 opacity-90"><span>🗣️</span> Okunuşu</div>
-                            <p id="z-okunus" class="text-lg md:text-xl text-emerald-950 font-bold leading-relaxed text-center">Okunuşu</p>
+                        <div class="bg-emerald-50/80 p-4 rounded-2xl border border-emerald-200 mb-4 shadow-sm">
+                            <div class="text-[10px] font-black text-emerald-700 uppercase tracking-widest mb-2 flex items-center justify-center gap-1.5 opacity-90"><span>🗣️</span> Okunuşu</div>
+                            <p id="z-okunus" class="text-lg text-emerald-950 font-bold leading-relaxed text-center">Okunuşu</p>
                         </div>
                         
-                        <p id="z-arapca" class="font-arabic text-3xl text-slate-800 mb-6 no-select leading-relaxed drop-shadow-sm text-center" dir="rtl">Arapça</p>
+                        <p id="z-arapca" class="font-arabic text-3xl text-slate-800 mb-5 no-select leading-relaxed drop-shadow-sm text-center" dir="rtl">Arapça</p>
                         
-                        <div class="bg-slate-50 p-4 rounded-2xl border border-slate-100">
-                            <div class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1.5 flex items-center justify-center gap-1"><span>📖</span> Anlamı</div>
-                            <p id="z-meal" class="text-sm text-slate-600 italic leading-relaxed text-center">Meali</p>
+                        <div class="bg-slate-50 p-3 rounded-2xl border border-slate-100 mb-2">
+                            <div class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1 flex items-center justify-center gap-1"><span>📖</span> Anlamı</div>
+                            <p id="z-meal" class="text-xs text-slate-600 italic leading-relaxed text-center">Meali</p>
+                        </div>
+
+                        <!-- Eklenen Not Alanı -->
+                        <div id="z-not-kapsayici" class="bg-amber-50/50 p-3 rounded-2xl border border-amber-100 hidden">
+                            <div class="text-[10px] font-bold text-amber-600 uppercase tracking-widest mb-1 flex items-center justify-center gap-1"><span>📌</span> Not / Açıklama</div>
+                            <p id="z-not" class="text-xs text-amber-800 leading-relaxed text-center font-medium"></p>
                         </div>
                     </div>
                 </div>
 
-                <!-- ALT KONTROL PANELİ (SABİTLENMİŞ - STICKY) -->
-                <div class="sticky bottom-14 w-full bg-slate-50/95 backdrop-blur-xl border-t border-slate-200/80 px-5 pt-4 pb-4 z-20 rounded-t-[2rem] shadow-[0_-15px_30px_-5px_rgba(0,0,0,0.08)] mt-auto">
+                <!-- ALT KONTROL PANELİ (GİZLENEBİLİR) -->
+                <div id="z-sayac-kontrol-alani" class="sticky bottom-14 w-full bg-slate-50/95 backdrop-blur-xl border-t border-slate-200/80 px-5 pt-3 pb-3 z-20 rounded-t-[2rem] shadow-[0_-15px_30px_-5px_rgba(0,0,0,0.08)] mt-auto hidden transition-all duration-300">
                     
                     <!-- Ortak Hedef İlerleme Çubuğu -->
                     <div id="hedef-kapsayici" class="w-full mb-4 hidden">
@@ -282,7 +284,8 @@
                                 <span id="hedef-metin" class="text-slate-700 font-bold text-sm">0 / 0</span>
                             </div>
                             <div class="text-center">
-                                <span id="zikir-suresi" class="text-slate-500 font-bold text-xs bg-slate-100 px-2 py-0.5 rounded border border-slate-200 shadow-inner font-mono">00:00</span>
+                                <span class="text-[9px] font-bold text-slate-400 uppercase tracking-wider block">Süre</span>
+                                <span id="zikir-suresi" class="text-slate-600 font-bold text-xs bg-slate-100 px-2 py-0.5 rounded border border-slate-200 shadow-inner font-mono">00:00</span>
                             </div>
                             <div class="text-right">
                                 <span class="text-[9px] font-bold text-red-400 uppercase tracking-wider block">Kalan</span>
@@ -305,15 +308,15 @@
                             <span class="text-[8px] font-bold uppercase tracking-wider">Sıfırla</span>
                         </button>
 
-                        <!-- Dijital Sayaç ve Dev Oku Butonu (İç İçe Kompakt Tasarım) -->
+                        <!-- Dijital Sayaç ve Dev Oku Butonu -->
                         <div class="flex flex-col items-center flex-1 relative">
                             <div id="z-sayac" class="text-[2.5rem] leading-none font-black text-slate-800 bg-white border border-slate-100 shadow-[inset_0_-3px_6px_rgba(0,0,0,0.04)] px-5 py-2.5 rounded-2xl text-center no-select transition-all duration-300 font-mono tracking-tighter mb-[-12px] z-10 w-full max-w-[150px]">
                                 0
                             </div>
-                            <button onclick="window.zikirArtir()" class="relative w-[110px] h-[110px] sm:w-[120px] sm:h-[120px] rounded-full bg-gradient-to-b from-emerald-400 to-emerald-700 btn-3d flex items-center justify-center group outline-none no-select touch-manipulation z-20">
+                            <button onclick="window.zikirArtir()" class="relative w-[85px] h-[85px] sm:w-[95px] sm:h-[95px] rounded-full bg-gradient-to-b from-emerald-400 to-emerald-700 btn-3d flex items-center justify-center group outline-none no-select touch-manipulation z-20">
                                 <div class="absolute inset-[-6px] rounded-full border-2 border-emerald-500/20 group-active:scale-95 transition-transform"></div>
-                                <div class="w-[90px] h-[90px] sm:w-[100px] sm:h-[100px] rounded-full bg-gradient-to-br from-emerald-500 to-emerald-800 shadow-inner flex items-center justify-center border-t border-emerald-300/50">
-                                    <span class="text-white font-black text-2xl tracking-widest drop-shadow-md">OKU</span>
+                                <div class="w-[65px] h-[65px] sm:w-[75px] sm:h-[75px] rounded-full bg-gradient-to-br from-emerald-500 to-emerald-800 shadow-inner flex items-center justify-center border-t border-emerald-300/50">
+                                    <span class="text-white font-black text-xl tracking-widest drop-shadow-md">OKU</span>
                                 </div>
                             </button>
                         </div>
@@ -356,7 +359,6 @@
                     </button>
                 </div>
                 
-                <!-- Özet Kaza Kartı -->
                 <div class="bg-gradient-to-br from-emerald-600 to-teal-700 p-5 rounded-2xl text-white shadow-md mb-6 relative overflow-hidden">
                     <div class="absolute -right-4 -bottom-4 text-7xl opacity-10">🕌</div>
                     <div class="text-[10px] uppercase tracking-widest opacity-80 mb-1">Maksimum Kaza Borcunuz</div>
@@ -391,6 +393,9 @@
                     <span id="vakit-konum-metni" class="truncate pr-2">Ankara, Turkey</span>
                     <button onclick="window.vakitleriGetir()" class="text-emerald-600 bg-white px-2 py-1 rounded shadow-sm border border-slate-200 active:scale-95">↻ Yenile</button>
                 </p>
+
+                <!-- DİNİ GÜNLER AFİŞİ (BANNER) -->
+                <div id="yaklasan-dini-gun-banner" class="hidden mb-4"></div>
 
                 <div id="vakit-kerahat-banner" class="hidden"></div>
 
@@ -531,6 +536,10 @@
                         <div><label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">Arapça Metin</label><textarea id="crud-arapca" dir="rtl" rows="2" class="arabic-text w-full p-3.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:bg-white outline-none transition-all text-lg"></textarea></div>
                         <div><label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">Okunuşu</label><textarea id="crud-okunus" rows="2" class="w-full p-3.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:bg-white outline-none transition-all text-sm font-medium"></textarea></div>
                         <div><label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">Meali</label><textarea id="crud-meal" rows="2" class="w-full p-3.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:bg-white outline-none transition-all text-sm font-medium"></textarea></div>
+                        
+                        <!-- YENİ EKLENEN NOT / AÇIKLAMA ALANI -->
+                        <div><label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">Not / Açıklama</label><textarea id="crud-not" rows="2" class="w-full p-3.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:bg-white outline-none transition-all text-sm font-medium" placeholder="Örn: Bu duayı sabahları 3 kere okumak tavsiye edilir..."></textarea></div>
+
                         <div class="flex gap-3 mt-4 pt-4 border-t border-slate-100">
                             <button type="button" onclick="window.modalKapat()" class="flex-1 bg-white border border-slate-200 text-slate-700 py-3.5 rounded-xl font-bold hover:bg-slate-50 transition active:scale-95">İptal</button>
                             <button type="submit" class="flex-1 bg-emerald-600 text-white py-3.5 rounded-xl font-bold hover:bg-emerald-700 shadow-md transition active:scale-95">Kaydet</button>
@@ -540,7 +549,7 @@
             </div>
         </div>
 
-        <!-- KONUM SEÇİM MODALI (DROPDOWN VE GPS DESTEKLİ) -->
+        <!-- KONUM SEÇİM MODALI (BIGDATACLOUD DESTEKLİ) -->
         <div id="modal-konum" class="hidden absolute inset-0 bg-slate-900/60 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 backdrop-blur-sm">
             <div class="bg-white rounded-t-3xl sm:rounded-3xl shadow-2xl w-full max-w-sm flex flex-col overflow-hidden animate-[slideUp_0.3s_ease-out]">
                 <div class="bg-slate-50 border-b border-slate-100 p-5 flex justify-between items-center relative">
@@ -552,7 +561,7 @@
                         <div>
                             <div class="flex justify-between items-center mb-1.5">
                                 <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider">Ülke</label>
-                                <button onclick="window.otomatikKonumBul(event)" type="button" class="text-[10px] bg-emerald-50 text-emerald-700 px-2.5 py-1 rounded-md border border-emerald-200 font-bold active:scale-95">🌍 Otomatik Bul</button>
+                                <button onclick="window.otomatikKonumBul(event)" type="button" class="text-[10px] bg-emerald-50 text-emerald-700 px-2.5 py-1 rounded-md border border-emerald-200 font-bold active:scale-95 shadow-sm">🌍 GPS ile Bul</button>
                             </div>
                             <select id="input-ulke" class="w-full p-3.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-emerald-500 outline-none font-medium appearance-none" onchange="window.ulkeDegisti(this.value)"></select>
                         </div>
@@ -577,10 +586,10 @@
                     <button onclick="window.uyariModalKapat()" class="w-8 h-8 bg-white border border-slate-200 rounded-full text-slate-500 flex items-center justify-center font-bold hover:bg-slate-100">&times;</button>
                 </div>
                 <div class="p-6">
-                    <p class="text-[13px] text-slate-500 mb-6 bg-slate-50 p-3 rounded-lg border border-slate-100">Ekranınız açıldığı an vakit yaklaştıysa sistem sizi görsel ve sesli olarak uyarır.</p>
+                    <p class="text-[13px] text-slate-500 mb-6 bg-slate-50 p-3 rounded-lg border border-slate-100">Vakit yaklaştığında veya girdiğinde sesli ve görsel olarak ekranınızda uyarı alırsınız.</p>
                     <div class="flex flex-col gap-5">
                         <label class="flex items-center justify-between">
-                            <span class="text-sm font-bold text-slate-700">Erken Uyarı Aktif</span>
+                            <span class="text-sm font-bold text-slate-700">Uyarı ve Ses Aktif</span>
                             <input type="checkbox" id="uyari-aktif" class="w-5 h-5 text-emerald-600 rounded border-slate-300 focus:ring-emerald-500">
                         </label>
                         <div>
@@ -656,7 +665,7 @@
                     </div>
 
                     <div>
-                        <h4 class="font-bold text-emerald-800 text-sm mb-3 flex items-center gap-2 border-b border-slate-200 pb-2"><span>🤲</span> Okunacak Dualar (Okunuşu):</h4>
+                        <h4 class="font-bold text-emerald-800 text-sm mb-3 flex items-center gap-2 border-b border-slate-200 pb-2"><span>🤲</span> Okunacak Dualar:</h4>
                         <div id="hicri-modal-dualar" class="text-[13px] text-slate-700 space-y-3 pl-2"></div>
                     </div>
                 </div>
@@ -902,6 +911,7 @@
             remove: function(k) { return new Promise((r) => { if(!this.db) return r(); try { const tx = this.db.transaction('store', 'readwrite'); tx.objectStore('store').delete(k); tx.oncomplete = () => r(); } catch(e) { r(); } }); }
         };
 
+        // TAM VE ORİJİNAL VERİTABANI (Bozulmadan geri yüklendi)
         const varsayilanDB = [
             { id: "1", kategori: "Zikir", baslik: "Sübhanallah", hedef: 33, arapca: "سُبْحَانَ اللَّهِ", okunus: "Sübhanallah", meal: "Allah bütün noksan sıfatlardan münezzehtir." },
             { id: "2", kategori: "Zikir", baslik: "Elhamdülillah", hedef: 33, arapca: "الْحَمْدُ لِلَّهِ", okunus: "Elhamdülillah", meal: "Hamd Allah'a mahsustur." },
@@ -920,7 +930,7 @@
             { id: "15", kategori: "Zikir", baslik: "La Havle", hedef: 100, arapca: "لَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِٱللَّٰهِ", okunus: "Lâ havle ve lâ kuvvete illâ billâh", meal: "Güç ve kuvvet ancak Allah'a mahsustur." }
         ];
 
-        let dbData = []; let kayitlar = []; let zikirMode = 'kutuphane'; let aktifZikirId = "1"; let sayac = 0; let freeSayac = 0; let freeHedef = 0; let ulke = "Turkey"; let sehir = "Ankara";
+        let dbData = []; let kayitlar = []; let zikirMode = 'kutuphane'; let aktifZikirId = ""; let sayac = 0; let freeSayac = 0; let freeHedef = 0; let ulke = "Turkey"; let sehir = "Ankara";
         const kazaVakitBilgileri = [ { id: 'sabah', ad: 'Sabah' }, { id: 'ogle', ad: 'Öğle' }, { id: 'ikindi', ad: 'İkindi' }, { id: 'aksam', ad: 'Akşam' }, { id: 'yatsi', ad: 'Yatsı' }, { id: 'vitir', ad: 'Vitir' } ];
         let kazaDurumu = { sabah: 0, ogle: 0, ikindi: 0, aksam: 0, yatsi: 0, vitir: 0 };
         let kazaMaksimum = { sabah: 0, ogle: 0, ikindi: 0, aksam: 0, yatsi: 0, vitir: 0 };
@@ -937,15 +947,17 @@
             "Saudi Arabia": ["Riyadh", "Jeddah", "Mecca", "Medina", "Dammam", "Ta'if"]
         };
 
-        let uyariAyarlari = { aktif: false, dakika: 15 };
+        let uyariAyarlari = { aktif: true, dakika: 15 };
         let zikirBaslangicZamani = null;
         let zikirTimer = null;
         let audioCtx = null;
         let sonUyarilanVakit = null;
+        let isAudioUnlocked = false;
 
         window.fb = null;
         let isCloudConnected = false; let auth, firestoreDb, currentUser, appId;
 
+        // TAM VE ORİJİNAL GÜNLÜK İÇERİKLER
         const gunlukIceriklerDB = [
             { ayet: "Şüphesiz Allah, adaleti, iyilik yapmayı, yakınlara yardım etmeyi emreder... (Nahl, 90)", hadis: "Sizin en hayırlınız, Kur'an'ı öğrenen ve öğretendir. (Buhârî, Fezâilü'l-Kur'ân 21)", dua: "Allah'ım! Fayda vermeyen ilimden, ürpermeyen kalpten, doymayan nefisten ve kabul olunmayan duadan sana sığınırım. (Müslim)" },
             { ayet: "Kim zerre miktarı hayır yapmışsa onu görür... (Zilzâl, 7)", hadis: "Müslüman, elinden ve dilinden diğer Müslümanların güvende olduğu kimsedir. (Buhârî)", dua: "Rabbimiz! Bize dünyada da iyilik ver, ahirette de iyilik ver ve bizi ateş azabından koru. (Bakara, 201)" },
@@ -957,22 +969,23 @@
             { ayet: "Bilin ki, kalpler ancak Allah'ı anmakla huzur bulur. (Ra'd, 28)", hadis: "İnsanlara merhamet etmeyene Allah merhamet etmez. (Buhârî)", dua: "Allah'ım! Senin sevgini ve seni sevenlerin sevgisini senden dilerim." }
         ];
 
-        // DETAYLANDIRILMIŞ HİCRİ AYLAR VE TAVSİYELER
+        // TAM VE ORİJİNAL HİCRİ AYLAR BİLGİSİ
         const hicriAylarBilgisi = [
-            { ad: "Muharrem", aciklama: "Haram aylardandır. İlahi bereketin coştuğu aydır. Aşure günü (10. gün) bu aydadır.", ibadetler: ["Aşure orucu (9-10 veya 10-11. gün)", "Bolca tövbe istiğfar", "Kerbela şehitlerini anma, sadaka verme"], dualar: ["Lâ ilâhe illallah (Mümkün mertebe çok)", "Hasbünallahu ve ni'mel vekîl (Allah bize yeter)", "Sübhanallahi mil'el mîzân ve müntehel ılmi ve mebleğar-rızâ ve zinetel-arş"] },
-            { ad: "Safer", aciklama: "Hicri takvimin ikinci ayıdır. Bela ve musibetlerden Allah'a sığınılır.", ibadetler: ["Kaza namazları kılmak", "Bol bol sadaka vermek", "Nafile namazlarla Allah'a sığınmak"], dualar: ["Estağfirullah el-azîm", "Ayetel Kürsi, Felak ve Nas sureleri okumak", "Allahümme salli alâ seyyidinâ Muhammed"] },
-            { ad: "Rebiülevvel", aciklama: "Peygamber Efendimiz Hz. Muhammed'in (s.a.v) dünyayı şereflendirdiği Mevlid ayıdır.", ibadetler: ["Mevlid-i Şerif okumak / dinlemek", "Siyer-i Nebi (Peygamberimizin hayatını) okumak", "Sünnetlere sıkı sıkıya sarılmak"], dualar: ["Allahümme salli alâ seyyidinâ Muhammedin ve alâ âlihî ve sahbihî ve sellim", "Kelime-i Şehadet: Eşhedü en lâ ilâhe illallah ve eşhedü enne Muhammeden abdühû ve rasûlüh", "Yasin-i Şerif okumak"] },
-            { ad: "Rebiülahir", aciklama: "Baharın sonudur. İbadet ve taatte devamlılık tavsiye edilir.", ibadetler: ["Günlük Kur'an cüzü okumaya başlamak", "Pazartesi ve Perşembe nafile oruçları"], dualar: ["Lâ havle ve lâ kuvvete illâ billâhil aliyyil azîm", "Sübhânallahi velhamdülillâhi velâ ilâhe illallahu vallahu ekber"] },
-            { ad: "Cemaziyelevvel", aciklama: "Tövbe ve ibadetlerin artırıldığı, manevi hazırlık aylarına girişin başlangıcıdır.", ibadetler: ["Geçmiş günahlar için tövbe istiğfar", "Sıla-i Rahim (Akraba ziyareti)"], dualar: ["Seyyidül İstiğfar: Allahümme ente rabbî lâ ilâhe illâ ente, halaktenî ve ene abdüke, ve ene alâ ahdike ve va'dike m'esteta'tü. Eûzü bike min şerri mâ sana'tü. Ebûü leke bi ni'metike aleyye ve ebûü leke bi zenbî fağfirlî, fe innehû lâ yağfiruz-zünûbe illâ ente.", "Rabbenâ âtinâ fid-dünyâ haseneten ve fil-âhirati haseneten ve kınâ azâben-nâr"] },
-            { ad: "Cemaziyelahir", aciklama: "Hicri yılın altıncı ayıdır, Recep ayından önceki son duraktır.", ibadetler: ["Varsa kaza oruçlarını tamamlamak", "İhtiyaç sahiplerine yardım, zekat hesaplamaları"], dualar: ["Lâ ilâhe illâ ente sübhâneke innî küntü minez-zâlimîn", "Allahümme innî es'elükel afve vel âfiyete fid-dünyâ vel-âhirah"] },
-            { ad: "Recep", aciklama: "Mübarek Üç Ayların başlangıcıdır. Haram aylardandır. Regaip ve Miraç geceleri bu aydadır.", ibadetler: ["Recep ayına özel nafile oruçlar tutmak", "Regaip ve Miraç gecelerini namazla ihya etmek", "Günde 11 defa İhlas Suresi okumak"], dualar: ["Allahümme bârik lenâ fî Recebe ve Şa'bân ve belliğnâ Ramadân", "Estağfirullahel azîme ellezî lâ ilâhe illâ hüvel hayyel kayyûme ve etûbü ileyh"] },
-            { ad: "Şaban", aciklama: "Üç ayların ikincisidir. Beraat Kandili bu aydadır. Amellerin Allah'a arz edildiği aydır.", ibadetler: ["Ramazan orucuna hazırlık için nafile oruçlar", "Beraat gecesini ibadet, dua ve gözyaşı ile geçirmek", "Kur'an okumayı artırmak"], dualar: ["Günde 100 defa Salavat-ı Şerife okumak", "Beraat Gecesi 3 defa Yasin-i Şerif okumak", "Allahümme inneke afüvvün tuhibbul afve fa'fu annî"] },
-            { ad: "Ramazan", aciklama: "Kur'an'ın indirildiği, farz orucun tutulduğu on bir ayın sultanıdır. Kadir Gecesi bu aydadır.", ibadetler: ["Farz Oruç tutmak", "Teravih Namazı kılmak", "Mukabele (Kur'an Hatmi) okumak", "Fitre ve Zekat vermek, İtikafa girmek"], dualar: ["İftar Duası: Allahümme leke sumtü ve bike âmentü ve aleyke tevekkeltü ve alâ rızkıke eftartü", "Allahümme inneke afüvvün tuhibbul afve fa'fu annî", "Kelime-i Tevhid"] },
-            { ad: "Şevval", aciklama: "Ramazan Bayramı ile başlayan aydır. Ramazan ayındaki güzel alışkanlıkların devam ettirilmesi istenir.", ibadetler: ["Şevval orucu (6 gün) tutmak (Çok faziletlidir)", "Bayramlaşma ve küslerin barışması"], dualar: ["Allahu Ekber, Elhamdülillah, Sübhanallah (Sıkça zikir)", "Bayram Tekbiri: Allahu ekber Allahu ekber, Lâ ilâhe illallahu vallahu ekber. Allahu ekber ve lillahi'l-hamd."] },
-            { ad: "Zilkade", aciklama: "Haram aylardandır. Hac hazırlıklarının başladığı, sükunet ve ibadet ayıdır.", ibadetler: ["Haram ay hürmetine günahlardan ekstra sakınmak", "Nafile namaz ve oruçları artırmak"], dualar: ["Lâ ilâhe illallahü vahdehû lâ şerîke leh, lehül mülkü ve lehül hamdü ve hüve alâ külli şey'in kadîr", "Bolca Estağfirullah çekmek"] },
-            { ad: "Zilhicce", aciklama: "Haram aylardandır. Hac ibadetinin yapıldığı, Kurban Bayramının olduğu mübarek aydır.", ibadetler: ["İlk 9 gün oruç tutmak (Özellikle Arefe günü)", "Kurban kesmek", "Farz namazların ardında Teşrik Tekbirleri getirmek"], dualar: ["Teşrik Tekbiri: Allahu ekber Allahu ekber, Lâ ilâhe illallahu vallahu ekber. Allahu ekber ve lillahi'l-hamd.", "Sübhanallahi ve bihamdihi sübhanallahil azîm", "Arefe Duası: Lâ ilâhe illallahü vahdehû lâ şerîke leh, lehül mülkü ve lehül hamdü ve hüve alâ külli şey'in kadîr."] }
+            { ad: "Muharrem", aciklama: "Haram aylardandır. İlahi bereketin coştuğu aydır. Aşure günü (10. gün) bu aydadır.", ibadetler: ["Aşure orucu (9-10 veya 10-11. gün)", "Bolca tövbe istiğfar", "Kerbela şehitlerini anma, sadaka verme"], dualar: ["<b>Aşure Günü Duası:</b> 'Sübhanallahi mil'el mîzân ve müntehel ılmi ve mebleğar-rızâ ve zinetel-arş' (Aşure günü 10 defa okunur.)", "<b>Kılınacak Namaz:</b> Muharrem ayının ilk gecesi 2 rekat namaz kılınması tavsiye edilir.<br><b>Kılınışı:</b> Her rekatta Fatiha'dan sonra 3 İhlas Suresi okunur.<br><b>Fazileti:</b> Bütün senenin günahlardan korunmasına vesile olur."] },
+            { ad: "Safer", aciklama: "Hicri takvimin ikinci ayıdır. Bela ve musibetlerden Allah'a sığınılır.", ibadetler: ["Kaza namazları kılmak", "Bol bol sadaka vermek", "Nafile namazlarla Allah'a sığınmak"], dualar: ["<b>Okunacak Dua:</b> 'Estağfirullah el-azîm' bolca zikredilir. Ayetel Kürsi, Felak ve Nas sureleri her gün okunarak Allah'a sığınılır.", "<b>Kılınacak Namaz:</b> Safer ayının ilk ve son çarşamba gecesi 4 rekat namaz tavsiye edilir.<br><b>Kılınışı:</b> Her rekatta Fatiha'dan sonra 17 Kevser, 5 İhlas, 1 Felak, 1 Nas okunur."] },
+            { ad: "Rebiülevvel", aciklama: "Peygamber Efendimiz Hz. Muhammed'in (s.a.v) dünyayı şereflendirdiği Mevlid ayıdır.", ibadetler: ["Mevlid-i Şerif okumak / dinlemek", "Siyer-i Nebi (Peygamberimizin hayatını) okumak", "Sünnetlere sıkı sıkıya sarılmak"], dualar: ["<b>Salavat-ı Şerife:</b> 'Allahümme salli alâ seyyidinâ Muhammedin ve alâ âlihî ve sahbihî ve sellim' (Bolca okunmalıdır).", "<b>Mevlid Gecesi Namazı:</b> 2 rekat namaz kılınır.<br><b>Kılınışı:</b> Fatiha'dan sonra 1. rekatta Kâfirûn Suresi, 2. rekatta İhlas Suresi okunur. Ardından bolca salavat getirilir."] },
+            { ad: "Rebiülahir", aciklama: "Baharın sonudur. İbadet ve taatte devamlılık tavsiye edilir.", ibadetler: ["Günlük Kur'an cüzü okumaya başlamak", "Pazartesi ve Perşembe nafile oruçları"], dualar: ["<b>Zikir:</b> 'Lâ havle ve lâ kuvvete illâ billâhil aliyyil azîm' ve 'Sübhânallahi velhamdülillâhi velâ ilâhe illallahu vallahu ekber' tesbihlerine devam edilir.", "<b>İbadet:</b> Bu aya özel kesinleşmiş bir namaz yoktur ancak Kuşluk (İşrak) ve Teheccüd gibi nafile namazlara ağırlık verilmesi, kaza namazlarının kılınması tavsiye edilir."] },
+            { ad: "Cemaziyelevvel", aciklama: "Tövbe ve ibadetlerin artırıldığı, manevi hazırlık aylarına girişin başlangıcıdır.", ibadetler: ["Geçmiş günahlar için tövbe istiğfar", "Sıla-i Rahim (Akraba ziyareti)"], dualar: ["<b>Tövbe Duası:</b> Seyyidül İstiğfar (Allahümme ente rabbî lâ ilâhe illâ ente...) bu ayda çokça okunmalıdır.", "<b>Hacet Namazı:</b> Sıkıntıların defi için 2 veya 4 rekat Hacet namazı kılınır.<br><b>Fazileti:</b> Fatiha'dan sonra 3 defa Ayetel Kürsi okunması çok faziletlidir."] },
+            { ad: "Cemaziyelahir", aciklama: "Hicri yılın altıncı ayıdır, Recep ayından önceki son duraktır.", ibadetler: ["Varsa kaza oruçlarını tamamlamak", "İhtiyaç sahiplerine yardım, zekat hesaplamaları"], dualar: ["<b>Korunma Duası:</b> 'Bismillâhillezî lâ yedurru me'as-mihî şey'ün fil-ardı ve lâ fis-semâi ve hüves-semî'ul alîm' duası sabah akşam 3 kez okunur.", "<b>Şükür Namazı:</b> 2 rekat şükür namazı kılınıp, üç aylara sağlıkla ulaşmak için dua edilir."] },
+            { ad: "Recep", aciklama: "Mübarek Üç Ayların başlangıcıdır. Haram aylardandır. Regaip ve Miraç geceleri bu aydadır.", ibadetler: ["Recep ayına özel nafile oruçlar tutmak", "Regaip ve Miraç gecelerini namazla ihya etmek", "Günde 11 defa İhlas Suresi okumak"], dualar: ["<b>Üç Aylar Duası:</b> 'Allahümme bârik lenâ fî Recebe ve Şa'bân ve belliğnâ Ramadân'", "<b>Regaip Kandili Namazı:</b> Akşam ile Yatsı arası veya gece 12 rekat namaz kılınır. Her rekatta Fatiha'dan sonra 3 Kadir, 12 İhlas Suresi okunur.", "<b>Miraç Kandili Namazı:</b> 12 rekat namaz kılınır. Her rekatta Fatiha ve 1 sure okunur, 2 rekatta bir selam verilir. Sonunda 100 defa 'Sübhanallahi velhamdülillahi...' çekilir."] },
+            { ad: "Şaban", aciklama: "Üç ayların ikincisidir. Beraat Kandili bu aydadır. Amellerin Allah'a arz edildiği aydır.", ibadetler: ["Ramazan orucuna hazırlık için nafile oruçlar", "Beraat gecesini ibadet, dua ve gözyaşı ile geçirmek", "Kur'an okumayı artırmak"], dualar: ["<b>Zikir:</b> Günde 100 defa Salavat-ı Şerife okunur.", "<b>Beraat Gecesi Namazı:</b> 100 rekatlık Beraat namazı tavsiye edilmiştir.<br><b>Kılınışı:</b> Her rekatta 1 Fatiha, 10 İhlas suresi okunur.<br><b>Fazileti:</b> Bir yıllık günahların affına ve büyük sevaplara vesile olur."] },
+            { ad: "Ramazan", aciklama: "Kur'an'ın indirildiği, farz orucun tutulduğu on bir ayın sultanıdır. Kadir Gecesi bu aydadır.", ibadetler: ["Farz Oruç tutmak", "Teravih Namazı kılmak", "Mukabele (Kur'an Hatmi) okumak", "Fitre ve Zekat vermek, İtikafa girmek"], dualar: ["<b>İftar Duası:</b> 'Allahümme leke sumtü ve bike âmentü ve aleyke tevekkeltü...'", "<b>Kadir Gecesi Duası:</b> 'Allahümme inneke afüvvün tuhibbul afve fa'fu annî'", "<b>Teravih Namazı:</b> Yatsıdan sonra 20 rekat kılınan Ramazan'a özel sünnet namazıdır.<br><b>Kadir Gecesi Namazı:</b> 4 veya 12 rekat kılınır. Fatiha'dan sonra 3 Kadir, 3 İhlas okunur."] },
+            { ad: "Şevval", aciklama: "Ramazan Bayramı ile başlayan aydır. Ramazan ayındaki güzel alışkanlıkların devam ettirilmesi istenir.", ibadetler: ["Şevval orucu (6 gün) tutmak (Çok faziletlidir)", "Bayramlaşma ve küslerin barışması"], dualar: ["<b>Zikirler:</b> 'Allahu Ekber, Elhamdülillah, Sübhanallah' kelimelerine ağırlık verilir.", "<b>Oruç ve İbadet:</b> 6 gün Şevval orucu tutmak bütün yılı oruçlu geçirmiş gibi sevap kazandırır. Bayram günleri Teheccüd namazı kılmak çok faziletlidir."] },
+            { ad: "Zilkade", aciklama: "Haram aylardandır. Hac hazırlıklarının başladığı, sükunet ve ibadet ayıdır.", ibadetler: ["Haram ay hürmetine günahlardan ekstra sakınmak", "Nafile namaz ve oruçları artırmak"], dualar: ["<b>Tevhid:</b> 'Lâ ilâhe illallahü vahdehû lâ şerîke leh...' tesbihi günlük çekilir.", "<b>Nafile Namaz:</b> Haram aylardan olduğu için bu ayda gece ibadetine kalkmak (Teheccüd), Evvabin ve İşrak namazlarına devam etmek çok sevaptır."] },
+            { ad: "Zilhicce", aciklama: "Haram aylardandır. Hac ibadetinin yapıldığı, Kurban Bayramının olduğu mübarek aydır.", ibadetler: ["İlk 9 gün oruç tutmak (Özellikle Arefe günü)", "Kurban kesmek", "Farz namazların ardında Teşrik Tekbirleri getirmek"], dualar: ["<b>Teşrik Tekbiri:</b> 'Allahu ekber Allahu ekber, Lâ ilâhe illallahu vallahu ekber...' (Arefe sabahından bayramın 4. günü ikindisine kadar farz namazlardan sonra vaciptir).", "<b>Arefe Günü İbadeti:</b> 1000 defa İhlas suresi okumak çok faziletlidir. Arefe gecesi 4 rekat namaz tavsiye edilir; her rekatta 1 Fatiha, 50 İhlas okunur."] }
         ];
 
+        // TAM VE ORİJİNAL AŞR-I ŞERİF BİLGİSİ
         const asriSerifVerileri = {
             'sabah': { vakit: 'Sabah ve Akşam Namazı Sonrası', baslik: "Haşr Suresi (Son 3 Ayet)", arapca: "هُوَ اللّٰهُ الَّذ۪ي لَآ اِلٰهَ اِلَّا هُوَۚ عَالِمُ الْغَيْبِ وَالشَّهَادَةِۚ هُوَ الرَّحْمٰنُ الرَّح۪يمُ ﴿٢٢﴾ هُوَ اللّٰهُ الَّذ۪ي لَآ اِلٰهَ اِلَّا هُوَۚ اَلْمَلِكُ الْقُدُّوسُ السَّلَامُ الْمُؤْمِنُ الْمُهَيْمِنُ الْعَز۪يزُ الْجَبَّارُ الْمُتَكَبِّرُۚ سُبْحَانَ اللّٰهِ عَمَّا يُشْرِكُونَ ﴿٢٣﴾ هُوَ اللّٰهُ الْخَالِقُ الْبَارِئُ الْمُصَوِّرُ لَهُ الْاَسْمَآءُ الْحُسْنٰىۚ يُسَبِّحُ لَهُ مَا فِي السَّمٰوَاتِ وَالْاَرْضِۚ وَهُوَ الْعَز۪يزُ الْحَك۪يمُ ﴿٢٤﴾", okunus: "Hüvallâhüllezî lâ ilâhe illâ hû. Âlimül ğaybi veş-şehâdeh. Hüver-rahmânür-rahîm. Hüvallâhüllezî lâ ilâhe illâ hû. El-melikül-kuddûsüs-selâmül mü'minül müheyminül azîzül cebbârul mütekebbir. Sübhânallâhi ammâ yüşrikûn. Hüvallâhül hâlikul bâriül musavviru lehül esmâül hüsnâ. Yüsebbihu lehû mâ fis-semâvâti vel-ard. Ve hüvel azîzül hakîm." },
             'ogle': { vakit: 'Öğle Namazı Sonrası', baslik: "Fetih Suresi (Son 3 Ayet)", arapca: "لَقَدْ صَدَقَ اللَّهُ رَسُولَهُ الرُّؤْيَا بِالْحَقِّ ۖ لَتَدْخُلُنَّ الْمَسْجِدَ الْحَرَامَ إِنْ شَاءَ اللَّهُ آمِنِينَ مُحَلِّقِينَ رُءُوسَكُمْ وَمُقَصِّرِينَ لَا تَخَافُونَ ۖ فَعَلِمَ مَا لَمْ تَعْلَمُوا فَجَعَلَ مِنْ دُونِ ذَٰلِكَ فَتْحًا قَرِيبًا ﴿٢٧﴾ هُوَ الَّذِي أَرْسَلَ رَسُولَهُ بِالْهُدَىٰ وَدِينِ الْحَقِّ لِيُظْهِرَهُ عَلَى الدِّينِ كُلِّهِ ۚ وَكَفَىٰ بِاللَّهِ شَهِيدًا ﴿٢٨﴾ مُحَمَّدٌ رَسُولُ اللَّهِ ۚ وَالَّذِينَ مَعَهُ أَشِدَّاءُ عَلَى الْكُفَّارِ رُحَمَاءُ بَيْنَهُمْ ۖ تَرَاهُمْ رُكَّعًا سُجَّدًا يَبْتَغُونَ فَضْلًا مِنَ اللَّهِ وَرِضْوَانًا ۖ سِيمَاهُمْ فِي وُجُوهِهِمْ مِنْ أَثَرِ السُّجُودِ ۚ ذَٰلِكَ مَثَلُهُمْ فِي التَّوْرَاةِ ۚ وَمَثَلُهُمْ فِي الْإِنْجِيلِ كَزَرْعٍ أَخْرَجَ شَطْأَهُ فَآزَرَهُ فَاسْتَغْلَظَ فَاسْتَوَىٰ عَلَىٰ سُوقِهِ يُعْجِبُ الزُّرَّاعَ لِيَغِيظَ بِهِمُ الْكُفَّارَ ۗ وَعَدَ اللَّهُ الَّذِينَ آمَنُوا وَعَمِلُوا الصَّالِحَاتِ مِنْهُمْ مَغْفِرَةً وَأَجْرًا عَظِيمًا ﴿٢٩﴾", okunus: "Lekad sadakallâhü rasûlehür-ru'yâ bil-hakk. Letedhulünnel mescidel-harâme inşâellâhü âminîne muhallikîne ruûseküm ve mükassırîne lâ tehâfûn. Fe'alime mâ lem ta'lemû fece'ale min dûni zâlike fethan karîbâ. Hüvellezî ersele rasûlehû bil-hüdâ ve dînil hakkı liyuzhirahû aled-dîni küllih. Ve kefâ billâhi şehîdâ. Muhammedür-rasûlüllâh. Vellezîne me'ahû eşiddâü alel küffâri ruhamâü beynehüm. Terâhüm rukke'an süccedey-yebteğûne fadlem-minellâhi ve rıdvânâ. Sîmâhüm fî vucûhihim min eseris-sücûd. Zâlike meselühüm fit-tevrâh. Ve meselühüm fil incîl. Kezer'in ahrace şat'ehû feâzerahû festağleza festevâ alâ sûkıhî yu'cibüz-zürrâ'a liyeğîza bihimül küffâr. Ve'adellâhüllezîne âmenû ve amilüs-sâlihâti minhüm mağfiratev-ve ecran azîmâ." },
@@ -981,8 +994,7 @@
         };
 
         window.gununIceriginiYukle = () => {
-            const gun = new Date().getDate();
-            const index = gun % gunlukIceriklerDB.length;
+            const index = new Date().getDate() % gunlukIceriklerDB.length;
             const icerik = gunlukIceriklerDB[index];
             const ayetEl = document.getElementById('gunluk-ayet');
             const hadisEl = document.getElementById('gunluk-hadis');
@@ -992,31 +1004,24 @@
             if (duaEl) duaEl.innerText = icerik.dua;
         };
 
-        function veritabaniYukle() {
-            try {
-                const data = window.localStorage.getItem('hazine_db_pro');
-                if (data) {
-                    const parsed = JSON.parse(data);
-                    if (Array.isArray(parsed) && parsed.length > 0) {
-                        return parsed.filter(d => d !== null && typeof d === 'object' && d.id).map(item => ({
-                            id: String(item.id || Date.now()), kategori: String(item.kategori || "Genel"), baslik: String(item.baslik || "İsimsiz"), hedef: parseInt(item.hedef) || 0, arapca: String(item.arapca || ""), okunus: String(item.okunus || ""), meal: String(item.meal || "")
-                        }));
-                    }
+        function veritabaniYukle() { return JSON.parse(JSON.stringify(varsayilanDB)); }
+
+        // KULLANICI ETKİLEŞİMİYLE SES KİLİDİNİ AÇMA (Tarayıcı Oto-Ses Oynatma Engeli İçin)
+        document.addEventListener('click', () => {
+            if(!isAudioUnlocked) {
+                const s = document.getElementById('alert-sound');
+                if(s) {
+                    s.volume = 0; s.play().then(() => { s.pause(); s.currentTime = 0; s.volume = 1; isAudioUnlocked = true; }).catch(e=>{});
                 }
-            } catch(e) {}
-            return JSON.parse(JSON.stringify(varsayilanDB));
-        }
+            }
+        }, { once: true });
 
         window.onload = async () => {
             try {
                 await idb.init();
-                
                 try {
                     const yerelDB = await idb.get('dbData'); 
-                    if(yerelDB) {
-                        dbData = JSON.parse(yerelDB);
-                        if (!Array.isArray(dbData)) dbData = veritabaniYukle();
-                    } else { dbData = veritabaniYukle(); }
+                    if(yerelDB) { dbData = JSON.parse(yerelDB); if (!Array.isArray(dbData)) dbData = veritabaniYukle(); } else { dbData = veritabaniYukle(); }
                 } catch(e) { dbData = veritabaniYukle(); }
 
                 varsayilanDB.forEach(vd => { if(!dbData.find(d => String(d.id) === String(vd.id))) dbData.push(vd); });
@@ -1029,17 +1034,17 @@
                     if (yerelState) {
                         const s = JSON.parse(yerelState);
                         if(s) { 
-                            aktifZikirId = s.aktifZikirId || dbData[0].id; 
+                            aktifZikirId = s.aktifZikirId || ""; 
                             sayac = s.sayac || 0; zikirMode = s.zikirMode || 'kutuphane'; 
                             freeSayac = s.freeSayac || 0; freeHedef = s.freeHedef || 0; 
                             ulke = s.ulke || "Turkey"; sehir = s.sehir || "Ankara"; 
                             kazaDurumu = s.kazaDurumu || kazaDurumu; 
                             kazaMaksimum = s.kazaMaksimum || s.kazaDurumu || kazaMaksimum;
                         }
-                    } else { aktifZikirId = dbData[0].id; }
-                } catch(e) { aktifZikirId = dbData[0].id; }
+                    } else { aktifZikirId = ""; }
+                } catch(e) { aktifZikirId = ""; }
                 
-                try { const yerelUyari = window.localStorage.getItem('hazine_uyari_ayar'); if (yerelUyari) { const u = JSON.parse(yerelUyari); if (u) uyariAyarlari = { aktif: u.aktif || false, dakika: u.dakika || 15 }; } } catch(e) {}
+                try { const yerelUyari = window.localStorage.getItem('hazine_uyari_ayar'); if (yerelUyari) { const u = JSON.parse(yerelUyari); if (u) uyariAyarlari = { aktif: u.aktif || true, dakika: u.dakika || 15 }; } } catch(e) {}
 
                 if(freeHedef > 0) document.getElementById('input-serbest-hedef').value = freeHedef;
 
@@ -1050,8 +1055,8 @@
                 window.kazaEkraniGuncelle(); 
                 window.raporlariListele(); 
                 window.konumMetinleriniGuncelle();
-                window.hicriTakvimGuncelle();
                 window.gununIceriginiYukle();
+                window.hicriTakvimGuncelle();
                 setTimeout(() => { window.vakitleriGetir(); }, 1000);
 
                 const loader = document.getElementById('loading-screen');
@@ -1060,8 +1065,6 @@
                 if (!window.localStorage.getItem('hazine_policy_accepted')) window.infoModalAc();
                 initFirebaseBackground();
                 
-                document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') { window.vakitleriGetir(); } });
-
             } catch (error) {
                 const loader = document.getElementById('loading-screen');
                 if (loader) loader.classList.add('hidden');
@@ -1070,19 +1073,13 @@
 
         async function initFirebaseBackground() {
             try {
-                let fConfig = null;
-                if (GITHUB_FIREBASE_CONFIG) { fConfig = GITHUB_FIREBASE_CONFIG; appId = fConfig.projectId || 'hazine-pro'; } 
-                if (!fConfig) return;
-
+                let fConfig = GITHUB_FIREBASE_CONFIG; appId = fConfig.projectId || 'hazine-pro';
                 const fbApp = await import("https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js");
                 const fbAuth = await import("https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js");
                 const fbStore = await import("https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js");
-                
                 window.fb = { initializeApp: fbApp.initializeApp, getAuth: fbAuth.getAuth, signInAnonymously: fbAuth.signInAnonymously, onAuthStateChanged: fbAuth.onAuthStateChanged, signInWithEmailAndPassword: fbAuth.signInWithEmailAndPassword, createUserWithEmailAndPassword: fbAuth.createUserWithEmailAndPassword, signOut: fbAuth.signOut, setPersistence: fbAuth.setPersistence, browserLocalPersistence: fbAuth.browserLocalPersistence, getFirestore: fbStore.getFirestore, collection: fbStore.collection, doc: fbStore.doc, setDoc: fbStore.setDoc, getDoc: fbStore.getDoc, getDocs: fbStore.getDocs, deleteDoc: fbStore.deleteDoc };
-
                 document.getElementById('cloud-offline-warning').classList.add('hidden'); document.getElementById('cloud-auth-section').classList.remove('hidden');
                 const app = window.fb.initializeApp(fConfig); auth = window.fb.getAuth(app); firestoreDb = window.fb.getFirestore(app);
-                
                 try { await window.fb.setPersistence(auth, window.fb.browserLocalPersistence); } catch(err) {} await window.fb.signInAnonymously(auth).catch(()=>{});
                 
                 window.fb.onAuthStateChanged(auth, async (u) => {
@@ -1124,17 +1121,7 @@
             const btn = document.getElementById('btn-auth-submit'); const eskiMetin = btn.innerText; btn.innerText = "⏳ Bekleyiniz..."; btn.disabled = true;
             try { await window.fb.signInWithEmailAndPassword(auth, email, pass); window.toastGoster("Giriş yapıldı.", "success"); } catch(err) { try { await window.fb.createUserWithEmailAndPassword(auth, email, pass); await window.syncAllToCloud(); window.toastGoster("Hesap oluşturuldu!", "success"); } catch(err2) { window.toastGoster("Hata: " + err2.message, "error"); } } btn.innerText = eskiMetin; btn.disabled = false;
         };
-
         window.bulutCikisYap = async () => { if(window.fb) await window.fb.signOut(auth); window.toastGoster("Çıkış yapıldı.", "info"); };
-
-        window.sekmeyeGec = (hedef) => {
-            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active')); const h = document.getElementById('view-' + hedef); if (h) h.classList.add('active');
-            document.querySelectorAll('.nav-btn').forEach(btn => { btn.classList.remove('active', 'text-emerald-600'); btn.classList.add('text-slate-400'); btn.querySelector('.nav-indicator').style.opacity = '0'; });
-            const aktifBtn = document.querySelector(`[data-target="view-${hedef}"]`); if (aktifBtn) { aktifBtn.classList.remove('text-slate-400'); aktifBtn.classList.add('active', 'text-emerald-600'); aktifBtn.querySelector('.nav-indicator').style.opacity = '1'; }
-            const scrollAlan = document.getElementById('main-scroll'); if (scrollAlan) scrollAlan.scrollTop = 0; syncToCloud();
-        };
-
-        window.saatiBaslat = () => { setInterval(() => { const s = new Date(); document.getElementById('canli-saat').innerText = `${String(s.getHours()).padStart(2, '0')}:${String(s.getMinutes()).padStart(2, '0')}:${String(s.getSeconds()).padStart(2, '0')}`; }, 1000); };
 
         window.hicriTakvimGuncelle = async () => {
             try {
@@ -1147,43 +1134,109 @@
                     const ibadetlerEl = document.getElementById('hicri-modal-ibadetler'); ibadetlerEl.innerHTML = "";
                     hicriAylarBilgisi[ayNo - 1].ibadetler.forEach(ibdt => { ibadetlerEl.innerHTML += `<div class="flex gap-2 items-start"><span class="text-emerald-500 mt-0.5">•</span><p>${ibdt}</p></div>`; });
                     const dualarEl = document.getElementById('hicri-modal-dualar'); dualarEl.innerHTML = "";
-                    hicriAylarBilgisi[ayNo - 1].dualar.forEach(dua => { dualarEl.innerHTML += `<div class="bg-slate-50 p-3 rounded-xl border border-slate-200"><p class="italic text-emerald-800 font-medium">${dua}</p></div>`; });
+                    hicriAylarBilgisi[ayNo - 1].dualar.forEach(dua => { dualarEl.innerHTML += `<div class="bg-white p-3.5 rounded-xl border border-slate-200 shadow-sm"><p class="text-[13px] text-slate-700 leading-relaxed">${dua}</p></div>`; });
                 }
             } catch (e) { document.getElementById('hicri-ay-bilgisi').innerText = "Hicri Tarih"; }
         };
-
         window.hicriBilgiModalAc = () => { document.getElementById('modal-hicribilgi').classList.remove('hidden'); };
 
         window.asriSerifModalAc = (vakit) => { const data = asriSerifVerileri[vakit]; if(data) { document.getElementById('asr-vakit').innerText = data.vakit; document.getElementById('asr-baslik').innerText = data.baslik; document.getElementById('asr-arapca').innerText = data.arapca; document.getElementById('asr-okunus').innerText = data.okunus; document.getElementById('modal-asriserif').classList.remove('hidden'); } };
         window.asriSerifModalKapat = () => { document.getElementById('modal-asriserif').classList.add('hidden'); };
 
+        window.sekmeyeGec = (hedef) => {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active')); const h = document.getElementById('view-' + hedef); if (h) h.classList.add('active');
+            document.querySelectorAll('.nav-btn').forEach(btn => { btn.classList.remove('active', 'text-emerald-600'); btn.classList.add('text-slate-400'); btn.querySelector('.nav-indicator').style.opacity = '0'; });
+            const aktifBtn = document.querySelector(`[data-target="view-${hedef}"]`); if (aktifBtn) { aktifBtn.classList.remove('text-slate-400'); aktifBtn.classList.add('active', 'text-emerald-600'); aktifBtn.querySelector('.nav-indicator').style.opacity = '1'; }
+            const scrollAlan = document.getElementById('main-scroll'); if (scrollAlan) scrollAlan.scrollTop = 0; syncToCloud();
+        };
+
+        window.saatiBaslat = () => { setInterval(() => { const s = new Date(); document.getElementById('canli-saat').innerText = `${String(s.getHours()).padStart(2, '0')}:${String(s.getMinutes()).padStart(2, '0')}:${String(s.getSeconds()).padStart(2, '0')}`; }, 1000); };
+
         window.zikirSuresiGuncelle = () => { if(!zikirBaslangicZamani) return; const gecenSaniye = Math.floor((Date.now() - zikirBaslangicZamani) / 1000); const dk = String(Math.floor(gecenSaniye / 60)).padStart(2, '0'); const sn = String(gecenSaniye % 60).padStart(2, '0'); const el = document.getElementById('zikir-suresi'); if(el) el.innerText = `${dk}:${sn}`; };
 
         window.zikirModDegistir = (mod, kaydetVeSenkronizeEt = true) => {
             zikirMode = mod; const btnKut = document.getElementById('btn-mode-kutuphane'); const btnSer = document.getElementById('btn-mode-serbest');
-            if(mod === 'kutuphane') { btnKut.classList.add('bg-white', 'shadow', 'text-emerald-800'); btnKut.classList.remove('text-slate-500'); btnSer.classList.remove('bg-white', 'shadow', 'text-emerald-800'); btnSer.classList.add('text-slate-500'); document.getElementById('kutuphane-secici-container').classList.remove('hidden'); document.getElementById('zikir-detay').classList.remove('hidden'); document.getElementById('serbest-ayarlar-container').classList.add('hidden'); } 
-            else { btnSer.classList.add('bg-white', 'shadow', 'text-emerald-800'); btnSer.classList.remove('text-slate-500'); btnKut.classList.remove('bg-white', 'shadow', 'text-emerald-800'); btnKut.classList.add('text-slate-500'); document.getElementById('kutuphane-secici-container').classList.add('hidden'); document.getElementById('zikir-detay').classList.add('hidden'); document.getElementById('serbest-ayarlar-container').classList.remove('hidden'); }
-            if(kaydetVeSenkronizeEt) { saveLocalState(); syncToCloud(); } window.zikirEkraniGuncelle();
+            if(mod === 'kutuphane') { 
+                btnKut.classList.add('bg-white', 'shadow', 'text-emerald-800'); btnKut.classList.remove('text-slate-500'); 
+                btnSer.classList.remove('bg-white', 'shadow', 'text-emerald-800'); btnSer.classList.add('text-slate-500'); 
+                document.getElementById('kutuphane-secici-container').classList.remove('hidden'); 
+                document.getElementById('serbest-ayarlar-container').classList.add('hidden'); 
+            } else { 
+                btnSer.classList.add('bg-white', 'shadow', 'text-emerald-800'); btnSer.classList.remove('text-slate-500'); 
+                btnKut.classList.remove('bg-white', 'shadow', 'text-emerald-800'); btnKut.classList.add('text-slate-500'); 
+                document.getElementById('kutuphane-secici-container').classList.add('hidden'); 
+                document.getElementById('serbest-ayarlar-container').classList.remove('hidden'); 
+            }
+            if(kaydetVeSenkronizeEt) { saveLocalState(); syncToCloud(); } 
+            window.zikirEkraniGuncelle();
         };
 
         window.serbestHedefKaydet = () => { freeHedef = parseInt(document.getElementById('input-serbest-hedef').value) || 0; saveLocalState(); window.zikirEkraniGuncelle(); };
 
+        // KATEGORİSİZ DÜZ SEÇİCİ
         window.zikirSeciciDoldur = () => {
-            const secici = document.getElementById('zikir-secici'); if(!secici) return; secici.innerHTML = ""; const kategoriler = [...new Set(dbData.map(item => item.kategori))];
-            kategoriler.forEach(kat => { const grup = document.createElement('optgroup'); grup.label = kat; dbData.filter(d => d.kategori === kat).forEach(dua => { const opt = document.createElement('option'); opt.value = dua.id; opt.textContent = dua.baslik; if(String(dua.id) === String(aktifZikirId)) opt.selected = true; grup.appendChild(opt); }); secici.appendChild(grup); });
+            const secici = document.getElementById('zikir-secici'); if(!secici) return; 
+            secici.innerHTML = '<option value="" disabled selected>Zikir veya Dua Seçiniz...</option>'; 
+            dbData.forEach(dua => { 
+                const opt = document.createElement('option'); 
+                opt.value = dua.id; 
+                opt.textContent = dua.baslik; 
+                if(String(dua.id) === String(aktifZikirId)) opt.selected = true; 
+                secici.appendChild(opt); 
+            });
         };
 
         window.zikirSec = (id) => { aktifZikirId = String(id); sayac = 0; zikirBaslangicZamani = null; if(zikirTimer) clearInterval(zikirTimer); const zs = document.getElementById('zikir-suresi'); if(zs) zs.innerText = "00:00"; saveLocalState(); syncToCloud(); window.zikirEkraniGuncelle(); };
 
         window.zikirEkraniGuncelle = () => {
+            const kontrolAlani = document.getElementById('z-sayac-kontrol-alani');
+            const detayAlani = document.getElementById('zikir-detay');
+
+            // Eğer Kütüphane modundaysa ve seçim yapılmadıysa her şeyi gizle
+            if (zikirMode === 'kutuphane' && (!aktifZikirId || aktifZikirId === "")) {
+                if(detayAlani) detayAlani.classList.add('hidden');
+                if(kontrolAlani) kontrolAlani.classList.add('hidden');
+                return;
+            } else {
+                if(kontrolAlani) kontrolAlani.classList.remove('hidden');
+                if (zikirMode === 'kutuphane' && detayAlani) detayAlani.classList.remove('hidden');
+                else if(detayAlani) detayAlani.classList.add('hidden'); // Serbest modda detay yok
+            }
+
             let aktifHedef = 0, aktifSayac = 0; const sayacKutusu = document.getElementById('z-sayac'); if(sayacKutusu) sayacKutusu.classList.remove('hedef-basarili');
+            
             if(zikirMode === 'kutuphane') {
-                const zikir = dbData.find(d => String(d.id) === String(aktifZikirId)); if(!zikir) return; document.getElementById('z-kategori').innerText = zikir.kategori; document.getElementById('z-baslik').innerText = zikir.baslik; const arapcaEl = document.getElementById('z-arapca'); if(zikir.arapca) { arapcaEl.innerText = zikir.arapca; arapcaEl.classList.remove('hidden'); } else { arapcaEl.classList.add('hidden'); } document.getElementById('z-okunus').innerText = zikir.okunus; const mealEl = document.getElementById('z-meal'); if(zikir.meal) { mealEl.innerText = zikir.meal; mealEl.classList.remove('hidden'); } else { mealEl.classList.add('hidden'); } aktifHedef = parseInt(zikir.hedef) || 0; aktifSayac = sayac;
+                const zikir = dbData.find(d => String(d.id) === String(aktifZikirId)); if(!zikir) return; 
+                document.getElementById('z-kategori').innerText = zikir.kategori; 
+                document.getElementById('z-baslik').innerText = zikir.baslik; 
+                const arapcaEl = document.getElementById('z-arapca'); if(zikir.arapca) { arapcaEl.innerText = zikir.arapca; arapcaEl.classList.remove('hidden'); } else { arapcaEl.classList.add('hidden'); } 
+                document.getElementById('z-okunus').innerText = zikir.okunus; 
+                const mealEl = document.getElementById('z-meal'); if(zikir.meal) { mealEl.innerText = zikir.meal; mealEl.classList.remove('hidden'); } else { mealEl.classList.add('hidden'); } 
+                
+                // NOT / AÇIKLAMA KONTROLÜ
+                const notKapsayici = document.getElementById('z-not-kapsayici');
+                const notEl = document.getElementById('z-not');
+                if(notKapsayici && notEl) {
+                    if(zikir.not) { 
+                        notEl.innerText = zikir.not; 
+                        notKapsayici.classList.remove('hidden'); 
+                    } else { 
+                        notKapsayici.classList.add('hidden'); 
+                    }
+                }
+
+                aktifHedef = parseInt(zikir.hedef) || 0; aktifSayac = sayac;
             } else { aktifHedef = freeHedef; aktifSayac = freeSayac; }
+            
             if(sayacKutusu) sayacKutusu.innerText = aktifSayac;
             const hedefKapsayici = document.getElementById('hedef-kapsayici'), hedefBar = document.getElementById('hedef-bar'), hedefMetin = document.getElementById('hedef-metin'), hedefKalan = document.getElementById('hedef-kalan');
+            
             if(aktifHedef > 0) {
-                if(hedefKapsayici) hedefKapsayici.classList.remove('hidden'); if(hedefMetin) hedefMetin.innerText = `${aktifSayac} / ${aktifHedef}`; let kalan = aktifHedef - aktifSayac; if(kalan < 0) kalan = 0; if(hedefKalan) hedefKalan.innerText = `${kalan}`; let yuzde = (aktifSayac / aktifHedef) * 100; if(yuzde > 100) yuzde = 100; if(hedefBar) hedefBar.style.width = yuzde + "%";
+                if(hedefKapsayici) hedefKapsayici.classList.remove('hidden'); 
+                if(hedefMetin) hedefMetin.innerText = `${aktifSayac} / ${aktifHedef}`; 
+                let kalan = aktifHedef - aktifSayac; if(kalan < 0) kalan = 0; 
+                if(hedefKalan) hedefKalan.innerText = `${kalan}`; 
+                let yuzde = (aktifSayac / aktifHedef) * 100; if(yuzde > 100) yuzde = 100; if(hedefBar) hedefBar.style.width = yuzde + "%";
                 if(aktifSayac >= aktifHedef) { if(hedefBar) { hedefBar.classList.replace('from-emerald-400', 'from-gold-400'); hedefBar.classList.replace('to-teal-500', 'to-yellow-500'); } if(sayacKutusu) sayacKutusu.classList.add('hedef-basarili'); } 
                 else { if(hedefBar) { hedefBar.classList.replace('from-gold-400', 'from-emerald-400'); hedefBar.classList.replace('to-yellow-500', 'to-teal-500'); } }
             } else { if(hedefKapsayici) hedefKapsayici.classList.add('hidden'); }
@@ -1205,14 +1258,21 @@
             }
             if(guncelHedef > 0 && guncelSayac === guncelHedef) {
                 if(zikirTimer) clearInterval(zikirTimer); if(navigator.vibrate) navigator.vibrate([100, 50, 100, 50, 200]);
-                if (audioCtx) { const osc = audioCtx.createOscillator(); const gainNode = audioCtx.createGain(); osc.connect(gainNode); gainNode.connect(audioCtx.destination); osc.type = 'sine'; osc.frequency.setValueAtTime(600, audioCtx.currentTime); osc.frequency.setValueAtTime(800, audioCtx.currentTime + 0.1); gainNode.gain.setValueAtTime(0.3, audioCtx.currentTime); gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.5); osc.start(); osc.stop(audioCtx.currentTime + 0.5); } window.toastGoster("🎯 Hedefe Ulaştınız!", "success");
+                window.toastGoster("🎯 Hedefe Ulaştınız!", "success");
             } else { if (navigator.vibrate) navigator.vibrate(15); }
         };
 
         window.onayIste = (b, m, i, fn) => { document.getElementById('onay-baslik').innerText = b; document.getElementById('onay-metin').innerText = m; document.getElementById('onay-ikon').innerText = i; document.getElementById('modal-onay').classList.remove('hidden'); document.getElementById('btn-onay-evet').onclick = () => { fn(); window.onayIptal(); }; };
         window.onayIptal = () => { document.getElementById('modal-onay').classList.add('hidden'); };
-        
-        window.sayaciSifirla = () => { window.onayIste("Sayacı Sıfırla", "Sıfırlamak istiyor musunuz?", "🔄", () => { if (zikirMode === 'kutuphane') { sayac = 0; } else { freeSayac = 0; freeHedef = 0; const elSH = document.getElementById('input-serbest-hedef'); if(elSH) elSH.value = ''; } zikirBaslangicZamani = null; if(zikirTimer) clearInterval(zikirTimer); const suresiEl = document.getElementById('zikir-suresi'); if(suresiEl) suresiEl.innerText = "00:00"; saveLocalState(); syncToCloud(); window.zikirEkraniGuncelle(); window.toastGoster("Sıfırlandı.", "info"); }); };
+
+        window.sayaciSifirla = () => { 
+            window.onayIste("Sayacı Sıfırla", "Sıfırlamak istiyor musunuz?", "🔄", () => {
+                if (zikirMode === 'kutuphane') { sayac = 0; } else { freeSayac = 0; } 
+                zikirBaslangicZamani = null; if(zikirTimer) clearInterval(zikirTimer); 
+                const suresiEl = document.getElementById('zikir-suresi'); if(suresiEl) suresiEl.innerText = "00:00"; 
+                saveLocalState(); syncToCloud(); window.zikirEkraniGuncelle(); window.toastGoster("Sıfırlandı.", "info"); 
+            });
+        };
         
         window.zikriKaydet = async () => {
             let baslikStr = "", kaydedilecekSayi = 0;
@@ -1242,19 +1302,109 @@
 
         window.modalAc = () => { document.getElementById('crud-form').reset(); document.getElementById('crud-id').value = ""; document.getElementById('modal-baslik').innerText = "Yeni Dua Ekle"; document.getElementById('modal-crud').classList.remove('hidden'); };
         window.modalKapat = () => { document.getElementById('modal-crud').classList.add('hidden'); };
+        
         window.kaydiKaydet = async (e) => {
             e.preventDefault(); const id = document.getElementById('crud-id').value || String(Date.now());
-            const yeniData = { id: id, kategori: document.getElementById('crud-kategori').value.trim() || "Genel", baslik: document.getElementById('crud-baslik').value.trim() || "İsimsiz", hedef: parseInt(document.getElementById('crud-hedef').value) || 0, arapca: document.getElementById('crud-arapca').value.trim(), okunus: document.getElementById('crud-okunus').value.trim(), meal: document.getElementById('crud-meal').value.trim() };
+            const yeniData = { 
+                id: id, 
+                kategori: document.getElementById('crud-kategori').value.trim() || "Genel", 
+                baslik: document.getElementById('crud-baslik').value.trim() || "İsimsiz", 
+                hedef: parseInt(document.getElementById('crud-hedef').value) || 0, 
+                arapca: document.getElementById('crud-arapca').value.trim(), 
+                okunus: document.getElementById('crud-okunus').value.trim(), 
+                meal: document.getElementById('crud-meal').value.trim(),
+                not: document.getElementById('crud-not').value.trim() // EKLENEN NOT ALANI
+            };
             const index = dbData.findIndex(d => String(d.id) === id); if(index > -1) dbData[index] = yeniData; else dbData.push(yeniData); 
             await idb.set('dbData', JSON.stringify(dbData)); if (isCloudConnected && currentUser && window.fb) window.fb.setDoc(window.fb.doc(firestoreDb, 'artifacts', appId, 'users', currentUser.uid, 'dualar', id), yeniData);
             window.zikirSeciciDoldur(); window.kutuphaneListele(); if(aktifZikirId === id && zikirMode === 'kutuphane') window.zikirEkraniGuncelle(); window.modalKapat(); window.toastGoster("Kaydedildi!", "success");
         };
+        
         window.kaydiDuzenle = (id) => {
             const dua = dbData.find(d => String(d.id) === String(id)); if(!dua) return;
-            document.getElementById('crud-id').value = dua.id; document.getElementById('crud-kategori').value = dua.kategori; document.getElementById('crud-baslik').value = dua.baslik; document.getElementById('crud-hedef').value = dua.hedef || ""; document.getElementById('crud-arapca').value = dua.arapca || ""; document.getElementById('crud-okunus').value = dua.okunus; document.getElementById('crud-meal').value = dua.meal || ""; document.getElementById('modal-baslik').innerText = "İçeriği Düzenle"; document.getElementById('modal-crud').classList.remove('hidden');
+            document.getElementById('crud-id').value = dua.id; 
+            document.getElementById('crud-kategori').value = dua.kategori; 
+            document.getElementById('crud-baslik').value = dua.baslik; 
+            document.getElementById('crud-hedef').value = dua.hedef || ""; 
+            document.getElementById('crud-arapca').value = dua.arapca || ""; 
+            document.getElementById('crud-okunus').value = dua.okunus; 
+            document.getElementById('crud-meal').value = dua.meal || ""; 
+            document.getElementById('crud-not').value = dua.not || ""; // EKLENEN NOT ALANI ÇAĞIRIMI
+            document.getElementById('modal-baslik').innerText = "İçeriği Düzenle"; 
+            document.getElementById('modal-crud').classList.remove('hidden');
         };
+        
         window.kaydiSil = async (id) => {
-            if(dbData.length === 1) return window.toastGoster("Son kayıt silinemez!", "error"); window.onayIste("İçeriği Sil", "Kalıcı olarak silmek istediğinize emin misiniz?", "🗑️", async () => { dbData = dbData.filter(d => String(d.id) !== String(id)); await idb.set('dbData', JSON.stringify(dbData)); if (isCloudConnected && currentUser && window.fb) window.fb.deleteDoc(window.fb.doc(firestoreDb, 'artifacts', appId, 'users', currentUser.uid, 'dualar', String(id))); if(aktifZikirId === String(id)) { aktifZikirId = String(dbData[0].id); sayac = 0; saveLocalState(); syncToCloud(); } window.zikirSeciciDoldur(); window.kutuphaneListele(); window.zikirEkraniGuncelle(); window.toastGoster("İçerik silindi", "info"); });
+            if(dbData.length === 1) return window.toastGoster("Son kayıt silinemez!", "error"); window.onayIste("İçeriği Sil", "Kalıcı olarak silmek istediğinize emin misiniz?", "🗑️", async () => { dbData = dbData.filter(d => String(d.id) !== String(id)); await idb.set('dbData', JSON.stringify(dbData)); if (isCloudConnected && currentUser && window.fb) window.fb.deleteDoc(window.fb.doc(firestoreDb, 'artifacts', appId, 'users', currentUser.uid, 'dualar', String(id))); if(aktifZikirId === String(id)) { aktifZikirId = ""; sayac = 0; saveLocalState(); syncToCloud(); } window.zikirSeciciDoldur(); window.kutuphaneListele(); window.zikirEkraniGuncelle(); window.toastGoster("İçerik silindi", "info"); });
+        };
+
+        window.konumMetinleriniGuncelle = () => { document.getElementById('header-konum').innerText = `${sehir}, ${ulke}`; document.getElementById('vakit-konum-metni').innerHTML = `<span class="font-bold text-slate-700">${sehir}</span>, ${ulke}`; };
+        
+        window.ulkeDegisti = (secilenUlke) => {
+            const sehirSelect = document.getElementById('input-sehir'); if(!sehirSelect) return;
+            sehirSelect.innerHTML = ""; const sehirler = konumVerisi[secilenUlke] || ["Bilinmeyen Şehir"];
+            sehirler.sort().forEach(s => { const opt = document.createElement('option'); opt.value = s; opt.text = s; sehirSelect.appendChild(opt); });
+            if(sehirler.includes(sehir)) sehirSelect.value = sehir;
+        };
+
+        window.konumModalAc = () => { 
+            const ulkeSelect = document.getElementById('input-ulke');
+            if(ulkeSelect) {
+                ulkeSelect.innerHTML = ""; Object.keys(konumVerisi).sort().forEach(u => { const opt = document.createElement('option'); opt.value = u; opt.text = u; ulkeSelect.appendChild(opt); });
+                if(Object.keys(konumVerisi).includes(ulke)) ulkeSelect.value = ulke; window.ulkeDegisti(ulkeSelect.value);
+            }
+            document.getElementById('modal-konum').classList.remove('hidden'); 
+        };
+        
+        window.konumModalKapat = () => { document.getElementById('modal-konum').classList.add('hidden'); };
+        
+        // BIGDATACLOUD (Ana Güvenilir Ters Kodlama)
+        window.otomatikKonumBul = async (event) => { 
+            const btn = event.target; const eskiMetin = btn.innerText; btn.innerText = "⏳ Bulunuyor..."; btn.disabled = true; 
+            try { 
+                if (!navigator.geolocation) throw new Error("GPS Yok");
+                navigator.geolocation.getCurrentPosition(async (pos) => {
+                    try {
+                        let bulunanUlke = "", bulunanSehir = "";
+                        
+                        // En güvenilir ücretsiz anahtarsız servis BigDataCloud
+                        const bdcUrl = `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${pos.coords.latitude}&longitude=${pos.coords.longitude}&localityLanguage=en`;
+                        const res = await fetch(bdcUrl);
+                        const data = await res.json();
+                        
+                        bulunanUlke = data.countryName;
+                        bulunanSehir = data.city || data.locality || data.principalSubdivision;
+                        
+                        if(bulunanUlke === "Türkiye" || bulunanUlke === "Turkey (the)") bulunanUlke = "Turkey";
+                        if(bulunanSehir) bulunanSehir = bulunanSehir.replace(' Province', '').replace(' City', '').replace(' Metropolitan Municipality', '');
+                        
+                        const ulkeSelect = document.getElementById('input-ulke');
+                        if(konumVerisi[bulunanUlke]) {
+                            ulkeSelect.value = bulunanUlke; window.ulkeDegisti(bulunanUlke);
+                            const sehirSelect = document.getElementById('input-sehir');
+                            const match = konumVerisi[bulunanUlke].find(s => s.toLowerCase() === bulunanSehir.toLowerCase() || bulunanSehir.toLowerCase().includes(s.toLowerCase()));
+                            if(match) sehirSelect.value = match;
+                            else if(bulunanSehir && !konumVerisi[bulunanUlke].includes(bulunanSehir)) {
+                                const opt = document.createElement('option'); opt.value = bulunanSehir; opt.text = bulunanSehir;
+                                sehirSelect.appendChild(opt); sehirSelect.value = bulunanSehir;
+                            }
+                            window.toastGoster("Konum başarıyla tespit edildi.", "success");
+                        } else {
+                            window.toastGoster("Ülke desteklenmiyor. Lütfen listeden seçin.", "error");
+                        }
+                    } catch(e) { window.toastGoster("Harita servisine ulaşılamadı.", "error"); }
+                    finally { btn.innerText = eskiMetin; btn.disabled = false; }
+                }, (err) => {
+                    window.toastGoster("GPS sinyali zayıf veya konum kapalı.", "error");
+                    btn.innerText = eskiMetin; btn.disabled = false;
+                }, { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 });
+            } catch(e) { window.toastGoster("Tarayıcınız konum desteklemiyor.", "error"); btn.innerText = eskiMetin; btn.disabled = false; } 
+        };
+        
+        window.konumKaydet = () => { 
+            const yU = document.getElementById('input-ulke').value; const yS = document.getElementById('input-sehir').value; 
+            if(!yU || !yS) return window.toastGoster("Ülke veya şehir boş olamaz!", "error"); 
+            ulke = yU; sehir = yS; saveLocalState(); syncToCloud(); window.konumMetinleriniGuncelle(); window.konumModalKapat(); window.vakitleriGetir(); 
         };
 
         window.kazaEkraniGuncelle = () => {
@@ -1310,17 +1460,13 @@
             document.getElementById('hizli-yil-input').value = ""; 
             document.getElementById('modal-kaza-ayar').classList.remove('hidden'); 
         };
-        
         window.kazaTopluAyarModalKapat = () => { document.getElementById('modal-kaza-ayar').classList.add('hidden'); };
         
         window.hizliYilEkle = () => {
             const yil = parseInt(document.getElementById('hizli-yil-input').value) || 0;
             if(yil <= 0) return window.toastGoster("Lütfen geçerli bir yıl girin.", "error");
             const eklenecekGun = yil * 365;
-            kazaVakitBilgileri.forEach(v => { 
-                kazaDurumu[v.id] = (kazaDurumu[v.id] || 0) + eklenecekGun; 
-                kazaMaksimum[v.id] = (kazaMaksimum[v.id] || 0) + eklenecekGun; 
-            });
+            kazaVakitBilgileri.forEach(v => { kazaDurumu[v.id] = (kazaDurumu[v.id] || 0) + eklenecekGun; kazaMaksimum[v.id] = (kazaMaksimum[v.id] || 0) + eklenecekGun; });
             saveLocalState(); syncToCloud(); window.kazaEkraniGuncelle(); window.kazaTopluAyarModalKapat();
             window.toastGoster(`${yil} yıllık kaza borca eklendi!`, "success");
         };
@@ -1339,142 +1485,40 @@
             if (cinsiyet === 'kadin') { eklenecekGun -= (yilFark * 12 * ozelGun); }
             if (eklenecekGun < 0) eklenecekGun = 0;
 
-            kazaVakitBilgileri.forEach(v => { 
-                kazaDurumu[v.id] = (kazaDurumu[v.id] || 0) + eklenecekGun; 
-                kazaMaksimum[v.id] = (kazaMaksimum[v.id] || 0) + eklenecekGun; 
-            });
-            
+            kazaVakitBilgileri.forEach(v => { kazaDurumu[v.id] = (kazaDurumu[v.id] || 0) + eklenecekGun; kazaMaksimum[v.id] = (kazaMaksimum[v.id] || 0) + eklenecekGun; });
             saveLocalState(); syncToCloud(); window.kazaEkraniGuncelle();
             
-            if(elSonuc) { 
-                elSonuc.classList.remove('hidden'); 
-                elSonuc.innerHTML = `Hesaplandı:<br><span class="text-lg block my-1">${yilFark} Yıllık</span> Toplam <b>${eklenecekGun} Gün</b> borca eklendi.`; 
-            }
+            if(elSonuc) { elSonuc.classList.remove('hidden'); elSonuc.innerHTML = `Hesaplandı:<br><span class="text-lg block my-1">${yilFark} Yıllık</span> Toplam <b>${eklenecekGun} Gün</b> borca eklendi.`; }
             window.toastGoster(`Hesaplandı: ${yilFark} yıl (${eklenecekGun} gün eklendi).`, "success");
-            
-            setTimeout(() => {
-                window.kazaTopluAyarModalKapat();
-            }, 1800);
+            setTimeout(() => { window.kazaTopluAyarModalKapat(); }, 1800);
         };
-
         window.cinsiyetDegisti = (val) => { const ozelGunDiv = document.getElementById('kaza-ozel-gun-kapsayici'); if(val === 'kadin') { ozelGunDiv.classList.remove('hidden'); } else { ozelGunDiv.classList.add('hidden'); } };
-        
-        window.kazaTopluKaydet = () => { 
-            kazaVakitBilgileri.forEach(v => { 
-                const el = document.getElementById(`input-kaza-${v.id}`); 
-                if(el) { 
-                    const deger = parseInt(el.value) || 0; 
-                    kazaDurumu[v.id] = deger; 
-                    kazaMaksimum[v.id] = deger; 
-                } 
-            }); 
-            saveLocalState(); syncToCloud(); window.kazaEkraniGuncelle(); window.kazaTopluAyarModalKapat(); window.toastGoster("Güncellendi.", "success"); 
-        };
-        
+        window.kazaTopluKaydet = () => { kazaVakitBilgileri.forEach(v => { const el = document.getElementById(`input-kaza-${v.id}`); if(el) { const deger = parseInt(el.value) || 0; kazaDurumu[v.id] = deger; kazaMaksimum[v.id] = deger; } }); saveLocalState(); syncToCloud(); window.kazaEkraniGuncelle(); window.kazaTopluAyarModalKapat(); window.toastGoster("Güncellendi.", "success"); };
         window.kazaTamamenSifirla = () => { window.onayIste("Kazaları Sıfırla", "Tüm kaza borçlarınız ve kılınanlar sıfırlanacak. Emin misiniz?", "⚠️", () => { kazaVakitBilgileri.forEach(v => { kazaDurumu[v.id] = 0; kazaMaksimum[v.id] = 0; }); saveLocalState(); syncToCloud(); window.kazaEkraniGuncelle(); document.getElementById('modal-kaza-ayar').classList.add('hidden'); window.toastGoster("Tüm kazalar sıfırlandı.", "info"); }); };
 
-        window.yedekModalAc = () => { document.getElementById('modal-yedek').classList.remove('hidden'); }; window.yedekModalKapat = () => { document.getElementById('modal-yedek').classList.add('hidden'); };
-        window.yedekIndir = () => { const dataObj = { dbData, kayitlar, state: { sayac, aktifZikirId, zikirMode, freeSayac, freeHedef, ulke, sehir, kazaDurumu, kazaMaksimum } }; const blob = new Blob([JSON.stringify(dataObj, null, 2)], { type: 'application/json' }); const link = document.createElement("a"); link.href = URL.createObjectURL(blob); link.download = "Dijital_Hazine_Yedek.json"; link.click(); window.toastGoster("Yedek indirildi.", "success"); window.yedekModalKapat(); };
-        window.dosyadanYedekOku = (event) => { const file = event.target.files[0]; if(!file) return; const reader = new FileReader(); reader.onload = async (e) => { try { const data = JSON.parse(e.target.result); if(data.dbData) { dbData = data.dbData; kayitlar = data.kayitlar || []; if(data.state) { sayac = data.state.sayac || 0; aktifZikirId = data.state.aktifZikirId || dbData[0].id; zikirMode = data.state.zikirMode || 'kutuphane'; freeSayac = data.state.freeSayac || 0; freeHedef = data.state.freeHedef || 0; ulke = data.state.ulke || "Turkey"; sehir = data.state.sehir || "Ankara"; kazaDurumu = data.state.kazaDurumu || kazaDurumu; kazaMaksimum = data.state.kazaMaksimum || data.state.kazaDurumu || kazaMaksimum; } if(freeHedef > 0) document.getElementById('input-serbest-hedef').value = freeHedef; await idb.set('dbData', JSON.stringify(dbData)); await idb.set('kayitlar', JSON.stringify(kayitlar)); await saveLocalState(); window.syncAllToCloud(); window.zikirSeciciDoldur(); window.zikirModDegistir(zikirMode, false); window.kutuphaneListele(); window.kazaEkraniGuncelle(); window.raporlariListele(); window.konumMetinleriniGuncelle(); window.toastGoster("Yedek yüklendi!", "success"); window.yedekModalKapat(); } } catch(err) { window.toastGoster("Bozuk yedek.", "error"); } }; reader.readAsText(file); };
-
-        window.infoModalAc = () => { document.getElementById('modal-info').classList.remove('hidden'); }; window.infoModalKapat = () => { window.localStorage.setItem('hazine_policy_accepted', 'true'); document.getElementById('modal-info').classList.add('hidden'); };
-        
-        window.konumMetinleriniGuncelle = () => { document.getElementById('header-konum').innerText = `${sehir}, ${ulke}`; document.getElementById('vakit-konum-metni').innerHTML = `<span class="font-bold text-slate-700">${sehir}</span>, ${ulke}`; };
-        
-        window.ulkeDegisti = (secilenUlke) => {
-            const sehirSelect = document.getElementById('input-sehir');
-            if(!sehirSelect) return;
-            sehirSelect.innerHTML = "";
-            const sehirler = konumVerisi[secilenUlke] || ["Bilinmeyen Şehir"];
-            sehirler.sort().forEach(s => {
-                const opt = document.createElement('option');
-                opt.value = s; opt.text = s;
-                sehirSelect.appendChild(opt);
-            });
-            if(sehirler.includes(sehir)) sehirSelect.value = sehir;
-        };
-
-        window.konumModalAc = () => { 
-            const ulkeSelect = document.getElementById('input-ulke');
-            if(ulkeSelect) {
-                ulkeSelect.innerHTML = "";
-                Object.keys(konumVerisi).sort().forEach(u => {
-                    const opt = document.createElement('option');
-                    opt.value = u; opt.text = u;
-                    ulkeSelect.appendChild(opt);
-                });
-                if(Object.keys(konumVerisi).includes(ulke)) ulkeSelect.value = ulke;
-                window.ulkeDegisti(ulkeSelect.value);
-            }
-            document.getElementById('modal-konum').classList.remove('hidden'); 
-        };
-        
-        window.konumModalKapat = () => { document.getElementById('modal-konum').classList.add('hidden'); };
-        
-        window.otomatikKonumBul = async (event) => { 
-            const btn = event.target; const eskiMetin = btn.innerText; btn.innerText = "⏳ Bulunuyor..."; btn.disabled = true; 
-            try { 
-                if (!navigator.geolocation) throw new Error("GPS Yok");
-                navigator.geolocation.getCurrentPosition(async (pos) => {
-                    try {
-                        const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${pos.coords.latitude}&lon=${pos.coords.longitude}&accept-language=en`);
-                        const data = await res.json();
-                        let bulunanUlke = data.address.country;
-                        let bulunanSehir = data.address.province || data.address.city || data.address.town || data.address.state;
-                        
-                        if(bulunanUlke === "Türkiye") bulunanUlke = "Turkey";
-                        if(bulunanSehir) bulunanSehir = bulunanSehir.replace(' Province', '').replace(' City', '');
-                        
-                        const ulkeSelect = document.getElementById('input-ulke');
-                        if(konumVerisi[bulunanUlke]) {
-                            ulkeSelect.value = bulunanUlke;
-                            window.ulkeDegisti(bulunanUlke);
-                            const sehirSelect = document.getElementById('input-sehir');
-                            
-                            const match = konumVerisi[bulunanUlke].find(s => s.toLowerCase() === bulunanSehir.toLowerCase() || bulunanSehir.toLowerCase().includes(s.toLowerCase()));
-                            if(match) sehirSelect.value = match;
-                            else if(bulunanSehir && !konumVerisi[bulunanUlke].includes(bulunanSehir)) {
-                                const opt = document.createElement('option');
-                                opt.value = bulunanSehir; opt.text = bulunanSehir;
-                                sehirSelect.appendChild(opt); sehirSelect.value = bulunanSehir;
-                            }
-                            window.toastGoster("Konum başarıyla tespit edildi.", "success");
-                        } else {
-                            window.toastGoster("Ülke desteklenmiyor. Lütfen listeden seçin.", "error");
-                        }
-                    } catch(e) { window.toastGoster("Harita servisine ulaşılamadı.", "error"); }
-                    finally { btn.innerText = eskiMetin; btn.disabled = false; }
-                }, (err) => {
-                    window.toastGoster("GPS sinyali zayıf veya konum kapalı.", "error");
-                    btn.innerText = eskiMetin; btn.disabled = false;
-                }, { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 });
-            } catch(e) { window.toastGoster("Tarayıcınız konum desteklemiyor.", "error"); btn.innerText = eskiMetin; btn.disabled = false; } 
-        };
-        
-        window.konumKaydet = () => { 
-            const yU = document.getElementById('input-ulke').value; 
-            const yS = document.getElementById('input-sehir').value; 
-            if(!yU || !yS) return window.toastGoster("Ülke veya şehir boş olamaz!", "error"); 
-            ulke = yU; sehir = yS; 
-            saveLocalState(); syncToCloud(); 
-            window.konumMetinleriniGuncelle(); 
-            window.konumModalKapat(); 
-            window.vakitleriGetir(); 
-        };
+        window.yedekModalAc = () => { document.getElementById('modal-yedek').classList.remove('hidden'); };
+        window.yedekModalKapat = () => { document.getElementById('modal-yedek').classList.add('hidden'); };
+        window.infoModalAc = () => { document.getElementById('modal-info').classList.remove('hidden'); };
+        window.infoModalKapat = () => { document.getElementById('modal-info').classList.add('hidden'); window.localStorage.setItem('hazine_policy_accepted', 'true'); };
+        window.yedekIndir = () => { const data = { dbData, kayitlar, state: { aktifZikirId, sayac, zikirMode, freeSayac, freeHedef, ulke, sehir, kazaDurumu, kazaMaksimum } }; const blob = new Blob([JSON.stringify(data)], { type: "application/json" }); const link = document.createElement("a"); link.href = URL.createObjectURL(blob); link.download = "DijitalHazine_Yedek_" + new Date().toLocaleDateString('tr-TR').replace(/\./g, '-') + ".json"; link.click(); };
+        window.dosyadanYedekOku = (e) => { const file = e.target.files[0]; if (!file) return; const reader = new FileReader(); reader.onload = async (ev) => { try { const data = JSON.parse(ev.target.result); if (data.dbData) { dbData = data.dbData; await idb.set('dbData', JSON.stringify(dbData)); } if (data.kayitlar) { kayitlar = data.kayitlar; await idb.set('kayitlar', JSON.stringify(kayitlar)); } if (data.state) { aktifZikirId = data.state.aktifZikirId || ""; sayac = data.state.sayac || 0; zikirMode = data.state.zikirMode || 'kutuphane'; freeSayac = data.state.freeSayac || 0; freeHedef = data.state.freeHedef || 0; ulke = data.state.ulke || "Turkey"; sehir = data.state.sehir || "Ankara"; kazaDurumu = data.state.kazaDurumu || kazaDurumu; kazaMaksimum = data.state.kazaMaksimum || kazaMaksimum; await saveLocalState(); } window.syncAllToCloud(); window.zikirSeciciDoldur(); window.zikirModDegistir(zikirMode, false); window.kutuphaneListele(); window.kazaEkraniGuncelle(); window.raporlariListele(); window.konumMetinleriniGuncelle(); window.yedekModalKapat(); window.toastGoster("Yedek başarıyla yüklendi.", "success"); } catch(err) { window.toastGoster("Geçersiz yedek dosyası.", "error"); } }; reader.readAsText(file); e.target.value = ""; };
 
         window.uyariModalAc = () => { document.getElementById('uyari-aktif').checked = uyariAyarlari.aktif; document.getElementById('uyari-dakika').value = uyariAyarlari.dakika; document.getElementById('modal-uyari').classList.remove('hidden'); };
         window.uyariModalKapat = () => { document.getElementById('modal-uyari').classList.add('hidden'); };
         window.uyariKaydet = () => { uyariAyarlari.aktif = document.getElementById('uyari-aktif').checked; uyariAyarlari.dakika = parseInt(document.getElementById('uyari-dakika').value) || 15; window.localStorage.setItem('hazine_uyari_ayar', JSON.stringify(uyariAyarlari)); window.toastGoster("Uyarı ayarları kaydedildi.", "success"); window.uyariModalKapat(); };
-        window.ezanUyariKapat = () => { document.getElementById('modal-ezan-uyari').classList.add('hidden'); };
+        window.ezanUyariKapat = () => { document.getElementById('modal-ezan-uyari').classList.add('hidden'); document.getElementById('alert-sound').pause(); document.getElementById('alert-sound').currentTime = 0; };
         
+        // SESLİ VE GÖRSEL BİLDİRİM FONKSİYONU
         window.bildirimGonder = (baslik, metin, vakitAd) => {
-            if (sonUyarilanVakit === vakitAd) return;
+            if (!uyariAyarlari.aktif || sonUyarilanVakit === vakitAd) return;
             sonUyarilanVakit = vakitAd;
             if(navigator.vibrate) navigator.vibrate([200, 100, 200]); 
             
             document.getElementById('ezan-uyari-baslik').innerText = baslik;
             document.getElementById('ezan-uyari-metin').innerText = metin;
             document.getElementById('modal-ezan-uyari').classList.remove('hidden');
+            
+            try { document.getElementById('alert-sound').play().catch(e => console.log("Otomatik çalma tarayıcı tarafından engellendi.")); } catch(e) {}
             
             if ('speechSynthesis' in window) {
                 window.speechSynthesis.cancel();
@@ -1485,11 +1529,31 @@
         };
 
         window.diniGunleriHesapla = (yil) => { const holidays = []; const baslangic = new Date(yil, 0, 1); const bitis = new Date(yil, 11, 31); const formatter = new Intl.DateTimeFormat('en-US-u-ca-islamic-umalqura', { month: 'numeric', day: 'numeric' }); let regaipBulundu = false; for (let d = new Date(baslangic); d <= bitis; d.setDate(d.getDate() + 1)) { try { const formatted = formatter.formatToParts(d); const iMonth = parseInt(formatted.find(p => p.type === 'month').value); const iDay = parseInt(formatted.find(p => p.type === 'day').value); if (iMonth === 7 && iDay === 1) holidays.push({ name: "Üç Aylar Başlangıcı", date: new Date(d) }); if (iMonth === 7 && iDay === 27) holidays.push({ name: "Miraç Kandili", date: new Date(d) }); if (iMonth === 8 && iDay === 15) holidays.push({ name: "Beraat Kandili", date: new Date(d) }); if (iMonth === 9 && iDay === 1) holidays.push({ name: "Ramazan Başlangıcı", date: new Date(d), color: "emerald" }); if (iMonth === 9 && iDay === 27) holidays.push({ name: "Kadir Gecesi", date: new Date(d) }); if (iMonth === 10 && iDay === 1) holidays.push({ name: "Ramazan Bayramı", date: new Date(d), color: "blue" }); if (iMonth === 12 && iDay === 10) holidays.push({ name: "Kurban Bayramı", date: new Date(d), color: "blue" }); if (iMonth === 1 && iDay === 1) holidays.push({ name: "Hicri Yılbaşı", date: new Date(d) }); if (iMonth === 1 && iDay === 10) holidays.push({ name: "Aşure Günü", date: new Date(d) }); if (iMonth === 3 && iDay === 12) holidays.push({ name: "Mevlid Kandili", date: new Date(d) }); if (iMonth === 7 && d.getDay() === 4 && !regaipBulundu) { holidays.push({ name: "Regaip Kandili", date: new Date(d) }); regaipBulundu = true; } if (iMonth !== 7) regaipBulundu = false; } catch(e) {} } return holidays.sort((a, b) => a.date - b.date); };
-        window.diniGunlerEkraniDoldur = (yil) => { const liste = document.getElementById('dini-gunler-listesi'); liste.innerHTML = '<li class="py-4 text-center text-slate-400 font-medium">Hesaplanıyor... ⏳</li>'; setTimeout(() => { const gunler = window.diniGunleriHesapla(yil); liste.innerHTML = ""; const aylar = ["Oca", "Şub", "Mar", "Nis", "May", "Haz", "Tem", "Ağu", "Eyl", "Eki", "Kas", "Ara"]; if(gunler.length === 0) { liste.innerHTML = '<li class="py-4 text-center text-slate-400">Kayıt bulunamadı.</li>'; return; } const bugun = new Date(); gunler.forEach(g => { let cC = "text-slate-700 font-medium", bC = "bg-white border-slate-200 text-slate-600"; if (g.color === "emerald") { cC = "text-emerald-700 font-bold"; bC = "bg-emerald-50 border-emerald-200 text-emerald-700"; } else if (g.color === "blue") { cC = "text-blue-700 font-bold"; bC = "bg-blue-50 border-blue-200 text-blue-700"; } const farkGun = Math.ceil((g.date - bugun) / (1000 * 60 * 60 * 24)); let uyariRozeti = ""; if (farkGun >= 0 && farkGun <= 7) { uyariRozeti = `<span class="ml-2 bg-red-100 text-red-600 text-[9px] px-1.5 py-0.5 rounded animate-pulse">Yaklaştı</span>`; } liste.innerHTML += `<li class="py-3.5 px-4 flex justify-between items-center border-b border-slate-100 last:border-0"><span class="${cC}">${g.name}${uyariRozeti}</span><span class="font-bold border ${bC} px-2.5 py-1 rounded-lg text-xs shadow-sm">${g.date.getDate()} ${aylar[g.date.getMonth()]}</span></li>`; }); }, 50); };
-        window.diniGunlerYiliDegisti = (yil) => { window.diniGunlerEkraniDoldur(parseInt(yil)); }; window.diniGunlerModalAc = () => { const cY = new Date().getFullYear(); const secici = document.getElementById('dini-gunler-yil-secici'); if (secici.options.length === 0) { for(let y = cY - 1; y <= cY + 4; y++) { let opt = document.createElement('option'); opt.value = y; opt.text = y; if(y === cY) opt.selected = true; secici.appendChild(opt); } } document.getElementById('modal-dinigunler').classList.remove('hidden'); window.diniGunlerEkraniDoldur(parseInt(secici.value)); }; window.diniGunlerModalKapat = () => document.getElementById('modal-dinigunler').classList.add('hidden');
+        
+        // YAKLAŞAN DİNİ GÜN AFİŞİ
+        window.yaklasanDiniGunKontrol = () => {
+            const bugun = new Date();
+            const gunler = window.diniGunleriHesapla(bugun.getFullYear());
+            const yakinGun = gunler.find(g => { const fark = Math.ceil((g.date - bugun) / (1000 * 60 * 60 * 24)); return fark >= 0 && fark <= 7; });
+            const banner = document.getElementById('yaklasan-dini-gun-banner');
+            if(yakinGun) {
+                const fark = Math.ceil((yakinGun.date - bugun) / (1000 * 60 * 60 * 24));
+                let gunMetin = fark === 0 ? "Bugün" : `${fark} gün sonra`;
+                banner.innerHTML = `<div class="bg-gradient-to-r from-blue-500 to-indigo-600 text-white p-4 rounded-2xl shadow-md flex items-center justify-between">
+                    <div>
+                        <div class="text-[10px] font-bold uppercase tracking-widest opacity-80 mb-1">Yaklaşan Dini Gün</div>
+                        <div class="text-lg font-black">${yakinGun.name}</div>
+                    </div>
+                    <div class="bg-white/20 px-3 py-1.5 rounded-xl font-bold text-sm backdrop-blur-sm">${gunMetin}</div>
+                </div>`;
+                banner.classList.remove('hidden');
+            } else { banner.classList.add('hidden'); }
+        };
 
-        window.imsakiyeModalAc = async () => { document.getElementById('modal-imsakiye').classList.remove('hidden'); document.getElementById('imsakiye-yukleniyor').classList.remove('hidden'); document.getElementById('imsakiye-tablo-kapsayici').classList.add('hidden'); const tbody = document.getElementById('imsakiye-liste'); tbody.innerHTML = ""; try { const d = new Date(); const m = d.getMonth() + 1; const y = d.getFullYear(); const todayStr = String(d.getDate()).padStart(2, '0') + '-' + String(m).padStart(2, '0') + '-' + y; const res = await fetch(`https://api.aladhan.com/v1/calendarByCity?city=${encodeURIComponent(sehir)}&country=${encodeURIComponent(ulke)}&method=13&month=${m}&year=${y}`); const data = await res.json(); if (data.code === 200) { data.data.forEach(gun => { const isToday = gun.date.gregorian.date === todayStr; const bgClass = isToday ? "bg-emerald-50 font-bold" : ""; tbody.innerHTML += `<tr class="border-b border-slate-100 ${bgClass} hover:bg-slate-50 transition-colors"><td class="p-3 whitespace-nowrap text-slate-700">${gun.date.gregorian.day} ${gun.date.gregorian.month.en.substring(0,3)}</td><td class="p-3 font-bold text-emerald-700">${gun.timings.Fajr.split(' ')[0]}</td><td class="p-3 text-slate-500">${gun.timings.Sunrise.split(' ')[0]}</td><td class="p-3 text-slate-700">${gun.timings.Dhuhr.split(' ')[0]}</td><td class="p-3 text-slate-700">${gun.timings.Asr.split(' ')[0]}</td><td class="p-3 font-bold text-blue-700">${gun.timings.Maghrib.split(' ')[0]}</td><td class="p-3 text-slate-500">${gun.timings.Isha.split(' ')[0]}</td></tr>`; }); document.getElementById('imsakiye-yukleniyor').classList.add('hidden'); document.getElementById('imsakiye-tablo-kapsayici').classList.remove('hidden'); } else throw new Error(); } catch (e) { document.getElementById('imsakiye-yukleniyor').innerHTML = "❌ Veri çekilemedi."; } };
-        window.imsakiyeModalKapat = () => document.getElementById('modal-imsakiye').classList.add('hidden');
+        window.diniGunlerEkraniDoldur = (yil) => { const liste = document.getElementById('dini-gunler-listesi'); liste.innerHTML = '<li class="py-4 text-center text-slate-400 font-medium">Hesaplanıyor... ⏳</li>'; setTimeout(() => { const gunler = window.diniGunleriHesapla(yil); liste.innerHTML = ""; const aylar = ["Oca", "Şub", "Mar", "Nis", "May", "Haz", "Tem", "Ağu", "Eyl", "Eki", "Kas", "Ara"]; if(gunler.length === 0) { liste.innerHTML = '<li class="py-4 text-center text-slate-400">Kayıt bulunamadı.</li>'; return; } const bugun = new Date(); gunler.forEach(g => { let cC = "text-slate-700 font-medium", bC = "bg-white border-slate-200 text-slate-600"; if (g.color === "emerald") { cC = "text-emerald-700 font-bold"; bC = "bg-emerald-50 border-emerald-200 text-emerald-700"; } else if (g.color === "blue") { cC = "text-blue-700 font-bold"; bC = "bg-blue-50 border-blue-200 text-blue-700"; } const farkGun = Math.ceil((g.date - bugun) / (1000 * 60 * 60 * 24)); let uyariRozeti = ""; if (farkGun >= 0 && farkGun <= 7) { uyariRozeti = `<span class="ml-2 bg-red-100 text-red-600 text-[9px] px-1.5 py-0.5 rounded animate-pulse">Yaklaştı</span>`; } liste.innerHTML += `<li class="py-3.5 px-4 flex justify-between items-center border-b border-slate-100 last:border-0"><span class="${cC}">${g.name}${uyariRozeti}</span><span class="font-bold border ${bC} px-2.5 py-1 rounded-lg text-xs shadow-sm">${g.date.getDate()} ${aylar[g.date.getMonth()]}</span></li>`; }); }, 50); };
+        window.diniGunlerYiliDegisti = (yil) => { window.diniGunlerEkraniDoldur(parseInt(yil)); }; 
+        window.diniGunlerModalAc = () => { const cY = new Date().getFullYear(); const secici = document.getElementById('dini-gunler-yil-secici'); if (secici.options.length === 0) { for(let y = cY - 1; y <= cY + 4; y++) { let opt = document.createElement('option'); opt.value = y; opt.text = y; if(y === cY) opt.selected = true; secici.appendChild(opt); } } document.getElementById('modal-dinigunler').classList.remove('hidden'); window.diniGunlerEkraniDoldur(parseInt(secici.value)); }; 
+        window.diniGunlerModalKapat = () => document.getElementById('modal-dinigunler').classList.add('hidden');
 
         window.kerahatKontrol = () => { if(!window.namazVakitleri) return; const s = new Date(); const simdi = s.getHours() * 60 + s.getMinutes(); const parseTime = (timeStr) => { const [h, m] = timeStr.split(':').map(Number); return h * 60 + m; }; const gunes = parseTime(window.namazVakitleri.Sunrise), ogle = parseTime(window.namazVakitleri.Dhuhr), aksam = parseTime(window.namazVakitleri.Maghrib); let durum = "Kaza ve Nafile Namaz Kılınabilir", cls = "bg-emerald-50 text-emerald-800 border-emerald-200", ikon = "✅"; if (simdi >= gunes && simdi < gunes + 45) { durum = "Kerahat Vakti! (Namaz Kılınmaz)"; cls = "bg-red-50 text-red-700 border-red-200"; ikon = "🚫"; } else if (simdi >= ogle - 45 && simdi < ogle) { durum = "Kerahat Vakti! (Namaz Kılınmaz)"; cls = "bg-red-50 text-red-700 border-red-200"; ikon = "🚫"; } else if (simdi >= aksam - 45 && simdi < aksam) { durum = "Kerahat Vakti! (Sadece bugünün ikindisi)"; cls = "bg-amber-50 text-amber-700 border-amber-200"; ikon = "⚠️"; } const bannerHtml = `<div class="${cls} p-3.5 rounded-2xl mb-5 text-center font-bold text-xs flex items-center justify-center gap-2 shadow-sm border"><span class="text-xl">${ikon}</span> <span>${durum}</span></div>`; const kazaBanner = document.getElementById('kaza-kerahat-banner'); if(kazaBanner) { kazaBanner.innerHTML = bannerHtml; kazaBanner.classList.remove('hidden'); } const vakitBanner = document.getElementById('vakit-kerahat-banner'); if(vakitBanner) { vakitBanner.innerHTML = bannerHtml; vakitBanner.classList.remove('hidden'); } };
         window.nafileNamazlariHesapla = () => { if(!window.namazVakitleri) return; const s = new Date(); const simdi = s.getHours() * 60 + s.getMinutes(); const parseTime = (timeStr) => { const [h, m] = timeStr.split(':').map(Number); return h * 60 + m; }; const imsak = parseTime(window.namazVakitleri.Fajr), gunes = parseTime(window.namazVakitleri.Sunrise), ogle = parseTime(window.namazVakitleri.Dhuhr), ikindi = parseTime(window.namazVakitleri.Asr), aksam = parseTime(window.namazVakitleri.Maghrib), yatsi = parseTime(window.namazVakitleri.Isha); let isKerahat = false; if ((simdi >= gunes && simdi < gunes + 45) || (simdi >= ogle - 45 && simdi < ogle) || (simdi >= aksam - 45 && simdi < aksam)) { isKerahat = true; } const nafileListesi = []; if (!isKerahat) { if (simdi >= yatsi || simdi < imsak) { nafileListesi.push({ ad: "Teheccüd Namazı", rekat: "2-12 Rekat", tarif: "Yatsıdan sonra uyunup uyanıldıktan sonra imsak vaktine kadar kılınan çok faziletli gece namazı." }); } if (simdi >= gunes + 45 && simdi < ogle - 45) { nafileListesi.push({ ad: "İşrak / Kuşluk", rekat: "2-12 Rekat", tarif: "Güneş doğup 45 dakika geçtikten sonra başlar, öğleye 45 dk kala biter." }); } if (simdi >= aksam && simdi < yatsi) { nafileListesi.push({ ad: "Evvâbîn Namazı", rekat: "2-6 Rekat", tarif: "Akşamın sünnetinden sonra, yatsıya kadar kılınan tövbe namazıdır." }); } if (!((simdi >= imsak && simdi < gunes) || (simdi >= ikindi && simdi < aksam))) { nafileListesi.push({ ad: "Şükür / Hacet / Tövbe", rekat: "2 Rekat", tarif: "Kerahat vakitleri hariç her an abdest aldıktan sonra kılınabilir." }); } } const kart = document.getElementById('nafile-namaz-karti'); if(!kart) return; if (isKerahat) { kart.innerHTML = `<div class="flex items-center gap-2 mb-2"><span class="text-2xl">🚫</span><h3 class="font-extrabold text-red-700">Nafile Kılınmaz</h3></div><p class="text-xs text-red-600/80 font-medium">İçinde bulunduğumuz zaman dilimi kerahat vaktidir.</p>`; kart.className = "mt-5 bg-red-50 p-5 rounded-3xl border border-red-100 shadow-sm transition-all"; } else if (nafileListesi.length > 0) { let html = `<div class="flex items-center gap-2 mb-4"><span class="text-2xl">✨</span><h3 class="font-extrabold text-emerald-800">Şu An Kılınabilecek Nafileler</h3></div><div class="flex flex-col gap-4">`; nafileListesi.forEach(n => { html += `<div class="border-l-4 border-emerald-400 pl-4 py-1 bg-slate-50 rounded-r-xl"><div class="flex justify-between items-center mb-1.5"><span class="font-bold text-slate-700">${n.ad}</span><span class="text-[10px] font-bold bg-emerald-100 text-emerald-700 px-2 py-1 rounded-md">${n.rekat}</span></div><p class="text-[11px] text-slate-500 leading-snug font-medium">${n.tarif}</p></div>`; }); html += `</div>`; kart.innerHTML = html; kart.className = "mt-5 bg-white p-5 rounded-3xl border border-slate-200 shadow-sm transition-all"; } else { kart.classList.add('hidden'); return; } kart.classList.remove('hidden'); };
@@ -1504,7 +1568,7 @@
                     if (simdiDakika >= vakitDakikalar.Fajr && simdiDakika < vakitDakikalar.Sunrise) aktifVakitId = 'Fajr'; else if (simdiDakika >= vakitDakikalar.Sunrise && simdiDakika < vakitDakikalar.Dhuhr) aktifVakitId = 'Sunrise'; else if (simdiDakika >= vakitDakikalar.Dhuhr && simdiDakika < vakitDakikalar.Asr) aktifVakitId = 'Dhuhr'; else if (simdiDakika >= vakitDakikalar.Asr && simdiDakika < vakitDakikalar.Maghrib) aktifVakitId = 'Asr'; else if (simdiDakika >= vakitDakikalar.Maghrib && simdiDakika < vakitDakikalar.Isha) aktifVakitId = 'Maghrib';
                     [{ id: 'Fajr', i: '🌌', n: 'İmsak' }, { id: 'Sunrise', i: '🌅', n: 'Güneş' }, { id: 'Dhuhr', i: '☀️', n: 'Öğle' }, { id: 'Asr', i: '🌤️', n: 'İkindi' }, { id: 'Maghrib', i: '🌆', n: 'Akşam' }, { id: 'Isha', i: '🌃', n: 'Yatsı' }].forEach(v => { const isAktif = v.id === aktifVakitId; const aktifClass = isAktif ? "vakit-aktif" : ""; const textClass = isAktif ? "text-emerald-800" : "text-slate-800"; grid.innerHTML += `<div class="bg-white p-5 rounded-3xl shadow-sm border border-slate-100 flex flex-col items-center justify-center text-center transition-colors duration-500 ${aktifClass}"><div class="text-3xl mb-2 drop-shadow-sm">${v.i}</div><div class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">${v.n}</div><div class="text-2xl font-black ${textClass} mt-1">${window.namazVakitleri[v.id]}</div></div>`; });
                     document.getElementById('vakit-yukleniyor').classList.add('hidden'); grid.classList.remove('hidden'); document.getElementById('sonraki-vakit-karti').classList.remove('hidden');
-                    window.kerahatKontrol(); window.nafileNamazlariHesapla(); window.sonrakiVaktiHesapla();
+                    window.yaklasanDiniGunKontrol(); window.kerahatKontrol(); window.nafileNamazlariHesapla(); window.sonrakiVaktiHesapla();
                 } else throw new Error();
             } catch (err) { document.getElementById('vakit-yukleniyor').innerHTML = "❌ Hatalı şehir veya internet yok."; }
         };
@@ -1530,18 +1594,12 @@
                         document.getElementById('kalan-sure').innerText = `${kalanSaat}s ${kalanDakika}d`; 
                         bulundu = true; 
                         
-                        // Yeni Uyarı Mantığı
                         let siradakiVakitIsmi = vakitİsimleri[v];
-                        
-                        if (kalanSaat === 0) {
-                            if (siradakiVakitIsmi === "Güneş" && kalanDakika <= 15) {
+                        if (kalanSaat === 0 && uyariAyarlari.aktif) {
+                            if (siradakiVakitIsmi === "Güneş" && kalanDakika <= uyariAyarlari.dakika) {
                                 window.bildirimGonder("DİKKAT", "Güneş doğmak üzere! Sabah namazını kılmak için son " + kalanDakika + " dakikanız.", v);
-                            } else if (siradakiVakitIsmi === "Öğle" && kalanDakika <= 45) {
-                                window.bildirimGonder("KERAHAT VAKTİ", "Öğle vaktine " + kalanDakika + " dakika kaldı. Bu sürede hiçbir namaz kılınması uygun değildir.", v);
-                            } else if (siradakiVakitIsmi === "Akşam" && kalanDakika <= 45) {
-                                window.bildirimGonder("KERAHAT VAKTİ", "Akşama " + kalanDakika + " dakika kaldı. Sadece bugünün İkindi farzı kılınabilir.", v);
-                            } else if (["İmsak", "İkindi", "Yatsı"].includes(siradakiVakitIsmi) && kalanDakika <= 15) {
-                                window.bildirimGonder("Namaz Vakti", siradakiVakitIsmi + " vaktine " + kalanDakika + " dakika kaldı. Namaza hazırlanın.", v);
+                            } else if (["İmsak", "Öğle", "İkindi", "Akşam", "Yatsı"].includes(siradakiVakitIsmi) && kalanDakika <= uyariAyarlari.dakika) {
+                                window.bildirimGonder("Namaz Vakti Yaklaşıyor", siradakiVakitIsmi + " vaktine " + kalanDakika + " dakika kaldı.", v);
                             }
                         }
                         
@@ -1550,14 +1608,22 @@
                 }
                 
                 if(!bulundu) document.getElementById('kalan-sure').innerText = "Bekleniyor";
-                
-                if(s.getSeconds() === 0) { 
-                    window.kerahatKontrol(); 
-                    window.nafileNamazlariHesapla(); 
-                    if(s.getMinutes() === 0) window.vakitleriGetir(); 
-                }
+                if(s.getSeconds() === 0 && s.getMinutes() === 0) window.vakitleriGetir(); 
             }, 1000); 
         };
+
+        window.toastGoster = (mesaj, tip="info") => { const toast = document.getElementById('toast'); if(!toast) return; document.getElementById('toast-icon').innerText = tip === "success" ? "✅" : tip === "error" ? "❌" : "ℹ️"; document.getElementById('toast-msg').innerText = mesaj; toast.classList.remove('opacity-0', 'translate-y-2'); setTimeout(() => { toast.classList.add('opacity-0', 'translate-y-2'); }, 2500); };
+        window.imsakiyeModalAc = async () => { document.getElementById('modal-imsakiye').classList.remove('hidden'); document.getElementById('imsakiye-yukleniyor').classList.remove('hidden'); document.getElementById('imsakiye-tablo-kapsayici').classList.add('hidden'); const tbody = document.getElementById('imsakiye-liste'); tbody.innerHTML = ""; try { const d = new Date(); const m = d.getMonth() + 1; const y = d.getFullYear(); const todayStr = String(d.getDate()).padStart(2, '0') + '-' + String(m).padStart(2, '0') + '-' + y; const res = await fetch(`https://api.aladhan.com/v1/calendarByCity?city=${encodeURIComponent(sehir)}&country=${encodeURIComponent(ulke)}&method=13&month=${m}&year=${y}`); const data = await res.json(); if (data.code === 200) { data.data.forEach(gun => { const isToday = gun.date.gregorian.date === todayStr; const bgClass = isToday ? "bg-emerald-50 font-bold" : ""; tbody.innerHTML += `<tr class="border-b border-slate-100 ${bgClass} hover:bg-slate-50 transition-colors"><td class="p-3 whitespace-nowrap text-slate-700">${gun.date.gregorian.day} ${gun.date.gregorian.month.en.substring(0,3)}</td><td class="p-3 font-bold text-emerald-700">${gun.timings.Fajr.split(' ')[0]}</td><td class="p-3 text-slate-500">${gun.timings.Sunrise.split(' ')[0]}</td><td class="p-3 text-slate-700">${gun.timings.Dhuhr.split(' ')[0]}</td><td class="p-3 text-slate-700">${gun.timings.Asr.split(' ')[0]}</td><td class="p-3 font-bold text-blue-700">${gun.timings.Maghrib.split(' ')[0]}</td><td class="p-3 text-slate-500">${gun.timings.Isha.split(' ')[0]}</td></tr>`; }); document.getElementById('imsakiye-yukleniyor').classList.add('hidden'); document.getElementById('imsakiye-tablo-kapsayici').classList.remove('hidden'); } else throw new Error(); } catch (e) { document.getElementById('imsakiye-yukleniyor').innerHTML = "❌ Veri çekilemedi."; } };
+        window.imsakiyeModalKapat = () => document.getElementById('modal-imsakiye').classList.add('hidden');
+        window.raporlariListele = () => {
+            const liste = document.getElementById('kayit-listesi'); liste.innerHTML = ""; let toplamZikirSayisi = 0; let zikirFrekans = {};
+            if(kayitlar.length === 0) { document.getElementById('stat-toplam-zikir').innerText = "0"; document.getElementById('stat-kayit-sayisi').innerText = "0"; document.getElementById('stat-en-cok-okunan').innerText = "-"; liste.innerHTML = `<p class="text-center text-slate-400 py-8 font-medium">Kayıt bulunamadı.</p>`; return; } 
+            kayitlar.forEach(k => { toplamZikirSayisi += parseInt(k.sayi) || 0; zikirFrekans[k.baslik] = (zikirFrekans[k.baslik] || 0) + (parseInt(k.sayi) || 0); liste.innerHTML += `<div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-100 flex justify-between items-center"><div><h4 class="font-bold text-slate-800 text-sm mb-1">${window.xssKoru(k.baslik)}</h4><p class="text-[10px] font-medium text-slate-400">${window.xssKoru(k.tarih)}</p></div><div class="bg-emerald-50 border border-emerald-100 text-emerald-700 font-bold px-3 py-1.5 rounded-xl text-sm">${k.sayi}</div></div>`; });
+            let enCokOkunanZikir = "-", maxSayi = 0; for(let baslik in zikirFrekans) { if(zikirFrekans[baslik] > maxSayi) { maxSayi = zikirFrekans[baslik]; enCokOkunanZikir = baslik; } }
+            document.getElementById('stat-toplam-zikir').innerText = toplamZikirSayisi.toLocaleString('tr-TR'); document.getElementById('stat-kayit-sayisi').innerText = kayitlar.length.toLocaleString('tr-TR'); document.getElementById('stat-en-cok-okunan').innerText = enCokOkunanZikir;
+        };
+        window.kayitlariTemizle = async () => { window.onayIste("Geçmişi Temizle", "Tüm kayıt geçmişiniz silinecek. Emin misiniz?", "⚠️", async () => { kayitlar = []; await idb.remove('kayitlar'); if (isCloudConnected && currentUser && window.fb) { const sn = await window.fb.getDocs(window.fb.collection(firestoreDb, 'artifacts', appId, 'users', currentUser.uid, 'kayitlar')); sn.forEach(d => window.fb.deleteDoc(d.ref)); } window.raporlariListele(); window.toastGoster("Geçmiş temizlendi", "info"); }); };
+        window.csvIndir = () => { if(kayitlar.length === 0) return; let csv = "\uFEFFTarih;Zikir;Okunan Sayi\n"; kayitlar.forEach(k => { csv += `${k.tarih};${k.baslik.replace(/;/g, ',')};${k.sayi}\n`; }); const link = document.createElement("a"); link.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8;' })); link.download = "Rapor.csv"; link.click(); };
 
         window.kibleModalAc = () => { window.kibleBulunduMu = false; document.getElementById('modal-kible').classList.remove('hidden'); document.getElementById('kible-uyari').innerText = "Lütfen telefonunuzu düz tutun."; document.getElementById('kible-uyari').className = "bg-blue-500/20 backdrop-blur-md text-blue-100 p-4 rounded-2xl text-sm mb-8 w-full max-w-sm text-center border border-blue-400/30 shadow-lg transition-all duration-300"; let kadran = document.getElementById('pusula-kadran'); kadran.style.transform = `rotate(0deg)`; kadran.classList.replace('border-yellow-400/80', 'border-emerald-500/30'); kadran.classList.replace('shadow-[0_0_50px_rgba(250,204,21,0.6)]', 'shadow-[0_0_50px_rgba(16,185,129,0.15)]'); document.getElementById('pusula-igne').style.transform = `rotate(0deg)`; document.getElementById('mekke-ikon').style.transform = `rotate(0deg) scale(1)`; document.getElementById('btn-kible-baslat').classList.remove('hidden'); };
         window.kibleModalKapat = () => { document.getElementById('modal-kible').classList.add('hidden'); window.kibleBulunduMu = false; if(window.pusulaDinleyiciAktif) { window.removeEventListener('deviceorientation', window.pusulaIsleyici, true); window.removeEventListener('deviceorientationabsolute', window.pusulaIsleyici, true); window.pusulaDinleyiciAktif = false; window.sensorVerisiGeldi = false; } if(window.watchId) { navigator.geolocation.clearWatch(window.watchId); window.watchId = null; } };
@@ -1594,61 +1660,13 @@
             if (yon !== null && window.sensorVerisiGeldi) { document.getElementById('pusula-kadran').style.transform = `rotate(${-yon}deg)`; document.getElementById('pusula-igne').style.transform = `rotate(${window.kibleAci}deg)`; let tamUstteMi = window.kibleHedefKontrol(yon, window.kibleAci); let ekrandakiGercekAcisi = -yon + window.kibleAci; let scaleStr = tamUstteMi ? " scale(1.4)" : " scale(1)"; document.getElementById('mekke-ikon').style.transform = `rotate(${-ekrandakiGercekAcisi}deg)${scaleStr}`; }
         };
 
-        window.raporlariListele = () => {
-            const liste = document.getElementById('kayit-listesi'); liste.innerHTML = ""; 
-            
-            let toplamZikirSayisi = 0;
-            let zikirFrekans = {};
-            
-            if(kayitlar.length === 0) { 
-                document.getElementById('stat-toplam-zikir').innerText = "0";
-                document.getElementById('stat-kayit-sayisi').innerText = "0";
-                document.getElementById('stat-en-cok-okunan').innerText = "-";
-                liste.innerHTML = `<p class="text-center text-slate-400 py-8 font-medium">Kayıt bulunamadı.</p>`; 
-                return; 
-            } 
-            
-            kayitlar.forEach(k => { 
-                toplamZikirSayisi += parseInt(k.sayi) || 0;
-                zikirFrekans[k.baslik] = (zikirFrekans[k.baslik] || 0) + (parseInt(k.sayi) || 0);
-                
-                liste.innerHTML += `<div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-100 flex justify-between items-center"><div><h4 class="font-bold text-slate-800 text-sm mb-1">${window.xssKoru(k.baslik)}</h4><p class="text-[10px] font-medium text-slate-400">${window.xssKoru(k.tarih)}</p></div><div class="bg-emerald-50 border border-emerald-100 text-emerald-700 font-bold px-3 py-1.5 rounded-xl text-sm">${k.sayi}</div></div>`; 
-            });
-
-            let enCokOkunanZikir = "-";
-            let maxSayi = 0;
-            for(let baslik in zikirFrekans) {
-                if(zikirFrekans[baslik] > maxSayi) {
-                    maxSayi = zikirFrekans[baslik];
-                    enCokOkunanZikir = baslik;
-                }
-            }
-
-            document.getElementById('stat-toplam-zikir').innerText = toplamZikirSayisi.toLocaleString('tr-TR');
-            document.getElementById('stat-kayit-sayisi').innerText = kayitlar.length.toLocaleString('tr-TR');
-            document.getElementById('stat-en-cok-okunan').innerText = enCokOkunanZikir;
-        };
-
-        window.kayitlariTemizle = async () => { window.onayIste("Geçmişi Temizle", "Tüm kayıt geçmişiniz silinecek. Emin misiniz?", "⚠️", async () => { kayitlar = []; await idb.remove('kayitlar'); if (isCloudConnected && currentUser && window.fb) { const sn = await window.fb.getDocs(window.fb.collection(firestoreDb, 'artifacts', appId, 'users', currentUser.uid, 'kayitlar')); sn.forEach(d => window.fb.deleteDoc(d.ref)); } window.raporlariListele(); window.toastGoster("Geçmiş temizlendi", "info"); }); };
-        window.csvIndir = () => { if(kayitlar.length === 0) return; let csv = "\uFEFFTarih;Zikir;Okunan Sayi\n"; kayitlar.forEach(k => { csv += `${k.tarih};${k.baslik.replace(/;/g, ',')};${k.sayi}\n`; }); const link = document.createElement("a"); link.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8;' })); link.download = "Rapor.csv"; link.click(); };
-        window.toastGoster = (mesaj, tip="info") => { const toast = document.getElementById('toast'); if(!toast) return; document.getElementById('toast-icon').innerText = tip === "success" ? "✅" : tip === "error" ? "❌" : "ℹ️"; document.getElementById('toast-msg').innerText = mesaj; toast.classList.remove('opacity-0', 'translate-y-2'); setTimeout(() => { toast.classList.add('opacity-0', 'translate-y-2'); }, 2500); };
-
-        let baslangicY = 0;
-        document.addEventListener('touchstart', (e) => { baslangicY = e.touches[0].pageY; }, { passive: true });
-        
-        // Düzeltilmiş Scroll Engelleme Mantığı (Touchmove)
+        let baslangicY = 0; document.addEventListener('touchstart', (e) => { baslangicY = e.touches[0].pageY; }, { passive: true });
         document.addEventListener('touchmove', (e) => { 
             const y = e.touches[0].pageY; 
-            
-            // Eğer Modal gibi scroll edilebilir (overflow-y-auto) bir alanın içindeysek engellemeyi durdur.
             const isModalScroll = e.target.closest('.overflow-y-auto');
             if (isModalScroll && isModalScroll.id !== 'main-scroll') return; 
-
-            // Sadece ana arka plan aşağı çekildiğinde (pull-to-refresh) engelle
             const scrollAlani = document.getElementById('main-scroll'); 
-            if (scrollAlani && y > baslangicY && scrollAlani.scrollTop <= 0) { 
-                e.preventDefault(); 
-            } 
+            if (scrollAlani && y > baslangicY && scrollAlani.scrollTop <= 0) { e.preventDefault(); } 
         }, { passive: false });
 
         const mainScrollEl = document.getElementById('main-scroll');
@@ -1660,6 +1678,7 @@
             });
         }
         window.yukariCik = () => { const ms = document.getElementById('main-scroll'); if (ms) ms.scrollTo({ top: 0, behavior: 'smooth' }); };
+
     </script>
 </body>
 </html>
