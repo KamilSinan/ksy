@@ -92,6 +92,58 @@
             50% { box-shadow: 0 0 20px rgba(16, 185, 129, 0.8), inset 0 0 10px rgba(16, 185, 129, 0.3); } 
         }
 
+        /* Serbest Mod Zikirmatik Özel Tasarım */
+        .mode-serbest #z-sayac-kontrol-alani {
+            position: relative !important;
+            bottom: auto !important;
+            background: transparent !important;
+            border-top: none !important;
+            box-shadow: none !important;
+            margin-top: 2rem !important;
+            padding-bottom: 2rem !important;
+            backdrop-filter: none !important;
+            -webkit-backdrop-filter: none !important;
+        }
+        .mode-serbest #sayac-buton-grubu {
+            align-items: center !important;
+        }
+        .mode-serbest #z-sayac {
+            font-size: 5rem !important;
+            max-width: 280px !important;
+            padding: 1.5rem 1rem !important;
+            margin-bottom: -25px !important;
+            border-radius: 2rem !important;
+            border: 2px solid #e2e8f0 !important;
+            color: #064e3b !important;
+            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05), inset 0 -4px 10px rgba(0,0,0,0.02) !important;
+        }
+        .mode-serbest #btn-oku {
+            width: 200px !important;
+            height: 200px !important;
+        }
+        .mode-serbest #btn-oku-ic {
+            width: 170px !important;
+            height: 170px !important;
+        }
+        .mode-serbest #btn-oku-text {
+            font-size: 2.5rem !important;
+        }
+        .mode-serbest .yan-butonlar {
+            width: 4.5rem !important;
+            height: 4.5rem !important;
+            margin-bottom: -3rem !important;
+            border-radius: 1.5rem !important;
+            background-color: white !important;
+            border: 1px solid #e2e8f0 !important;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1) !important;
+        }
+        .mode-serbest .yan-butonlar span:first-child {
+            font-size: 1.5rem !important;
+        }
+        #z-sayac-kontrol-alani, #sayac-buton-grubu, #z-sayac, #btn-oku, #btn-oku-ic, #btn-oku-text, .yan-butonlar {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
     </style>
 </head>
 <body class="text-slate-800 h-[100dvh] w-full flex justify-center overflow-hidden antialiased selection:bg-emerald-200">
@@ -198,60 +250,42 @@
                 <!-- ÜST İÇERİK (Kaydırılabilir Alan) -->
                 <div class="w-full flex-none px-5 pt-5 pb-4 flex flex-col">
                     
-                    <!-- GÜNÜN İÇERİKLERİ KARTI (AKORDİYON) -->
-                    <div class="w-full mb-4 bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm transition-all duration-300">
-                        <button onclick="document.getElementById('gunun-icerikleri-container').classList.toggle('hidden'); document.getElementById('gunun-hazineleri-ok').classList.toggle('rotate-180');" class="w-full px-4 py-3.5 flex justify-between items-center bg-gradient-to-r from-emerald-50 to-slate-50 text-emerald-800 font-extrabold text-xs uppercase tracking-wider active:bg-emerald-100 transition-colors">
-                            <span class="flex items-center gap-2 text-sm"><span class="text-lg">✨</span> Günün Hazineleri (Görüntüle)</span>
-                            <span id="gunun-hazineleri-ok" class="transition-transform duration-300 text-slate-400">▼</span>
-                        </button>
-                        <div id="gunun-icerikleri-container" class="hidden p-4 bg-white border-t border-slate-100 flex flex-col gap-3">
-                            <!-- Ayet -->
-                            <div class="bg-gradient-to-br from-emerald-50 to-teal-50 border border-emerald-100 p-3 rounded-xl shadow-sm relative overflow-hidden">
-                                <div class="text-[10px] font-bold text-emerald-600 uppercase tracking-widest mb-1">📖 Günün Ayeti</div>
-                                <p class="text-xs text-slate-700 font-medium leading-relaxed italic" id="gunluk-ayet">Yükleniyor...</p>
-                            </div>
-                            <!-- Hadis -->
-                            <div class="bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-100 p-3 rounded-xl shadow-sm relative overflow-hidden">
-                                <div class="text-[10px] font-bold text-blue-600 uppercase tracking-widest mb-1">💬 Günün Hadisi</div>
-                                <p class="text-xs text-slate-700 font-medium leading-relaxed italic" id="gunluk-hadis">Yükleniyor...</p>
-                            </div>
-                            <!-- Dua -->
-                            <div class="bg-gradient-to-br from-amber-50 to-orange-50 border border-amber-100 p-3 rounded-xl shadow-sm relative overflow-hidden">
-                                <div class="text-[10px] font-bold text-amber-600 uppercase tracking-widest mb-1">🤲 Günün Duası</div>
-                                <p class="text-xs text-slate-700 font-medium leading-relaxed italic" id="gunluk-dua">Yükleniyor...</p>
+                    <!-- GÜNÜN HAZİNELERİ BUTONU (POPUP TETİKLEYİCİ) -->
+                    <button onclick="window.gununHazineleriModalAc()" class="w-full bg-gradient-to-r from-emerald-50 to-teal-50 border border-emerald-100 p-3.5 rounded-2xl shadow-sm flex justify-between items-center mb-5 active:scale-95 transition-transform">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 bg-white rounded-xl shadow-sm flex items-center justify-center text-xl">✨</div>
+                            <div class="text-left">
+                                <div class="text-xs font-extrabold text-emerald-800 uppercase tracking-wider">Günün Hazineleri</div>
+                                <div class="text-[10px] text-emerald-600 font-medium mt-0.5">Ayet, Hadis ve Dua Oku</div>
                             </div>
                         </div>
-                    </div>
+                        <span class="text-emerald-500 text-xl font-bold pr-1">→</span>
+                    </button>
 
-                    <!-- Mod Seçici -->
-                    <div class="flex bg-slate-200/70 p-1.5 rounded-2xl mb-4 w-full shadow-inner relative">
-                        <button onclick="window.zikirModDegistir('kutuphane')" id="btn-mode-kutuphane" class="flex-1 py-2.5 rounded-xl text-sm font-bold bg-white shadow text-emerald-800 transition-all duration-300">📚 Kütüphane</button>
-                        <button onclick="window.zikirModDegistir('serbest')" id="btn-mode-serbest" class="flex-1 py-2.5 rounded-xl text-sm font-bold text-slate-500 hover:text-slate-700 transition-all duration-300">✨ Serbest</button>
-                    </div>
-
-                    <!-- Kütüphane Modu Seçicisi (Kategorisiz) -->
-                    <div id="kutuphane-secici-container" class="w-full mb-2">
-                        <div class="relative">
-                            <select id="zikir-secici" onchange="window.zikirSec(this.value)" class="w-full pl-4 pr-10 py-4 bg-white border border-emerald-200 rounded-2xl shadow-sm focus:ring-2 focus:ring-emerald-500 outline-none text-emerald-900 font-bold appearance-none transition-shadow">
+                    <!-- ZİKİR VE MOD SEÇİM ALANI -->
+                    <div class="flex gap-2 mb-3 w-full">
+                        <div class="relative flex-1">
+                            <select id="zikir-secici" onchange="window.zikirSec(this.value)" class="w-full pl-4 pr-8 py-3.5 bg-white border border-emerald-200 rounded-xl shadow-sm focus:ring-2 focus:ring-emerald-500 outline-none text-emerald-900 font-bold appearance-none transition-shadow text-sm">
                                 <option value="" disabled selected>Zikir veya Dua Seçiniz...</option>
                             </select>
-                            <div class="absolute right-4 top-1/2 transform -translate-y-1/2 pointer-events-none text-emerald-600 text-lg">▼</div>
+                            <div class="absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none text-emerald-600 text-sm">▼</div>
                         </div>
+                        <button onclick="window.zikirModDegistir('serbest')" id="btn-mode-serbest" class="px-4 py-3.5 rounded-xl text-sm font-bold bg-white border border-slate-200 text-slate-600 shadow-sm hover:bg-slate-50 transition-all active:scale-95 whitespace-nowrap flex items-center gap-1.5">
+                            <span class="text-lg leading-none mb-0.5">♾️</span> Serbest
+                        </button>
                     </div>
 
                     <!-- Serbest Mod Hedef Girişi -->
-                    <div id="serbest-ayarlar-container" class="w-full mb-2 hidden">
-                        <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200">
-                            <label class="block text-xs font-bold text-slate-400 uppercase mb-2 text-center tracking-wider">Hedef Sayı (Opsiyonel)</label>
-                            <input type="number" id="input-serbest-hedef" placeholder="Sınırsız (Limit yok)" min="0" class="w-full p-3 bg-slate-50 border border-slate-100 rounded-xl focus:ring-2 focus:ring-emerald-500 outline-none text-slate-800 font-bold text-2xl text-center transition-all" oninput="window.serbestHedefKaydet()">
+                    <div id="serbest-ayarlar-container" class="w-full mb-2 hidden animate-[slideUp_0.2s_ease-out]">
+                        <div class="bg-gradient-to-r from-slate-50 to-white p-4 rounded-2xl shadow-sm border border-slate-200">
+                            <label class="block text-xs font-bold text-slate-500 uppercase mb-2 text-center tracking-wider">Serbest Mod Hedefi (Opsiyonel)</label>
+                            <input type="number" id="input-serbest-hedef" placeholder="Sınırsız (Limit yok)" min="0" class="w-full p-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-emerald-500 outline-none text-emerald-800 font-bold text-xl text-center transition-all shadow-inner" oninput="window.serbestHedefKaydet()">
                         </div>
                     </div>
 
                     <!-- Dua Detay Kartı (SADECE SEÇİM YAPILDIĞINDA GÖSTERİLECEK) -->
                     <div id="zikir-detay" class="w-full bg-white p-5 rounded-3xl shadow-md border border-slate-100 flex flex-col mb-2 mt-2 relative hidden transition-all">
-                        <div class="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-emerald-500 to-teal-500 text-white text-[10px] font-bold uppercase tracking-widest px-4 py-1.5 rounded-full shadow-md z-10" id="z-kategori">Kategori</div>
-                        
-                        <h2 id="z-baslik" class="text-xl font-extrabold mt-3 mb-4 text-slate-800 text-center">Başlık</h2>
+                        <h2 id="z-baslik" class="text-xl font-extrabold mt-1 mb-4 text-slate-800 text-center">Başlık</h2>
                         
                         <div class="bg-emerald-50/80 p-4 rounded-2xl border border-emerald-200 mb-4 shadow-sm">
                             <div class="text-[10px] font-black text-emerald-700 uppercase tracking-widest mb-2 flex items-center justify-center gap-1.5 opacity-90"><span>🗣️</span> Okunuşu</div>
@@ -300,10 +334,10 @@
                     </div>
 
                     <!-- Kontroller ve Sayaç -->
-                    <div class="flex items-end justify-between gap-3">
+                    <div id="sayac-buton-grubu" class="flex items-end justify-between gap-3 transition-all duration-300">
                         
                         <!-- Sıfırla Butonu -->
-                        <button onclick="window.sayaciSifirla()" class="w-16 h-16 bg-white text-red-500 rounded-2xl border border-slate-200 shadow-sm flex flex-col items-center justify-center gap-1 active:scale-95 group mb-1">
+                        <button onclick="window.sayaciSifirla()" class="yan-butonlar w-16 h-16 bg-white text-red-500 rounded-2xl border border-slate-200 shadow-sm flex flex-col items-center justify-center gap-1 active:scale-95 group mb-1">
                             <span class="text-xl group-active:-rotate-180 transition-transform duration-300">↺</span>
                             <span class="text-[8px] font-bold uppercase tracking-wider">Sıfırla</span>
                         </button>
@@ -313,16 +347,16 @@
                             <div id="z-sayac" class="text-[2.5rem] leading-none font-black text-slate-800 bg-white border border-slate-100 shadow-[inset_0_-3px_6px_rgba(0,0,0,0.04)] px-5 py-2.5 rounded-2xl text-center no-select transition-all duration-300 font-mono tracking-tighter mb-[-12px] z-10 w-full max-w-[150px]">
                                 0
                             </div>
-                            <button onclick="window.zikirArtir()" class="relative w-[85px] h-[85px] sm:w-[95px] sm:h-[95px] rounded-full bg-gradient-to-b from-emerald-400 to-emerald-700 btn-3d flex items-center justify-center group outline-none no-select touch-manipulation z-20">
+                            <button id="btn-oku" onclick="window.zikirArtir()" class="relative w-[85px] h-[85px] sm:w-[95px] sm:h-[95px] rounded-full bg-gradient-to-b from-emerald-400 to-emerald-700 btn-3d flex items-center justify-center group outline-none no-select touch-manipulation z-20 transition-all duration-300">
                                 <div class="absolute inset-[-6px] rounded-full border-2 border-emerald-500/20 group-active:scale-95 transition-transform"></div>
-                                <div class="w-[65px] h-[65px] sm:w-[75px] sm:h-[75px] rounded-full bg-gradient-to-br from-emerald-500 to-emerald-800 shadow-inner flex items-center justify-center border-t border-emerald-300/50">
-                                    <span class="text-white font-black text-xl tracking-widest drop-shadow-md">OKU</span>
+                                <div id="btn-oku-ic" class="w-[65px] h-[65px] sm:w-[75px] sm:h-[75px] rounded-full bg-gradient-to-br from-emerald-500 to-emerald-800 shadow-inner flex items-center justify-center border-t border-emerald-300/50 transition-all duration-300">
+                                    <span id="btn-oku-text" class="text-white font-black text-xl tracking-widest drop-shadow-md transition-all duration-300">OKU</span>
                                 </div>
                             </button>
                         </div>
 
                         <!-- Kaydet Butonu -->
-                        <button onclick="window.zikriKaydet()" class="w-16 h-16 bg-white text-gold-500 rounded-2xl border border-slate-200 shadow-sm flex flex-col items-center justify-center gap-1 active:scale-95 group mb-1">
+                        <button onclick="window.zikriKaydet()" class="yan-butonlar w-16 h-16 bg-white text-gold-500 rounded-2xl border border-slate-200 shadow-sm flex flex-col items-center justify-center gap-1 active:scale-95 group mb-1">
                             <span class="text-xl group-active:scale-110 transition-transform">💾</span>
                             <span class="text-[8px] font-bold uppercase tracking-wider">Kaydet</span>
                         </button>
@@ -520,6 +554,36 @@
         </div>
 
         <!-- MODALLAR -->
+        <!-- GÜNÜN HAZİNELERİ MODALI -->
+        <div id="modal-gunun-hazineleri" class="hidden absolute inset-0 bg-slate-900/60 z-[80] flex items-end sm:items-center justify-center p-0 sm:p-4 backdrop-blur-sm transition-opacity">
+            <div class="bg-white rounded-t-3xl sm:rounded-3xl shadow-2xl w-full max-w-md flex flex-col overflow-hidden max-h-[85vh] animate-[slideUp_0.3s_ease-out]">
+                <div class="bg-gradient-to-r from-emerald-700 to-teal-700 text-white p-5 flex justify-between items-center shadow-md z-10">
+                    <h3 class="font-extrabold text-lg flex items-center gap-2"><span class="text-2xl drop-shadow-sm">✨</span> Günün Hazineleri</h3>
+                    <button onclick="window.gununHazineleriModalKapat()" class="w-8 h-8 bg-white/10 border border-white/20 hover:bg-white/20 rounded-full flex items-center justify-center font-bold transition">&times;</button>
+                </div>
+                <div class="p-6 overflow-y-auto overflow-x-hidden bg-slate-50 flex flex-col gap-4">
+                    <!-- Ayet -->
+                    <div class="bg-gradient-to-br from-emerald-50 to-teal-50 border border-emerald-100 p-4 rounded-2xl shadow-sm relative overflow-hidden">
+                        <div class="absolute -right-2 -top-2 text-4xl opacity-10">📖</div>
+                        <div class="text-[10px] font-bold text-emerald-600 uppercase tracking-widest mb-2 flex items-center gap-1.5"><span class="text-sm">📖</span> Günün Ayeti</div>
+                        <p class="text-sm text-slate-700 font-medium leading-relaxed italic" id="gunluk-ayet">Yükleniyor...</p>
+                    </div>
+                    <!-- Hadis -->
+                    <div class="bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-100 p-4 rounded-2xl shadow-sm relative overflow-hidden">
+                        <div class="absolute -right-2 -top-2 text-4xl opacity-10">💬</div>
+                        <div class="text-[10px] font-bold text-blue-600 uppercase tracking-widest mb-2 flex items-center gap-1.5"><span class="text-sm">💬</span> Günün Hadisi</div>
+                        <p class="text-sm text-slate-700 font-medium leading-relaxed italic" id="gunluk-hadis">Yükleniyor...</p>
+                    </div>
+                    <!-- Dua -->
+                    <div class="bg-gradient-to-br from-amber-50 to-orange-50 border border-amber-100 p-4 rounded-2xl shadow-sm relative overflow-hidden">
+                        <div class="absolute -right-2 -top-2 text-4xl opacity-10">🤲</div>
+                        <div class="text-[10px] font-bold text-amber-600 uppercase tracking-widest mb-2 flex items-center gap-1.5"><span class="text-sm">🤲</span> Günün Duası</div>
+                        <p class="text-sm text-slate-700 font-medium leading-relaxed italic" id="gunluk-dua">Yükleniyor...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- CRUD MODAL -->
         <div id="modal-crud" class="hidden absolute inset-0 bg-slate-900/60 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 backdrop-blur-sm transition-opacity">
             <div class="bg-white rounded-t-3xl sm:rounded-3xl shadow-2xl w-full max-w-md max-h-[90vh] flex flex-col overflow-hidden animate-[slideUp_0.3s_ease-out]">
@@ -530,7 +594,6 @@
                 <div class="p-5 overflow-y-auto overflow-x-hidden flex-1">
                     <form id="crud-form" onsubmit="window.kaydiKaydet(event)" class="flex flex-col gap-4">
                         <input type="hidden" id="crud-id">
-                        <div><label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">Kategori</label><input type="text" id="crud-kategori" required placeholder="Örn: Sabah Duaları" class="w-full p-3.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:bg-white outline-none transition-all text-sm font-medium"></div>
                         <div><label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">Başlık</label><input type="text" id="crud-baslik" required placeholder="Örn: Ayetel Kürsi" class="w-full p-3.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:bg-white outline-none transition-all text-sm font-medium"></div>
                         <div><label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">Hedef Sayı (Opsiyonel)</label><input type="number" id="crud-hedef" placeholder="Örn: 33 veya 99" class="w-full p-3.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:bg-white outline-none transition-all text-sm font-medium"></div>
                         <div><label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">Arapça Metin</label><textarea id="crud-arapca" dir="rtl" rows="2" class="arabic-text w-full p-3.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:bg-white outline-none transition-all text-lg"></textarea></div>
@@ -911,23 +974,23 @@
             remove: function(k) { return new Promise((r) => { if(!this.db) return r(); try { const tx = this.db.transaction('store', 'readwrite'); tx.objectStore('store').delete(k); tx.oncomplete = () => r(); } catch(e) { r(); } }); }
         };
 
-        // TAM VE ORİJİNAL VERİTABANI (Bozulmadan geri yüklendi)
+        // TAM VE ORİJİNAL VERİTABANI (Kategori kalabalığından arındırılarak geri yüklendi)
         const varsayilanDB = [
-            { id: "1", kategori: "Zikir", baslik: "Sübhanallah", hedef: 33, arapca: "سُبْحَانَ اللَّهِ", okunus: "Sübhanallah", meal: "Allah bütün noksan sıfatlardan münezzehtir." },
-            { id: "2", kategori: "Zikir", baslik: "Elhamdülillah", hedef: 33, arapca: "الْحَمْدُ لِلَّهِ", okunus: "Elhamdülillah", meal: "Hamd Allah'a mahsustur." },
-            { id: "3", kategori: "Zikir", baslik: "Allahü Ekber", hedef: 33, arapca: "اللَّهُ أَكْبَرُ", okunus: "Allahü Ekber", meal: "Allah en büyüktür." },
-            { id: "4", kategori: "Tevhid", baslik: "Kelime-i Tevhid", hedef: 100, arapca: "لَا إِلٰهَ إِلَّا اللهُ", okunus: "Lâ ilâhe illallah", meal: "Allah'tan başka ilah yoktur." },
-            { id: "5", kategori: "Ramazan", baslik: "İftar Duası", hedef: 1, arapca: "اللَّهُمَّ لَكَ صُمْتُ وَبِكَ آمَنْتُ وَعَلَيْكَ تَوَكَّلْتُ وَعَلَى رِزْقِكَ أَفْطَرْتُ", okunus: "Allahümme leke sumtü ve bike âmentü ve aleyke tevekkeltü ve alâ rızkıke eftartü", meal: "Allah'ım! Senin rızan için oruç tuttum, sana inandım, sana güvendim, senin rızkınla orucumu açtım." },
-            { id: "6", kategori: "Kurban Bayramı", baslik: "Teşrik Tekbiri", hedef: 23, arapca: "اللَّهُ أَكْبَرُ اللَّهُ أَكْبَرُ، لَا إِلَهَ إِلَّا اللَّهُ، وَاللَّهُ أَكْبَرُ، اللَّهُ أَكْبَرُ، وَلِلَّهِ الْحَمْدُ", okunus: "Allahu ekber Allahu ekber, Lâ ilâhe illallahu vallahu ekber. Allahu ekber ve lillahi'l-hamd.", meal: "Allah en büyüktür, Allah en büyüktür. Allah'tan başka ilâh yoktur. O Allah en büyüktür, Allah en büyüktür. Hamd Allah'a mahsustur." },
-            { id: "7", kategori: "Ramazan", baslik: "Kadir Gecesi Duası", hedef: 100, arapca: "اللَّهُمَّ إِنَّكَ عَفُوٌّ تُحِبُّ الْعَفْوَ فَاعْفُ عَنِّي", okunus: "Allahümme inneke afüvvün tuhibbul afve fa'fu annî", meal: "Allah'ım! Sen affedicisin, affetmeyi seversin, beni de affet." },
-            { id: "8", kategori: "Namaz", baslik: "Ezan Duası", hedef: 1, arapca: "اللَّهُمَّ رَبَّ هَذِهِ الدَّعْوَةِ التَّامَّةِ، وَالصَّلَاةِ الْقَائِمَةِ، آتِ مُحَمَّدًا الْوَسِيلَةَ وَالْفَضِيلَةَ، وَابْعَثْهُ مَقَامًا مَحْمُودًا الَّذِي وَعَدْتَهُ", okunus: "Allahümme rabbe hâzihi'd-da'veti't-tâmmeh, ve's-salâti'l-kâimeh, âti Muhammedenil vesîlete ve'l-fadîlete veb'ashü makâmen mahmûdenillezî veadteh", meal: "Ey bu eksiksiz davetin ve kılınacak namazın Rabbi olan Allah'ım! Muhammed'e vesileyi ve fazileti ver. Onu kendisine vaat ettiğin Makam-ı Mahmud'a ulaştır." },
-            { id: "9", kategori: "Şifa & Korunma", baslik: "Nazar Duası (Kalem Suresi)", hedef: 7, arapca: "وَإِن يَكَادُ الَّذِينَ كَفَرُوا لَيُزْلِقُونَكَ بِأَبْصَارِهِمْ لَمَّا سَمِعُوا الذِّكْرَ وَيَقُولُونَ إِنَّهُ لَمَجْنُونٌ * وَمَا هُوَ إِلَّا ذِكْرٌ لِّلْعَالَمِينَ", okunus: "Ve in yekâdüllezîne keferû leyüzlikûneke biebsârihim lemmâ semi'uz-zikra ve yekûlûne innehû lemecnûn. Ve mâ hüve illâ zikrul-lil'âlemîn.", meal: "İnkar edenler Zikr'i (Kur'an'ı) işittiklerinde neredeyse seni gözleriyle devireceklerdi. 'O delidir!' diyorlar. Oysa o (Kur'an) alemler için ancak bir öğüttür." },
-            { id: "10", kategori: "Zikir", baslik: "Hasbiyallah (Tevbe 129)", hedef: 7, arapca: "حَسْبِيَ اللَّهُ لاَ إِلَـٰهَ إِلاَّ هُوَ عَلَيْهِ تَوَكَّلْتُ وَهُوَ رَبُّ الْعَرْشِ الْعَظِيمِ", okunus: "Hasbiyallahü lâ ilâhe illâ hû, aleyhi tevekkeltü ve hüve rabbül arşil azîm", meal: "Bana Allah yeter. O'ndan başka ilah yoktur. Ben O'na tevekkül ettim. O, büyük arşın Rabbidir." },
-            { id: "11", kategori: "Tövbe", baslik: "Seyyidül İstiğfar", hedef: 1, arapca: "اللَّهُمَّ أَنْتَ رَبِّي لَا إِلَهَ إِلَّا أَنْتَ، خَلَقْتَنِي وَأَنَا عَبْدُكَ، وَأَنَا عَلَى عَهْدِكَ وَوَعْدِكَ مَا اسْتَطَعْتُ، أَعُوذُ بِكَ مِنْ شَرِّ مَا صَنَعْتُ، أَبُوءُ لَكَ بِنِعْمَتِكَ عَلَيَّ، وَأَبُوءُ لَكَ بِذَنْبِي، فَاغْفِرْ لِي؛ فَإِنَّهُ لَا يَغْفِرُ الذُّنُوبَ إِلَّا أَنْتَ", okunus: "Allahümme ente rabbî lâ ilâhe illâ ente, halaktenî ve ene abdüke, ve ene alâ ahdike ve va'dike m'esteta'tü. Eûzü bike min şerri mâ sana'tü. Ebûü leke bi ni'metike aleyye ve ebûü leke bi zenbî fağfirlî, fe innehû lâ yağfiruz-zünûbe illâ ente.", meal: "Allah'ım! Sen benim Rabbimsin. Senden başka hiçbir ilah yoktur. Beni sen yarattın, ben senin kulunum. Gücüm yettiği ölçüde senin ahdin ve vaadin üzereyim. Yaptıklarımın şerrinden sana sığınırım. Bana olan nimetlerini de, günahımı da itiraf ediyorum. Beni bağışla. Çünkü günahları ancak sen bağışlarsın." },
-            { id: "12", kategori: "Şifa & Korunma", baslik: "Bismillâhillezi (Korunma)", hedef: 3, arapca: "بِسْمِ اللَّهِ الَّذِي لَا يَضُرُّ مَعَ اسْمِهِ شَيْءٌ فِي الْأَرْضِ وَلَا فِي السَّمَاءِ وَهُوَ السَّمِيعُ الْعَلِيمُ", okunus: "Bismillâhillezî lâ yedurru me'as-mihî şey'ün fil-ardı ve lâ fis-semâi ve hüves-semî'ul alîm.", meal: "İsmiyle (birlikte anıldığında) ne yerde ne de gökte hiçbir şeyin zarar veremeyeceği Allah'ın adıyla. O, hakkıyla işitendir, hakkıyla bilendir." },
-            { id: "13", kategori: "Şifa & Korunma", baslik: "Ayetel Kürsi", hedef: 7, arapca: "اللَّهُ لَا إِلَٰهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ ۚ لَا تَأْخُذُهُ سِنَةٌ وَلَا نَوْمٌ ۚ لَّهُ مَا فِي السَّمَاوَاتِ وَمَا فِي الْأَرْضِ ۗ مَن ذَا الَّذِي يَشْفَعُ عِندَهُ إِلَّا بِإِذْنِهِ ۚ يَعْلَمُ مَا بَيْنَ أَيْدِيهِمْ وَمَا خَلْفَهُمْ ۖ وَلَا يُحِيطُونَ بِشَيْءٍ مِّنْ عِلْمِهِ إِلَّا بِمَا شَاءَ ۚ وَسِعَ كُرْسِيُّهُ السَّمَاوَاتِ وَالْأَرْضَ ۖ وَلَا يَئُودُهُ حِفْظُهُمَا ۚ وَهُوَ الْعَلِيُّ الْعَظِيمُ", okunus: "Allâhü lâ ilâhe illâ hüvel hayyül kayyûm, lâ te'huzühû sinetün velâ nevm, lehû mâ fissemâvâti ve mâ fil'ard, men zellezî yeşfe'u indehû illâ bi'iznih, ya'lemu mâ beyne eydîhim vemâ halfehüm, velâ yühîtûne bişey'in min ilmihî illâ bimâ şâe vesia kürsiyyühüssemâvâti vel'ard, velâ yeûdühû hıfzuhümâ ve hüvel aliyyül azîm.", meal: "Allah, O'ndan başka ilah yoktur; diridir, her şeyin varlığı O'na bağlı ve dayalıdır..." },
-            { id: "14", kategori: "Tövbe", baslik: "Hz. Yunus'un Duası", hedef: 100, arapca: "لَّا إِلَٰهَ إِلَّا أَنتَ سُبْحَانَكَ إِنِّي كُنتُ مِنَ الظَّالِمِينَ", okunus: "Lâ ilâhe illâ ente sübhâneke innî küntü minez-zâlimîn", meal: "Senden başka ilah yoktur. Seni eksikliklerden uzak tutarım. Ben gerçekten zalimlerden oldum." },
-            { id: "15", kategori: "Zikir", baslik: "La Havle", hedef: 100, arapca: "لَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِٱللَّٰهِ", okunus: "Lâ havle ve lâ kuvvete illâ billâh", meal: "Güç ve kuvvet ancak Allah'a mahsustur." }
+            { id: "1", baslik: "Sübhanallah", hedef: 33, arapca: "سُبْحَانَ اللَّهِ", okunus: "Sübhanallah", meal: "Allah bütün noksan sıfatlardan münezzehtir." },
+            { id: "2", baslik: "Elhamdülillah", hedef: 33, arapca: "الْحَمْدُ لِلَّهِ", okunus: "Elhamdülillah", meal: "Hamd Allah'a mahsustur." },
+            { id: "3", baslik: "Allahü Ekber", hedef: 33, arapca: "اللَّهُ أَكْبَرُ", okunus: "Allahü Ekber", meal: "Allah en büyüktür." },
+            { id: "4", baslik: "Kelime-i Tevhid", hedef: 100, arapca: "لَا إِلٰهَ إِلَّا اللهُ", okunus: "Lâ ilâhe illallah", meal: "Allah'tan başka ilah yoktur." },
+            { id: "5", baslik: "İftar Duası", hedef: 1, arapca: "اللَّهُمَّ لَكَ صُمْتُ وَبِكَ آمَنْتُ وَعَلَيْكَ تَوَكَّلْتُ وَعَلَى رِزْقِكَ أَفْطَرْتُ", okunus: "Allahümme leke sumtü ve bike âmentü ve aleyke tevekkeltü ve alâ rızkıke eftartü", meal: "Allah'ım! Senin rızan için oruç tuttum, sana inandım, sana güvendim, senin rızkınla orucumu açtım." },
+            { id: "6", baslik: "Teşrik Tekbiri", hedef: 23, arapca: "اللَّهُ أَكْبَرُ اللَّهُ أَكْبَرُ، لَا إِلَهَ إِلَّا اللَّهُ، وَاللَّهُ أَكْبَرُ، اللَّهُ أَكْبَرُ، وَلِلَّهِ الْحَمْدُ", okunus: "Allahu ekber Allahu ekber, Lâ ilâhe illallahu vallahu ekber. Allahu ekber ve lillahi'l-hamd.", meal: "Allah en büyüktür, Allah en büyüktür. Allah'tan başka ilâh yoktur. O Allah en büyüktür, Allah en büyüktür. Hamd Allah'a mahsustur." },
+            { id: "7", baslik: "Kadir Gecesi Duası", hedef: 100, arapca: "اللَّهُمَّ إِنَّكَ عَفُوٌّ تُحِبُّ الْعَفْوَ فَاعْفُ عَنِّي", okunus: "Allahümme inneke afüvvün tuhibbul afve fa'fu annî", meal: "Allah'ım! Sen affedicisin, affetmeyi seversin, beni de affet." },
+            { id: "8", baslik: "Ezan Duası", hedef: 1, arapca: "اللَّهُمَّ رَبَّ هَذِهِ الدَّعْوَةِ التَّامَّةِ، وَالصَّلَاةِ الْقَائِمَةِ، آتِ مُحَمَّدًا الْوَسِيلَةَ وَالْفَضِيلَةَ، وَابْعَثْهُ مَقَامًا مَحْمُودًا الَّذِي وَعَدْتَهُ", okunus: "Allahümme rabbe hâzihi'd-da'veti't-tâmmeh, ve's-salâti'l-kâimeh, âti Muhammedenil vesîlete ve'l-fadîlete veb'ashü makâmen mahmûdenillezî veadteh", meal: "Ey bu eksiksiz davetin ve kılınacak namazın Rabbi olan Allah'ım! Muhammed'e vesileyi ve fazileti ver. Onu kendisine vaat ettiğin Makam-ı Mahmud'a ulaştır." },
+            { id: "9", baslik: "Nazar Duası (Kalem Suresi)", hedef: 7, arapca: "وَإِن يَكَادُ الَّذِينَ كَفَرُوا لَيُزْلِقُونَكَ بِأَبْصَارِهِمْ لَمَّا سَمِعُوا الذِّكْرَ وَيَقُولُونَ إِنَّهُ لَمَجْنُونٌ * وَمَا هُوَ إِلَّا ذِكْرٌ لِّلْعَالَمِينَ", okunus: "Ve in yekâdüllezîne keferû leyüzlikûneke biebsârihim lemmâ semi'uz-zikra ve yekûlûne innehû lemecnûn. Ve mâ hüve illâ zikrul-lil'âlemîn.", meal: "İnkar edenler Zikr'i (Kur'an'ı) işittiklerinde neredeyse seni gözleriyle devireceklerdi. 'O delidir!' diyorlar. Oysa o (Kur'an) alemler için ancak bir öğüttür." },
+            { id: "10", baslik: "Hasbiyallah (Tevbe 129)", hedef: 7, arapca: "حَسْبِيَ اللَّهُ لاَ إِلَـٰهَ إِلاَّ هُوَ عَلَيْهِ تَوَكَّلْتُ وَهُوَ رَبُّ الْعَرْشِ الْعَظِيمِ", okunus: "Hasbiyallahü lâ ilâhe illâ hû, aleyhi tevekkeltü ve hüve rabbül arşil azîm", meal: "Bana Allah yeter. O'ndan başka ilah yoktur. Ben O'na tevekkül ettim. O, büyük arşın Rabbidir." },
+            { id: "11", baslik: "Seyyidül İstiğfar", hedef: 1, arapca: "اللَّهُمَّ أَنْتَ رَبِّي لَا إِلَهَ إِلَّا أَنْتَ، خَلَقْتَنِي وَأَنَا عَبْدُكَ، وَأَنَا عَلَى عَهْدِكَ وَوَعْدِكَ مَا اسْتَطَعْتُ، أَعُوذُ بِكَ مِنْ شَرِّ مَا صَنَعْتُ، أَبُوءُ لَكَ بِنِعْمَتِكَ عَلَيَّ، وَأَبُوءُ لَكَ بِذَنْبِي، فَاغْفِرْ لِي؛ فَإِنَّهُ لَا يَغْفِرُ الذُّنُوبَ إِلَّا أَنْتَ", okunus: "Allahümme ente rabbî lâ ilâhe illâ ente, halaktenî ve ene abdüke, ve ene alâ ahdike ve va'dike m'esteta'tü. Eûzü bike min şerri mâ sana'tü. Ebûü leke bi ni'metike aleyye ve ebûü leke bi zenbî fağfirlî, fe innehû lâ yağfiruz-zünûbe illâ ente.", meal: "Allah'ım! Sen benim Rabbimsin. Senden başka hiçbir ilah yoktur. Beni sen yarattın, ben senin kulunum. Gücüm yettiği ölçüde senin ahdin ve vaadin üzereyim. Yaptıklarımın şerrinden sana sığınırım. Bana olan nimetlerini de, günahımı da itiraf ediyorum. Beni bağışla. Çünkü günahları ancak sen bağışlarsın." },
+            { id: "12", baslik: "Bismillâhillezi (Korunma)", hedef: 3, arapca: "بِسْمِ اللَّهِ الَّذِي لَا يَضُرُّ مَعَ اسْمِهِ شَيْءٌ فِي الْأَرْضِ وَلَا فِي السَّمَاءِ وَهُوَ السَّمِيعُ الْعَلِيمُ", okunus: "Bismillâhillezî lâ yedurru me'as-mihî şey'ün fil-ardı ve lâ fis-semâi ve hüves-semî'ul alîm.", meal: "İsmiyle (birlikte anıldığında) ne yerde ne de gökte hiçbir şeyin zarar veremeyeceği Allah'ın adıyla. O, hakkıyla işitendir, hakkıyla bilendir." },
+            { id: "13", baslik: "Ayetel Kürsi", hedef: 7, arapca: "اللَّهُ لَا إِلَٰهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ ۚ لَا تَأْخُذُهُ سِنَةٌ وَلَا نَوْمٌ ۚ لَّهُ مَا فِي السَّمَاوَاتِ وَمَا فِي الْأَرْضِ ۗ مَن ذَا الَّذِي يَشْفَعُ عِندَهُ إِلَّا بِإِذْنِهِ ۚ يَعْلَمُ مَا بَيْنَ أَيْدِيهِمْ وَمَا خَلْفَهُمْ ۖ وَلَا يُحِيطُونَ بِشَيْءٍ مِّنْ عِلْمِهِ إِلَّا بِمَا شَاءَ ۚ وَسِعَ كُرْسِيُّهُ السَّمَاوَاتِ وَالْأَرْضَ ۖ وَلَا يَئُودُهُ حِفْظُهُمَا ۚ وَهُوَ الْعَلِيُّ الْعَظِيمُ", okunus: "Allâhü lâ ilâhe illâ hüvel hayyül kayyûm, lâ te'huzühû sinetün velâ nevm, lehû mâ fissemâvâti ve mâ fil'ard, men zellezî yeşfe'u indehû illâ bi'iznih, ya'lemu mâ beyne eydîhim vemâ halfehüm, velâ yühîtûne bişey'in min ilmihî illâ bimâ şâe vesia kürsiyyühüssemâvâti vel'ard, velâ yeûdühû hıfzuhümâ ve hüvel aliyyül azîm.", meal: "Allah, O'ndan başka ilah yoktur; diridir, her şeyin varlığı O'na bağlı ve dayalıdır..." },
+            { id: "14", baslik: "Hz. Yunus'un Duası", hedef: 100, arapca: "لَّا إِلَٰهَ إِلَّا أَنتَ سُبْحَانَكَ إِنِّي كُنتُ مِنَ الظَّالِمِينَ", okunus: "Lâ ilâhe illâ ente sübhâneke innî küntü minez-zâlimîn", meal: "Senden başka ilah yoktur. Seni eksikliklerden uzak tutarım. Ben gerçekten zalimlerden oldum." },
+            { id: "15", baslik: "La Havle", hedef: 100, arapca: "لَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِٱللَّٰهِ", okunus: "Lâ havle ve lâ kuvvete illâ billâh", meal: "Güç ve kuvvet ancak Allah'a mahsustur." }
         ];
 
         let dbData = []; let kayitlar = []; let zikirMode = 'kutuphane'; let aktifZikirId = ""; let sayac = 0; let freeSayac = 0; let freeHedef = 0; let ulke = "Turkey"; let sehir = "Ankara";
@@ -1155,17 +1218,19 @@
         window.zikirSuresiGuncelle = () => { if(!zikirBaslangicZamani) return; const gecenSaniye = Math.floor((Date.now() - zikirBaslangicZamani) / 1000); const dk = String(Math.floor(gecenSaniye / 60)).padStart(2, '0'); const sn = String(gecenSaniye % 60).padStart(2, '0'); const el = document.getElementById('zikir-suresi'); if(el) el.innerText = `${dk}:${sn}`; };
 
         window.zikirModDegistir = (mod, kaydetVeSenkronizeEt = true) => {
-            zikirMode = mod; const btnKut = document.getElementById('btn-mode-kutuphane'); const btnSer = document.getElementById('btn-mode-serbest');
+            zikirMode = mod; const btnSer = document.getElementById('btn-mode-serbest'); const secici = document.getElementById('zikir-secici');
+            const viewZikirmatik = document.getElementById('view-zikirmatik');
             if(mod === 'kutuphane') { 
-                btnKut.classList.add('bg-white', 'shadow', 'text-emerald-800'); btnKut.classList.remove('text-slate-500'); 
-                btnSer.classList.remove('bg-white', 'shadow', 'text-emerald-800'); btnSer.classList.add('text-slate-500'); 
-                document.getElementById('kutuphane-secici-container').classList.remove('hidden'); 
+                if(btnSer) { btnSer.classList.remove('bg-emerald-50', 'border-emerald-200', 'text-emerald-700'); btnSer.classList.add('bg-white', 'border-slate-200', 'text-slate-600'); }
                 document.getElementById('serbest-ayarlar-container').classList.add('hidden'); 
+                if(viewZikirmatik) viewZikirmatik.classList.remove('mode-serbest');
             } else { 
-                btnSer.classList.add('bg-white', 'shadow', 'text-emerald-800'); btnSer.classList.remove('text-slate-500'); 
-                btnKut.classList.remove('bg-white', 'shadow', 'text-emerald-800'); btnKut.classList.add('text-slate-500'); 
-                document.getElementById('kutuphane-secici-container').classList.add('hidden'); 
+                if(btnSer) { btnSer.classList.add('bg-emerald-50', 'border-emerald-200', 'text-emerald-700'); btnSer.classList.remove('bg-white', 'border-slate-200', 'text-slate-600'); }
+                if(secici) secici.value = "";
+                aktifZikirId = "";
+                sayac = 0;
                 document.getElementById('serbest-ayarlar-container').classList.remove('hidden'); 
+                if(viewZikirmatik) viewZikirmatik.classList.add('mode-serbest');
             }
             if(kaydetVeSenkronizeEt) { saveLocalState(); syncToCloud(); } 
             window.zikirEkraniGuncelle();
@@ -1176,17 +1241,22 @@
         // KATEGORİSİZ DÜZ SEÇİCİ
         window.zikirSeciciDoldur = () => {
             const secici = document.getElementById('zikir-secici'); if(!secici) return; 
-            secici.innerHTML = '<option value="" disabled selected>Zikir veya Dua Seçiniz...</option>'; 
-            dbData.forEach(dua => { 
-                const opt = document.createElement('option'); 
-                opt.value = dua.id; 
-                opt.textContent = dua.baslik; 
-                if(String(dua.id) === String(aktifZikirId)) opt.selected = true; 
-                secici.appendChild(opt); 
-            });
+            secici.innerHTML = ''; 
+            if(dbData.length === 0) {
+                secici.innerHTML = '<option value="" disabled selected>Kütüphane boş, lütfen yeni ekleyin...</option>';
+            } else {
+                secici.innerHTML = '<option value="" disabled selected>Zikir veya Dua Seçiniz...</option>'; 
+                dbData.forEach(dua => { 
+                    const opt = document.createElement('option'); 
+                    opt.value = dua.id; 
+                    opt.textContent = dua.baslik; 
+                    if(String(dua.id) === String(aktifZikirId)) opt.selected = true; 
+                    secici.appendChild(opt); 
+                });
+            }
         };
 
-        window.zikirSec = (id) => { aktifZikirId = String(id); sayac = 0; zikirBaslangicZamani = null; if(zikirTimer) clearInterval(zikirTimer); const zs = document.getElementById('zikir-suresi'); if(zs) zs.innerText = "00:00"; saveLocalState(); syncToCloud(); window.zikirEkraniGuncelle(); };
+        window.zikirSec = (id) => { if(zikirMode !== 'kutuphane') window.zikirModDegistir('kutuphane', false); aktifZikirId = String(id); sayac = 0; zikirBaslangicZamani = null; if(zikirTimer) clearInterval(zikirTimer); const zs = document.getElementById('zikir-suresi'); if(zs) zs.innerText = "00:00"; saveLocalState(); syncToCloud(); window.zikirEkraniGuncelle(); };
 
         window.zikirEkraniGuncelle = () => {
             const kontrolAlani = document.getElementById('z-sayac-kontrol-alani');
@@ -1207,7 +1277,6 @@
             
             if(zikirMode === 'kutuphane') {
                 const zikir = dbData.find(d => String(d.id) === String(aktifZikirId)); if(!zikir) return; 
-                document.getElementById('z-kategori').innerText = zikir.kategori; 
                 document.getElementById('z-baslik').innerText = zikir.baslik; 
                 const arapcaEl = document.getElementById('z-arapca'); if(zikir.arapca) { arapcaEl.innerText = zikir.arapca; arapcaEl.classList.remove('hidden'); } else { arapcaEl.classList.add('hidden'); } 
                 document.getElementById('z-okunus').innerText = zikir.okunus; 
@@ -1286,14 +1355,14 @@
 
         window.kutuphaneListele = () => {
             const arama = (document.getElementById('arama-kutusu').value || "").toLowerCase(); const listeDiv = document.getElementById('kutuphane-listesi'); listeDiv.innerHTML = "";
-            const filtrelenmis = dbData.filter(d => (d.baslik || "").toLowerCase().includes(arama) || (d.okunus || "").toLowerCase().includes(arama) || (d.kategori || "").toLowerCase().includes(arama));
+            const filtrelenmis = dbData.filter(d => (d.baslik || "").toLowerCase().includes(arama) || (d.okunus || "").toLowerCase().includes(arama));
             if(filtrelenmis.length === 0) { listeDiv.innerHTML = `<p class="text-center text-slate-400 py-8 font-medium">Sonuç bulunamadı.</p>`; return; }
             filtrelenmis.forEach(dua => {
                 listeDiv.innerHTML += `
                     <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-100 flex flex-col gap-3 relative overflow-hidden group">
                         <div class="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-emerald-400 to-teal-500"></div>
                         <div class="flex justify-between items-start">
-                            <div><span class="text-[10px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-100 px-2.5 py-1 rounded-md uppercase tracking-wide">${window.xssKoru(dua.kategori)}</span><h3 class="font-bold text-slate-800 mt-2 text-lg leading-tight">${window.xssKoru(dua.baslik)}</h3><p class="text-xs text-slate-500 mt-1 line-clamp-1">${window.xssKoru(dua.okunus)}</p></div>
+                            <div><h3 class="font-bold text-slate-800 text-lg leading-tight">${window.xssKoru(dua.baslik)}</h3><p class="text-xs text-slate-500 mt-1 line-clamp-1">${window.xssKoru(dua.okunus)}</p></div>
                             <div class="flex gap-2 opacity-100 sm:opacity-0 group-hover:opacity-100 transition-opacity"><button onclick="window.kaydiDuzenle('${dua.id}')" class="w-9 h-9 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center hover:bg-blue-100 transition active:scale-95">✏️</button><button onclick="window.kaydiSil('${dua.id}')" class="w-9 h-9 bg-red-50 text-red-500 rounded-xl flex items-center justify-center hover:bg-red-100 transition active:scale-95">🗑️</button></div>
                         </div>
                     </div>`;
@@ -1307,7 +1376,6 @@
             e.preventDefault(); const id = document.getElementById('crud-id').value || String(Date.now());
             const yeniData = { 
                 id: id, 
-                kategori: document.getElementById('crud-kategori').value.trim() || "Genel", 
                 baslik: document.getElementById('crud-baslik').value.trim() || "İsimsiz", 
                 hedef: parseInt(document.getElementById('crud-hedef').value) || 0, 
                 arapca: document.getElementById('crud-arapca').value.trim(), 
@@ -1323,7 +1391,6 @@
         window.kaydiDuzenle = (id) => {
             const dua = dbData.find(d => String(d.id) === String(id)); if(!dua) return;
             document.getElementById('crud-id').value = dua.id; 
-            document.getElementById('crud-kategori').value = dua.kategori; 
             document.getElementById('crud-baslik').value = dua.baslik; 
             document.getElementById('crud-hedef').value = dua.hedef || ""; 
             document.getElementById('crud-arapca').value = dua.arapca || ""; 
@@ -1583,6 +1650,9 @@
         window.diniGunlerYiliDegisti = (yil) => { window.diniGunlerEkraniDoldur(parseInt(yil)); }; 
         window.diniGunlerModalAc = () => { const cY = new Date().getFullYear(); const secici = document.getElementById('dini-gunler-yil-secici'); if (secici.options.length === 0) { for(let y = cY - 1; y <= cY + 4; y++) { let opt = document.createElement('option'); opt.value = y; opt.text = y; if(y === cY) opt.selected = true; secici.appendChild(opt); } } document.getElementById('modal-dinigunler').classList.remove('hidden'); window.diniGunlerEkraniDoldur(parseInt(secici.value)); }; 
         window.diniGunlerModalKapat = () => document.getElementById('modal-dinigunler').classList.add('hidden');
+        
+        window.gununHazineleriModalAc = () => { document.getElementById('modal-gunun-hazineleri').classList.remove('hidden'); };
+        window.gununHazineleriModalKapat = () => { document.getElementById('modal-gunun-hazineleri').classList.add('hidden'); };
 
         window.kerahatKontrol = () => { if(!window.namazVakitleri) return; const s = new Date(); const simdi = s.getHours() * 60 + s.getMinutes(); const parseTime = (timeStr) => { const [h, m] = timeStr.split(':').map(Number); return h * 60 + m; }; const gunes = parseTime(window.namazVakitleri.Sunrise), ogle = parseTime(window.namazVakitleri.Dhuhr), aksam = parseTime(window.namazVakitleri.Maghrib); let durum = "Kaza ve Nafile Namaz Kılınabilir", cls = "bg-emerald-50 text-emerald-800 border-emerald-200", ikon = "✅"; if (simdi >= gunes && simdi < gunes + 45) { durum = "Kerahat Vakti! (Namaz Kılınmaz)"; cls = "bg-red-50 text-red-700 border-red-200"; ikon = "🚫"; } else if (simdi >= ogle - 45 && simdi < ogle) { durum = "Kerahat Vakti! (Namaz Kılınmaz)"; cls = "bg-red-50 text-red-700 border-red-200"; ikon = "🚫"; } else if (simdi >= aksam - 45 && simdi < aksam) { durum = "Kerahat Vakti! (Sadece bugünün ikindisi)"; cls = "bg-amber-50 text-amber-700 border-amber-200"; ikon = "⚠️"; } const bannerHtml = `<div class="${cls} p-3.5 rounded-2xl mb-5 text-center font-bold text-xs flex items-center justify-center gap-2 shadow-sm border"><span class="text-xl">${ikon}</span> <span>${durum}</span></div>`; const kazaBanner = document.getElementById('kaza-kerahat-banner'); if(kazaBanner) { kazaBanner.innerHTML = bannerHtml; kazaBanner.classList.remove('hidden'); } const vakitBanner = document.getElementById('vakit-kerahat-banner'); if(vakitBanner) { vakitBanner.innerHTML = bannerHtml; vakitBanner.classList.remove('hidden'); } };
         window.nafileNamazlariHesapla = () => { if(!window.namazVakitleri) return; const s = new Date(); const simdi = s.getHours() * 60 + s.getMinutes(); const parseTime = (timeStr) => { const [h, m] = timeStr.split(':').map(Number); return h * 60 + m; }; const imsak = parseTime(window.namazVakitleri.Fajr), gunes = parseTime(window.namazVakitleri.Sunrise), ogle = parseTime(window.namazVakitleri.Dhuhr), ikindi = parseTime(window.namazVakitleri.Asr), aksam = parseTime(window.namazVakitleri.Maghrib), yatsi = parseTime(window.namazVakitleri.Isha); let isKerahat = false; if ((simdi >= gunes && simdi < gunes + 45) || (simdi >= ogle - 45 && simdi < ogle) || (simdi >= aksam - 45 && simdi < aksam)) { isKerahat = true; } const nafileListesi = []; if (!isKerahat) { if (simdi >= yatsi || simdi < imsak) { nafileListesi.push({ ad: "Teheccüd Namazı", rekat: "2-12 Rekat", tarif: "Yatsıdan sonra uyunup uyanıldıktan sonra imsak vaktine kadar kılınan çok faziletli gece namazı." }); } if (simdi >= gunes + 45 && simdi < ogle - 45) { nafileListesi.push({ ad: "İşrak / Kuşluk", rekat: "2-12 Rekat", tarif: "Güneş doğup 45 dakika geçtikten sonra başlar, öğleye 45 dk kala biter." }); } if (simdi >= aksam && simdi < yatsi) { nafileListesi.push({ ad: "Evvâbîn Namazı", rekat: "2-6 Rekat", tarif: "Akşamın sünnetinden sonra, yatsıya kadar kılınan tövbe namazıdır." }); } if (!((simdi >= imsak && simdi < gunes) || (simdi >= ikindi && simdi < aksam))) { nafileListesi.push({ ad: "Şükür / Hacet / Tövbe", rekat: "2 Rekat", tarif: "Kerahat vakitleri hariç her an abdest aldıktan sonra kılınabilir." }); } } const kart = document.getElementById('nafile-namaz-karti'); if(!kart) return; if (isKerahat) { kart.innerHTML = `<div class="flex items-center gap-2 mb-2"><span class="text-2xl">🚫</span><h3 class="font-extrabold text-red-700">Nafile Kılınmaz</h3></div><p class="text-xs text-red-600/80 font-medium">İçinde bulunduğumuz zaman dilimi kerahat vaktidir.</p>`; kart.className = "mt-5 bg-red-50 p-5 rounded-3xl border border-red-100 shadow-sm transition-all"; } else if (nafileListesi.length > 0) { let html = `<div class="flex items-center gap-2 mb-4"><span class="text-2xl">✨</span><h3 class="font-extrabold text-emerald-800">Şu An Kılınabilecek Nafileler</h3></div><div class="flex flex-col gap-4">`; nafileListesi.forEach(n => { html += `<div class="border-l-4 border-emerald-400 pl-4 py-1 bg-slate-50 rounded-r-xl"><div class="flex justify-between items-center mb-1.5"><span class="font-bold text-slate-700">${n.ad}</span><span class="text-[10px] font-bold bg-emerald-100 text-emerald-700 px-2 py-1 rounded-md">${n.rekat}</span></div><p class="text-[11px] text-slate-500 leading-snug font-medium">${n.tarif}</p></div>`; }); html += `</div>`; kart.innerHTML = html; kart.className = "mt-5 bg-white p-5 rounded-3xl border border-slate-200 shadow-sm transition-all"; } else { kart.classList.add('hidden'); return; } kart.classList.remove('hidden'); };
