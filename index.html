@@ -1358,7 +1358,7 @@
         
         window.konumModalKapat = () => { document.getElementById('modal-konum').classList.add('hidden'); };
         
-        // BIGDATACLOUD (Ana Güvenilir Ters Kodlama)
+        // BIGDATACLOUD (Ana Güvenilir Ters Kodlama ve Uluslararası Kod Düzeltmesi)
         window.otomatikKonumBul = async (event) => { 
             const btn = event.target; const eskiMetin = btn.innerText; btn.innerText = "⏳ Bulunuyor..."; btn.disabled = true; 
             try { 
@@ -1367,24 +1367,53 @@
                     try {
                         let bulunanUlke = "", bulunanSehir = "";
                         
-                        // En güvenilir ücretsiz anahtarsız servis BigDataCloud
                         const bdcUrl = `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${pos.coords.latitude}&longitude=${pos.coords.longitude}&localityLanguage=en`;
                         const res = await fetch(bdcUrl);
                         const data = await res.json();
                         
-                        bulunanUlke = data.countryName;
-                        bulunanSehir = data.city || data.locality || data.principalSubdivision;
+                        bulunanUlke = data.countryName || "";
+                        bulunanSehir = data.city || data.locality || data.principalSubdivision || "";
                         
-                        if(bulunanUlke === "Türkiye" || bulunanUlke === "Turkey (the)") bulunanUlke = "Turkey";
+                        // İSİM YERİNE ISO ÜLKE KODU İLE EŞLEŞTİRME (Daha Güvenilir)
+                        const ulkeKodlari = {
+                            "TR": "Turkey",
+                            "DE": "Germany",
+                            "FR": "France",
+                            "NL": "Netherlands",
+                            "GB": "United Kingdom",
+                            "US": "United States",
+                            "AZ": "Azerbaijan",
+                            "CY": "Cyprus",
+                            "SA": "Saudi Arabia"
+                        };
+
+                        if (data.countryCode && ulkeKodlari[data.countryCode]) {
+                            bulunanUlke = ulkeKodlari[data.countryCode];
+                        } else if (bulunanUlke) {
+                            // Yedek (Fallback) İsimden bulma
+                            const lowerUlke = bulunanUlke.toLowerCase();
+                            if(lowerUlke.includes("turkey") || lowerUlke.includes("türkiye") || lowerUlke.includes("turkiye")) bulunanUlke = "Turkey";
+                        }
+                        
                         if(bulunanSehir) bulunanSehir = bulunanSehir.replace(' Province', '').replace(' City', '').replace(' Metropolitan Municipality', '');
                         
                         const ulkeSelect = document.getElementById('input-ulke');
                         if(konumVerisi[bulunanUlke]) {
                             ulkeSelect.value = bulunanUlke; window.ulkeDegisti(bulunanUlke);
                             const sehirSelect = document.getElementById('input-sehir');
-                            const match = konumVerisi[bulunanUlke].find(s => s.toLowerCase() === bulunanSehir.toLowerCase() || bulunanSehir.toLowerCase().includes(s.toLowerCase()));
-                            if(match) sehirSelect.value = match;
-                            else if(bulunanSehir && !konumVerisi[bulunanUlke].includes(bulunanSehir)) {
+                            
+                            // Akıllı şehir eşleştirme (Türkçe/İngilizce karakter sorunlarını aşar)
+                            const normalizeStr = (str) => (str || "").replace(/İ/g,'I').replace(/ı/g,'i').toLowerCase();
+                            const normBulunanSehir = normalizeStr(bulunanSehir);
+
+                            const match = konumVerisi[bulunanUlke].find(s => {
+                                const normS = normalizeStr(s);
+                                return normS === normBulunanSehir || normBulunanSehir.includes(normS) || normS.includes(normBulunanSehir);
+                            });
+
+                            if(match) {
+                                sehirSelect.value = match;
+                            } else if(bulunanSehir && !konumVerisi[bulunanUlke].includes(bulunanSehir)) {
                                 const opt = document.createElement('option'); opt.value = bulunanSehir; opt.text = bulunanSehir;
                                 sehirSelect.appendChild(opt); sehirSelect.value = bulunanSehir;
                             }
