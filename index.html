@@ -1601,7 +1601,19 @@
 
         window.uyariModalAc = () => { document.getElementById('uyari-aktif').checked = uyariAyarlari.aktif; document.getElementById('uyari-dakika').value = uyariAyarlari.dakika; document.getElementById('modal-uyari').classList.remove('hidden'); };
         window.uyariModalKapat = () => { document.getElementById('modal-uyari').classList.add('hidden'); };
-        window.uyariKaydet = () => { uyariAyarlari.aktif = document.getElementById('uyari-aktif').checked; uyariAyarlari.dakika = parseInt(document.getElementById('uyari-dakika').value) || 15; window.localStorage.setItem('hazine_uyari_ayar', JSON.stringify(uyariAyarlari)); window.toastGoster("Uyarı ayarları kaydedildi.", "success"); window.uyariModalKapat(); };
+        window.uyariKaydet = () => { 
+            uyariAyarlari.aktif = document.getElementById('uyari-aktif').checked; 
+            uyariAyarlari.dakika = parseInt(document.getElementById('uyari-dakika').value) || 15; 
+            window.localStorage.setItem('hazine_uyari_ayar', JSON.stringify(uyariAyarlari)); 
+            
+            // SİSTEM BİLDİRİMİ İZNİ İSTE
+            if (uyariAyarlari.aktif && "Notification" in window && Notification.permission !== "granted") {
+                Notification.requestPermission();
+            }
+            
+            window.toastGoster("Uyarı ayarları kaydedildi.", "success"); 
+            window.uyariModalKapat(); 
+        };
         window.ezanUyariKapat = () => { document.getElementById('modal-ezan-uyari').classList.add('hidden'); document.getElementById('alert-sound').pause(); document.getElementById('alert-sound').currentTime = 0; };
         
         // SESLİ VE GÖRSEL BİLDİRİM FONKSİYONU
@@ -1609,6 +1621,11 @@
             if (!uyariAyarlari.aktif || sonUyarilanVakit === vakitAd) return;
             sonUyarilanVakit = vakitAd;
             if(navigator.vibrate) navigator.vibrate([200, 100, 200]); 
+            
+            // SİSTEM BİLDİRİMİ GÖNDER (Arka plan için)
+            if ("Notification" in window && Notification.permission === "granted") {
+                try { new Notification(baslik, { body: metin }); } catch(e) {}
+            }
             
             document.getElementById('ezan-uyari-baslik').innerText = baslik;
             document.getElementById('ezan-uyari-metin').innerText = metin;
@@ -1624,7 +1641,38 @@
             }
         };
 
-        window.diniGunleriHesapla = (yil) => { const holidays = []; const baslangic = new Date(yil, 0, 1); const bitis = new Date(yil, 11, 31); const formatter = new Intl.DateTimeFormat('en-US-u-ca-islamic-umalqura', { month: 'numeric', day: 'numeric' }); let regaipBulundu = false; for (let d = new Date(baslangic); d <= bitis; d.setDate(d.getDate() + 1)) { try { const formatted = formatter.formatToParts(d); const iMonth = parseInt(formatted.find(p => p.type === 'month').value); const iDay = parseInt(formatted.find(p => p.type === 'day').value); if (iMonth === 7 && iDay === 1) holidays.push({ name: "Üç Aylar Başlangıcı", date: new Date(d) }); if (iMonth === 7 && iDay === 27) holidays.push({ name: "Miraç Kandili", date: new Date(d) }); if (iMonth === 8 && iDay === 15) holidays.push({ name: "Beraat Kandili", date: new Date(d) }); if (iMonth === 9 && iDay === 1) holidays.push({ name: "Ramazan Başlangıcı", date: new Date(d), color: "emerald" }); if (iMonth === 9 && iDay === 27) holidays.push({ name: "Kadir Gecesi", date: new Date(d) }); if (iMonth === 10 && iDay === 1) holidays.push({ name: "Ramazan Bayramı", date: new Date(d), color: "blue" }); if (iMonth === 12 && iDay === 10) holidays.push({ name: "Kurban Bayramı", date: new Date(d), color: "blue" }); if (iMonth === 1 && iDay === 1) holidays.push({ name: "Hicri Yılbaşı", date: new Date(d) }); if (iMonth === 1 && iDay === 10) holidays.push({ name: "Aşure Günü", date: new Date(d) }); if (iMonth === 3 && iDay === 12) holidays.push({ name: "Mevlid Kandili", date: new Date(d) }); if (iMonth === 7 && d.getDay() === 4 && !regaipBulundu) { holidays.push({ name: "Regaip Kandili", date: new Date(d) }); regaipBulundu = true; } if (iMonth !== 7) regaipBulundu = false; } catch(e) {} } return holidays.sort((a, b) => a.date - b.date); };
+        window.diniGunleriHesapla = (yil) => { 
+            const holidays = []; const baslangic = new Date(yil, 0, 1); const bitis = new Date(yil, 11, 31); const formatter = new Intl.DateTimeFormat('en-US-u-ca-islamic-umalqura', { month: 'numeric', day: 'numeric' }); let regaipBulundu = false; 
+            for (let d = new Date(baslangic); d <= bitis; d.setDate(d.getDate() + 1)) { 
+                try { 
+                    const formatted = formatter.formatToParts(d); const iMonth = parseInt(formatted.find(p => p.type === 'month').value); const iDay = parseInt(formatted.find(p => p.type === 'day').value); 
+                    if (iMonth === 7 && iDay === 1) holidays.push({ name: "Üç Aylar Başlangıcı", date: new Date(d) }); 
+                    if (iMonth === 7 && iDay === 27) holidays.push({ name: "Miraç Kandili", date: new Date(d) }); 
+                    if (iMonth === 8 && iDay === 15) holidays.push({ name: "Beraat Kandili", date: new Date(d) }); 
+                    if (iMonth === 9 && iDay === 1) holidays.push({ name: "Ramazan Başlangıcı", date: new Date(d), color: "emerald" }); 
+                    if (iMonth === 9 && iDay === 27) holidays.push({ name: "Kadir Gecesi", date: new Date(d) }); 
+                    
+                    // Bayram Günleri (Ramazan)
+                    if (iMonth === 10 && iDay === 1) holidays.push({ name: "Ramazan Bayramı (1. Gün)", date: new Date(d), color: "blue" }); 
+                    if (iMonth === 10 && iDay === 2) holidays.push({ name: "Ramazan Bayramı (2. Gün)", date: new Date(d), color: "blue" }); 
+                    if (iMonth === 10 && iDay === 3) holidays.push({ name: "Ramazan Bayramı (3. Gün)", date: new Date(d), color: "blue" }); 
+                    
+                    // Arefe ve Bayram Günleri (Kurban)
+                    if (iMonth === 12 && iDay === 9) holidays.push({ name: "Arefe Günü", date: new Date(d), color: "emerald" }); 
+                    if (iMonth === 12 && iDay === 10) holidays.push({ name: "Kurban Bayramı (1. Gün)", date: new Date(d), color: "blue" }); 
+                    if (iMonth === 12 && iDay === 11) holidays.push({ name: "Kurban Bayramı (2. Gün)", date: new Date(d), color: "blue" }); 
+                    if (iMonth === 12 && iDay === 12) holidays.push({ name: "Kurban Bayramı (3. Gün)", date: new Date(d), color: "blue" }); 
+                    if (iMonth === 12 && iDay === 13) holidays.push({ name: "Kurban Bayramı (4. Gün)", date: new Date(d), color: "blue" }); 
+                    
+                    if (iMonth === 1 && iDay === 1) holidays.push({ name: "Hicri Yılbaşı", date: new Date(d) }); 
+                    if (iMonth === 1 && iDay === 10) holidays.push({ name: "Aşure Günü", date: new Date(d) }); 
+                    if (iMonth === 3 && iDay === 12) holidays.push({ name: "Mevlid Kandili", date: new Date(d) }); 
+                    if (iMonth === 7 && d.getDay() === 4 && !regaipBulundu) { holidays.push({ name: "Regaip Kandili", date: new Date(d) }); regaipBulundu = true; } 
+                    if (iMonth !== 7) regaipBulundu = false; 
+                } catch(e) {} 
+            } 
+            return holidays.sort((a, b) => a.date - b.date); 
+        };
         
         // YAKLAŞAN DİNİ GÜN AFİŞİ
         window.yaklasanDiniGunKontrol = () => {
