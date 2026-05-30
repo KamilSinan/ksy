@@ -108,37 +108,37 @@
             align-items: center !important;
         }
         .mode-serbest #z-sayac {
-            font-size: 3.5rem !important;
-            max-width: 200px !important;
-            padding: 1rem !important;
+            font-size: 2.5rem !important;
+            max-width: 150px !important;
+            padding: 0.75rem !important;
             margin-bottom: -15px !important;
-            border-radius: 1.5rem !important;
+            border-radius: 1.25rem !important;
             border: 2px solid #e2e8f0 !important;
             color: #064e3b !important;
             box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05), inset 0 -4px 10px rgba(0,0,0,0.02) !important;
         }
         .mode-serbest #btn-oku {
-            width: 140px !important;
-            height: 140px !important;
+            width: 110px !important;
+            height: 110px !important;
         }
         .mode-serbest #btn-oku-ic {
-            width: 115px !important;
-            height: 115px !important;
+            width: 85px !important;
+            height: 85px !important;
         }
         .mode-serbest #btn-oku-text {
-            font-size: 1.75rem !important;
+            font-size: 1.25rem !important;
         }
         .mode-serbest .yan-butonlar {
-            width: 4rem !important;
-            height: 4rem !important;
-            margin-bottom: -2.5rem !important;
-            border-radius: 1.25rem !important;
+            width: 3.5rem !important;
+            height: 3.5rem !important;
+            margin-bottom: -2rem !important;
+            border-radius: 1rem !important;
             background-color: white !important;
             border: 1px solid #e2e8f0 !important;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1) !important;
         }
         .mode-serbest .yan-butonlar span:first-child {
-            font-size: 1.25rem !important;
+            font-size: 1.1rem !important;
         }
         #z-sayac-kontrol-alani, #sayac-buton-grubu, #z-sayac, #btn-oku, #btn-oku-ic, #btn-oku-text, .yan-butonlar {
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
@@ -277,33 +277,38 @@
 
                     <!-- Serbest Mod Hedef Girişi -->
                     <div id="serbest-ayarlar-container" class="w-full mb-2 hidden animate-[slideUp_0.2s_ease-out]">
-                        <div class="bg-gradient-to-r from-slate-50 to-white p-4 rounded-2xl shadow-sm border border-slate-200">
-                            <label class="block text-xs font-bold text-slate-500 uppercase mb-2 text-center tracking-wider">Serbest Mod Hedefi (Opsiyonel)</label>
-                            <input type="number" id="input-serbest-hedef" placeholder="Sınırsız (Limit yok)" min="0" class="w-full p-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-emerald-500 outline-none text-emerald-800 font-bold text-xl text-center transition-all shadow-inner" oninput="window.serbestHedefKaydet()">
+                        <div class="bg-gradient-to-r from-slate-50 to-white p-3 rounded-2xl shadow-sm border border-slate-200">
+                            <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1.5 text-center tracking-wider">Hedef (İsteğe Bağlı)</label>
+                            <input type="number" id="input-serbest-hedef" placeholder="Boş bırakırsanız sınırsız sayar" min="0" class="w-full p-2.5 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-emerald-500 outline-none text-emerald-800 font-bold text-lg text-center transition-all shadow-inner placeholder:text-xs placeholder:text-slate-400 placeholder:font-medium" oninput="window.serbestHedefKaydet()">
                         </div>
                     </div>
 
                     <!-- Dua Detay Kartı (SADECE SEÇİM YAPILDIĞINDA GÖSTERİLECEK) -->
-                    <div id="zikir-detay" class="w-full bg-white p-5 rounded-3xl shadow-md border border-slate-100 flex flex-col mb-2 mt-2 relative hidden transition-all">
-                        <h2 id="z-baslik" class="text-xl font-extrabold mt-1 mb-4 text-slate-800 text-center">Başlık</h2>
-                        
-                        <div class="bg-emerald-50/80 p-4 rounded-2xl border border-emerald-200 mb-4 shadow-sm">
-                            <div class="text-[10px] font-black text-emerald-700 uppercase tracking-widest mb-2 flex items-center justify-center gap-1.5 opacity-90"><span>🗣️</span> Okunuşu</div>
-                            <p id="z-okunus" class="text-lg text-emerald-950 font-bold leading-relaxed text-center">Okunuşu</p>
+                    <div id="zikir-detay" class="w-full bg-white rounded-3xl shadow-sm border border-slate-200 flex flex-col mb-2 mt-2 relative hidden transition-all overflow-hidden flex-shrink-0">
+                        <div class="bg-emerald-50/50 p-4 border-b border-emerald-100/50 text-center">
+                            <h2 id="z-baslik" class="text-lg font-extrabold text-slate-800 truncate">Başlık</h2>
                         </div>
                         
-                        <p id="z-arapca" class="font-arabic text-3xl text-slate-800 mb-5 no-select leading-relaxed drop-shadow-sm text-center" dir="rtl">Arapça</p>
-                        
-                        <div class="bg-slate-50 p-3 rounded-2xl border border-slate-100 mb-2">
-                            <div class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1 flex items-center justify-center gap-1"><span>📖</span> Anlamı</div>
-                            <p id="z-meal" class="text-xs text-slate-600 italic leading-relaxed text-center">Meali</p>
-                        </div>
+                        <div class="p-4 max-h-[26vh] overflow-y-auto scrollbar-hide flex flex-col gap-4 relative">
+                            <p id="z-arapca" class="font-arabic text-3xl text-slate-800 text-center leading-relaxed drop-shadow-sm" dir="rtl"></p>
+                            
+                            <div id="okunus-kapsayici" class="bg-slate-50 p-3.5 rounded-2xl border border-slate-100 hidden">
+                                <div class="text-[10px] font-black text-emerald-600 uppercase tracking-widest mb-1.5 flex justify-center items-center gap-1 opacity-90"><span>🗣️</span> Okunuşu</div>
+                                <p id="z-okunus" class="text-sm text-slate-800 font-bold leading-relaxed text-center"></p>
+                            </div>
+                            
+                            <div id="meal-kapsayici" class="bg-slate-50 p-3.5 rounded-2xl border border-slate-100 hidden">
+                                <div class="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1.5 flex justify-center items-center gap-1 opacity-90"><span>📖</span> Anlamı</div>
+                                <p id="z-meal" class="text-xs text-slate-600 italic leading-relaxed text-center"></p>
+                            </div>
 
-                        <!-- Eklenen Not Alanı -->
-                        <div id="z-not-kapsayici" class="bg-amber-50/50 p-3 rounded-2xl border border-amber-100 hidden">
-                            <div class="text-[10px] font-bold text-amber-600 uppercase tracking-widest mb-1 flex items-center justify-center gap-1"><span>📌</span> Not / Açıklama</div>
-                            <p id="z-not" class="text-xs text-amber-800 leading-relaxed text-center font-medium"></p>
+                            <div id="z-not-kapsayici" class="bg-amber-50/50 p-3.5 rounded-2xl border border-amber-100 hidden">
+                                <div class="text-[10px] font-black text-amber-600 uppercase tracking-widest mb-1.5 flex justify-center items-center gap-1 opacity-90"><span>📌</span> Not / Açıklama</div>
+                                <p id="z-not" class="text-xs text-amber-800 font-medium leading-relaxed text-center"></p>
+                            </div>
                         </div>
+                        
+                        <div class="absolute bottom-0 left-0 right-0 h-6 bg-gradient-to-t from-white to-transparent pointer-events-none rounded-b-3xl"></div>
                     </div>
                 </div>
 
@@ -327,7 +332,7 @@
                             </div>
                         </div>
                         <div class="w-full bg-slate-200 rounded-full h-2.5 shadow-inner overflow-hidden">
-                            <div id="hedef-bar" class="bg-gradient-to-r from-emerald-400 to-teal-500 h-full rounded-full transition-all duration-500 relative">
+                            <div id="hedef-bar" class="h-full rounded-full transition-all duration-500 relative" style="width: 0%; background: #10b981;">
                                 <div class="absolute inset-0 bg-white/20 w-full h-full animate-pulse"></div>
                             </div>
                         </div>
@@ -563,22 +568,33 @@
                 </div>
                 <div class="p-6 overflow-y-auto overflow-x-hidden bg-slate-50 flex flex-col gap-4">
                     <!-- Ayet -->
-                    <div class="bg-gradient-to-br from-emerald-50 to-teal-50 border border-emerald-100 p-4 rounded-2xl shadow-sm relative overflow-hidden">
+                    <div class="bg-gradient-to-br from-emerald-50 to-teal-50 border border-emerald-100 p-4 rounded-2xl shadow-sm relative overflow-hidden group">
                         <div class="absolute -right-2 -top-2 text-4xl opacity-10">📖</div>
-                        <div class="text-[10px] font-bold text-emerald-600 uppercase tracking-widest mb-2 flex items-center gap-1.5"><span class="text-sm">📖</span> Günün Ayeti</div>
-                        <p class="text-sm text-slate-700 font-medium leading-relaxed italic" id="gunluk-ayet">Yükleniyor...</p>
+                        <div class="flex justify-between items-center mb-3">
+                            <div class="text-[10px] font-bold text-emerald-600 uppercase tracking-widest flex items-center gap-1.5"><span class="text-sm">📖</span> Günün Ayeti</div>
+                            <button onclick="window.hazineKopyala('ayet')" class="text-emerald-600 bg-white border border-emerald-200 px-2.5 py-1 rounded-lg shadow-sm text-[10px] font-bold active:scale-95 transition-transform hover:bg-emerald-50">Kopyala</button>
+                        </div>
+                        <p id="gunluk-ayet-arapca" class="font-arabic text-2xl text-emerald-900 leading-loose text-right mb-3 drop-shadow-sm" dir="rtl"></p>
+                        <p class="text-sm text-slate-700 font-medium leading-relaxed italic text-justify" id="gunluk-ayet">Yükleniyor...</p>
+                        <div id="gunluk-ayet-kaynak" class="text-[10px] text-emerald-600 font-bold mt-2 text-right uppercase tracking-wider"></div>
                     </div>
                     <!-- Hadis -->
-                    <div class="bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-100 p-4 rounded-2xl shadow-sm relative overflow-hidden">
+                    <div class="bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-100 p-4 rounded-2xl shadow-sm relative overflow-hidden group">
                         <div class="absolute -right-2 -top-2 text-4xl opacity-10">💬</div>
-                        <div class="text-[10px] font-bold text-blue-600 uppercase tracking-widest mb-2 flex items-center gap-1.5"><span class="text-sm">💬</span> Günün Hadisi</div>
-                        <p class="text-sm text-slate-700 font-medium leading-relaxed italic" id="gunluk-hadis">Yükleniyor...</p>
+                        <div class="flex justify-between items-center mb-3">
+                            <div class="text-[10px] font-bold text-blue-600 uppercase tracking-widest flex items-center gap-1.5"><span class="text-sm">💬</span> Günün Hadisi</div>
+                            <button onclick="window.hazineKopyala('hadis')" class="text-blue-600 bg-white border border-blue-200 px-2.5 py-1 rounded-lg shadow-sm text-[10px] font-bold active:scale-95 transition-transform hover:bg-blue-50">Kopyala</button>
+                        </div>
+                        <p class="text-sm text-slate-700 font-medium leading-relaxed italic text-justify" id="gunluk-hadis">Yükleniyor...</p>
                     </div>
                     <!-- Dua -->
-                    <div class="bg-gradient-to-br from-amber-50 to-orange-50 border border-amber-100 p-4 rounded-2xl shadow-sm relative overflow-hidden">
+                    <div class="bg-gradient-to-br from-amber-50 to-orange-50 border border-amber-100 p-4 rounded-2xl shadow-sm relative overflow-hidden group">
                         <div class="absolute -right-2 -top-2 text-4xl opacity-10">🤲</div>
-                        <div class="text-[10px] font-bold text-amber-600 uppercase tracking-widest mb-2 flex items-center gap-1.5"><span class="text-sm">🤲</span> Günün Duası</div>
-                        <p class="text-sm text-slate-700 font-medium leading-relaxed italic" id="gunluk-dua">Yükleniyor...</p>
+                        <div class="flex justify-between items-center mb-3">
+                            <div class="text-[10px] font-bold text-amber-600 uppercase tracking-widest flex items-center gap-1.5"><span class="text-sm">🤲</span> Günün Duası</div>
+                            <button onclick="window.hazineKopyala('dua')" class="text-amber-600 bg-white border border-amber-200 px-2.5 py-1 rounded-lg shadow-sm text-[10px] font-bold active:scale-95 transition-transform hover:bg-amber-50">Kopyala</button>
+                        </div>
+                        <p class="text-sm text-slate-700 font-medium leading-relaxed italic text-justify" id="gunluk-dua">Yükleniyor...</p>
                     </div>
                 </div>
             </div>
@@ -1020,16 +1036,16 @@
         window.fb = null;
         let isCloudConnected = false; let auth, firestoreDb, currentUser, appId;
 
-        // TAM VE ORİJİNAL GÜNLÜK İÇERİKLER
+        // TAM VE ORİJİNAL GÜNLÜK İÇERİKLER (Arapça ve Kaynak Geliştirmeli)
         const gunlukIceriklerDB = [
-            { ayet: "Şüphesiz Allah, adaleti, iyilik yapmayı, yakınlara yardım etmeyi emreder... (Nahl, 90)", hadis: "Sizin en hayırlınız, Kur'an'ı öğrenen ve öğretendir. (Buhârî, Fezâilü'l-Kur'ân 21)", dua: "Allah'ım! Fayda vermeyen ilimden, ürpermeyen kalpten, doymayan nefisten ve kabul olunmayan duadan sana sığınırım. (Müslim)" },
-            { ayet: "Kim zerre miktarı hayır yapmışsa onu görür... (Zilzâl, 7)", hadis: "Müslüman, elinden ve dilinden diğer Müslümanların güvende olduğu kimsedir. (Buhârî)", dua: "Rabbimiz! Bize dünyada da iyilik ver, ahirette de iyilik ver ve bizi ateş azabından koru. (Bakara, 201)" },
-            { ayet: "Beni anın ki, ben de sizi anayım... (Bakara, 152)", hadis: "Ameller niyetlere göredir... (Buhârî)", dua: "Ey kalpleri çeviren Allah'ım! Kalbimi dinin üzerine sabit kıl. (Tirmizî)" },
-            { ayet: "Allah sabredenlerle beraberdir. (Bakara, 153)", hadis: "Kolaylaştırın, zorlaştırmayın; müjdeleyin, nefret ettirmeyin. (Buhârî)", dua: "Allah'ım! Seni anmak, sana şükretmek ve sana güzelce ibadet etmekte bana yardım et. (Ebû Dâvûd)" },
-            { ayet: "Gevşemeyin, hüzünlenmeyin. Eğer (gerçekten) inanıyorsanız üstün olan sizsiniz. (Âl-i İmrân, 139)", hadis: "İki nimet vardır ki, insanların çoğu bu konuda aldanmıştır: Sağlık ve boş vakit. (Buhârî)", dua: "Allah'ım! Hastalıktan, dertten ve her türlü musibetten sana sığınırım." },
-            { ayet: "Biz insana, anne-babasına iyi davranmasını emrettik... (Lokmân, 14)", hadis: "Kim bir Müslümanın dünya sıkıntılarından birini giderirse, Allah da onun kıyamet günündeki sıkıntılarından birini giderir. (Müslim)", dua: "Allah'ım! Beni bağışla, bana merhamet et, bana hidayet ver ve beni rızıklandır." },
-            { ayet: "De ki: Ey kendilerinin aleyhine aşırı giden kullarım! Allah'ın rahmetinden ümidinizi kesmeyin. (Zümer, 53)", hadis: "Zulümden sakının! Çünkü zulüm, kıyamet gününde zifiri karanlık olacaktır. (Müslim)", dua: "Allah'ım! Gizli ve açık bütün günahlarımı bağışla." },
-            { ayet: "Bilin ki, kalpler ancak Allah'ı anmakla huzur bulur. (Ra'd, 28)", hadis: "İnsanlara merhamet etmeyene Allah merhamet etmez. (Buhârî)", dua: "Allah'ım! Senin sevgini ve seni sevenlerin sevgisini senden dilerim." }
+            { ayetArapca: "إِنَّ اللَّهَ يَأْمُرُ بِالْعَدْلِ وَالْإِحْسَانِ وَإِيتَاءِ ذِي الْقُرْبَىٰ", ayet: "Şüphesiz Allah, adaleti, iyilik yapmayı, yakınlara yardım etmeyi emreder...", ayetKaynak: "Nahl Suresi, 90", hadis: "Sizin en hayırlınız, Kur'an'ı öğrenen ve öğretendir. (Buhârî, Fezâilü'l-Kur'ân 21)", dua: "Allah'ım! Fayda vermeyen ilimden, ürpermeyen kalpten, doymayan nefisten ve kabul olunmayan duadan sana sığınırım. (Müslim)" },
+            { ayetArapca: "فَمَنْ يَعْمَلْ مِثْقَالَ ذَرَّةٍ خَيْرًا يَرَهُ", ayet: "Kim zerre miktarı hayır yapmışsa onu görür...", ayetKaynak: "Zilzâl Suresi, 7", hadis: "Müslüman, elinden ve dilinden diğer Müslümanların güvende olduğu kimsedir. (Buhârî)", dua: "Rabbimiz! Bize dünyada da iyilik ver, ahirette de iyilik ver ve bizi ateş azabından koru. (Bakara, 201)" },
+            { ayetArapca: "فَاذْكُرُونِي أَذْكُرْكُمْ وَاشْكُرُوا لِي وَلَا تَكْفُرُونِ", ayet: "Beni anın ki, ben de sizi anayım. Bana şükredin, sakın nankörlük etmeyin.", ayetKaynak: "Bakara Suresi, 152", hadis: "Ameller niyetlere göredir... (Buhârî)", dua: "Ey kalpleri çeviren Allah'ım! Kalbimi dinin üzerine sabit kıl. (Tirmizî)" },
+            { ayetArapca: "يَا أَيُّهَا الَّذِينَ آمَنُوا اسْتَعِينُوا بِالصَّبْرِ وَالصَّلَاةِ ۚ إِنَّ اللَّهَ مَعَ الصَّابِرِينَ", ayet: "Ey iman edenler! Sabır ve namaz ile Allah'tan yardım isteyin. Şüphesiz Allah sabredenlerle beraberdir.", ayetKaynak: "Bakara Suresi, 153", hadis: "Kolaylaştırın, zorlaştırmayın; müjdeleyin, nefret ettirmeyin. (Buhârî)", dua: "Allah'ım! Seni anmak, sana şükretmek ve sana güzelce ibadet etmekte bana yardım et. (Ebû Dâvûd)" },
+            { ayetArapca: "وَلَا تَهِنُوا وَلَا تَحْزَنُوا وَأَنْتُمُ الْأَعْلَوْنَ إِنْ كُنْتُمْ مُؤْمِنِينَ", ayet: "Gevşemeyin, hüzünlenmeyin. Eğer (gerçekten) inanıyorsanız üstün olan sizsiniz.", ayetKaynak: "Âl-i İmrân Suresi, 139", hadis: "İki nimet vardır ki, insanların çoğu bu konuda aldanmıştır: Sağlık ve boş vakit. (Buhârî)", dua: "Allah'ım! Hastalıktan, dertten ve her türlü musibetten sana sığınırım." },
+            { ayetArapca: "وَوَصَّيْنَا الْإِنْسَانَ بِوَالِدَيْهِ حُسْنًا", ayet: "Biz insana, anne-babasına iyi davranmasını emrettik...", ayetKaynak: "Ankebût Suresi, 8", hadis: "Kim bir Müslümanın dünya sıkıntılarından birini giderirse, Allah da onun kıyamet günündeki sıkıntılarından birini giderir. (Müslim)", dua: "Allah'ım! Beni bağışla, bana merhamet et, bana hidayet ver ve beni rızıklandır." },
+            { ayetArapca: "قُلْ يَا عِبَادِيَ الَّذِينَ أَسْرَفُوا عَلَىٰ أَنْفُسِهِمْ لَا تَقْنَطُوا مِنْ رَحْمَةِ اللَّهِ", ayet: "De ki: Ey kendilerinin aleyhine aşırı giden kullarım! Allah'ın rahmetinden ümidinizi kesmeyin.", ayetKaynak: "Zümer Suresi, 53", hadis: "Zulümden sakının! Çünkü zulüm, kıyamet gününde zifiri karanlık olacaktır. (Müslim)", dua: "Allah'ım! Gizli ve açık bütün günahlarımı bağışla." },
+            { ayetArapca: "أَلَا بِذِكْرِ اللَّهِ تَطْمَئِنُّ الْقُلُوبُ", ayet: "Bilin ki, kalpler ancak Allah'ı anmakla huzur bulur.", ayetKaynak: "Ra'd Suresi, 28", hadis: "İnsanlara merhamet etmeyene Allah merhamet etmez. (Buhârî)", dua: "Allah'ım! Senin sevgini ve seni sevenlerin sevgisini senden dilerim." }
         ];
 
         // TAM VE ORİJİNAL HİCRİ AYLAR BİLGİSİ
@@ -1060,11 +1076,36 @@
             const index = new Date().getDate() % gunlukIceriklerDB.length;
             const icerik = gunlukIceriklerDB[index];
             const ayetEl = document.getElementById('gunluk-ayet');
+            const ayetArapcaEl = document.getElementById('gunluk-ayet-arapca');
+            const ayetKaynakEl = document.getElementById('gunluk-ayet-kaynak');
             const hadisEl = document.getElementById('gunluk-hadis');
             const duaEl = document.getElementById('gunluk-dua');
-            if (ayetEl) ayetEl.innerText = icerik.ayet;
+            
+            if (ayetEl) ayetEl.innerText = `"${icerik.ayet}"`;
+            if (ayetArapcaEl) {
+                if(icerik.ayetArapca) { ayetArapcaEl.innerText = icerik.ayetArapca; ayetArapcaEl.classList.remove('hidden'); }
+                else { ayetArapcaEl.classList.add('hidden'); }
+            }
+            if (ayetKaynakEl) ayetKaynakEl.innerText = `— ${icerik.ayetKaynak}`;
             if (hadisEl) hadisEl.innerText = icerik.hadis;
             if (duaEl) duaEl.innerText = icerik.dua;
+        };
+
+        window.hazineKopyala = (tip) => {
+            const index = new Date().getDate() % gunlukIceriklerDB.length;
+            const icerik = gunlukIceriklerDB[index];
+            let metin = "";
+            if(tip === 'ayet') metin = `✨ GÜNÜN AYETİ ✨\n\n${icerik.ayetArapca}\n\n"${icerik.ayet}"\n\n(${icerik.ayetKaynak})\n\n📍 Dijital Hazine Premium`;
+            else if(tip === 'hadis') metin = `✨ GÜNÜN HADİSİ ✨\n\n${icerik.hadis}\n\n📍 Dijital Hazine Premium`;
+            else if(tip === 'dua') metin = `✨ GÜNÜN DUASI ✨\n\n${icerik.dua}\n\n📍 Dijital Hazine Premium`;
+            
+            const ta = document.createElement('textarea');
+            ta.value = metin;
+            document.body.appendChild(ta);
+            ta.select();
+            document.execCommand('copy');
+            document.body.removeChild(ta);
+            window.toastGoster("Panoya kopyalandı! Şimdi paylaşabilirsiniz.", "success");
         };
 
         function veritabaniYukle() { return JSON.parse(JSON.stringify(varsayilanDB)); }
@@ -1279,8 +1320,14 @@
                 const zikir = dbData.find(d => String(d.id) === String(aktifZikirId)); if(!zikir) return; 
                 document.getElementById('z-baslik').innerText = zikir.baslik; 
                 const arapcaEl = document.getElementById('z-arapca'); if(zikir.arapca) { arapcaEl.innerText = zikir.arapca; arapcaEl.classList.remove('hidden'); } else { arapcaEl.classList.add('hidden'); } 
-                document.getElementById('z-okunus').innerText = zikir.okunus; 
-                const mealEl = document.getElementById('z-meal'); if(zikir.meal) { mealEl.innerText = zikir.meal; mealEl.classList.remove('hidden'); } else { mealEl.classList.add('hidden'); } 
+                
+                const okunusKapsayici = document.getElementById('okunus-kapsayici');
+                const okunusEl = document.getElementById('z-okunus');
+                if(zikir.okunus) { okunusEl.innerText = zikir.okunus; okunusKapsayici.classList.remove('hidden'); } else { okunusKapsayici.classList.add('hidden'); }
+                
+                const mealKapsayici = document.getElementById('meal-kapsayici');
+                const mealEl = document.getElementById('z-meal'); 
+                if(zikir.meal) { mealEl.innerText = zikir.meal; mealKapsayici.classList.remove('hidden'); } else { mealKapsayici.classList.add('hidden'); } 
                 
                 // NOT / AÇIKLAMA KONTROLÜ
                 const notKapsayici = document.getElementById('z-not-kapsayici');
@@ -1309,27 +1356,33 @@
                 if(hedefKalan) hedefKalan.innerText = `${kalan}`; 
                 
                 let yuzde = (aktifSayac / aktifHedef); if(yuzde > 1) yuzde = 1; 
-                if(hedefBar) hedefBar.style.width = (yuzde * 100) + "%";
                 
-                if(aktifSayac >= aktifHedef) { 
-                    if(hedefBar) { hedefBar.classList.replace('from-emerald-400', 'from-gold-400'); hedefBar.classList.replace('to-teal-500', 'to-yellow-500'); } 
-                } else { 
-                    if(hedefBar) { hedefBar.classList.replace('from-gold-400', 'from-emerald-400'); hedefBar.classList.replace('to-yellow-500', 'to-teal-500'); } 
-                }
-
-                // BUTON RENK GEÇİŞİ (Yeşilden Kırmızıya)
+                // BUTON VE BAR RENK GEÇİŞİ (Yeşilden Kırmızıya)
                 const r1 = Math.round(16 + (239 - 16) * yuzde); const g1 = Math.round(185 + (68 - 185) * yuzde); const b1 = Math.round(129 + (68 - 129) * yuzde);
                 const r2 = Math.round(6 + (153 - 6) * yuzde); const g2 = Math.round(95 + (27 - 95) * yuzde); const b2 = Math.round(70 + (27 - 70) * yuzde);
+                const dinamikRenk1 = `rgb(${r1},${g1},${b1})`;
+                const dinamikRenk2 = `rgb(${r2},${g2},${b2})`;
+
+                if(hedefBar) { 
+                    hedefBar.style.width = (yuzde * 100) + "%";
+                }
                 
                 const btnOkuIc = document.getElementById('btn-oku-ic');
-                if(btnOkuIc) {
-                    btnOkuIc.style.background = `linear-gradient(to bottom right, rgb(${r1},${g1},${b1}), rgb(${r2},${g2},${b2}))`;
-                    if(yuzde === 1) { 
+                if(yuzde >= 1) { 
+                    if(btnOkuIc) {
+                        btnOkuIc.style.background = `linear-gradient(to bottom right, #ef4444, #b91c1c)`;
                         btnOkuIc.style.boxShadow = "0 0 40px rgba(239, 68, 68, 0.8), inset 0 0 15px rgba(255,255,255,0.4)";
                         btnOkuIc.classList.add('animate-pulse');
-                    } else { 
+                    }
+                    if(hedefBar) hedefBar.style.background = `linear-gradient(to right, #ef4444, #b91c1c)`;
+                } else { 
+                    if(btnOkuIc) {
+                        btnOkuIc.style.background = `linear-gradient(to bottom right, ${dinamikRenk1}, ${dinamikRenk2})`;
                         btnOkuIc.style.boxShadow = ""; 
                         btnOkuIc.classList.remove('animate-pulse');
+                    }
+                    if(hedefBar) {
+                        hedefBar.style.background = `linear-gradient(to right, #10b981, ${dinamikRenk1})`;
                     }
                 }
 
@@ -1337,6 +1390,8 @@
                 if(hedefKapsayici) hedefKapsayici.classList.add('hidden'); 
                 if(sayacKutusu) sayacKutusu.classList.remove('hidden'); // HEDEF YOKSA SAYAÇ GÖRÜNÜR
                 
+                if(hedefBar) hedefBar.style.width = "0%";
+
                 const btnOkuIc = document.getElementById('btn-oku-ic');
                 if(btnOkuIc) {
                     btnOkuIc.style.background = '';
@@ -1372,7 +1427,14 @@
 
         window.sayaciSifirla = () => { 
             window.onayIste("Sayacı Sıfırla", "Sıfırlamak istiyor musunuz?", "🔄", () => {
-                if (zikirMode === 'kutuphane') { sayac = 0; } else { freeSayac = 0; } 
+                if (zikirMode === 'kutuphane') { 
+                    sayac = 0; 
+                } else { 
+                    freeSayac = 0; 
+                    freeHedef = 0; 
+                    const inputSerbestHedef = document.getElementById('input-serbest-hedef');
+                    if (inputSerbestHedef) inputSerbestHedef.value = ''; // Kutuyu temizle
+                } 
                 zikirBaslangicZamani = null; if(zikirTimer) clearInterval(zikirTimer); 
                 const suresiEl = document.getElementById('zikir-suresi'); if(suresiEl) suresiEl.innerText = "00:00"; 
                 saveLocalState(); syncToCloud(); window.zikirEkraniGuncelle(); window.toastGoster("Sıfırlandı.", "info"); 
