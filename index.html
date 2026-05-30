@@ -99,8 +99,8 @@
             background: transparent !important;
             border-top: none !important;
             box-shadow: none !important;
-            margin-top: 2rem !important;
-            padding-bottom: 2rem !important;
+            margin-top: 1rem !important;
+            padding-bottom: 1rem !important;
             backdrop-filter: none !important;
             -webkit-backdrop-filter: none !important;
         }
@@ -108,37 +108,37 @@
             align-items: center !important;
         }
         .mode-serbest #z-sayac {
-            font-size: 5rem !important;
-            max-width: 280px !important;
-            padding: 1.5rem 1rem !important;
-            margin-bottom: -25px !important;
-            border-radius: 2rem !important;
+            font-size: 3.5rem !important;
+            max-width: 200px !important;
+            padding: 1rem !important;
+            margin-bottom: -15px !important;
+            border-radius: 1.5rem !important;
             border: 2px solid #e2e8f0 !important;
             color: #064e3b !important;
             box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05), inset 0 -4px 10px rgba(0,0,0,0.02) !important;
         }
         .mode-serbest #btn-oku {
-            width: 200px !important;
-            height: 200px !important;
+            width: 140px !important;
+            height: 140px !important;
         }
         .mode-serbest #btn-oku-ic {
-            width: 170px !important;
-            height: 170px !important;
+            width: 115px !important;
+            height: 115px !important;
         }
         .mode-serbest #btn-oku-text {
-            font-size: 2.5rem !important;
+            font-size: 1.75rem !important;
         }
         .mode-serbest .yan-butonlar {
-            width: 4.5rem !important;
-            height: 4.5rem !important;
-            margin-bottom: -3rem !important;
-            border-radius: 1.5rem !important;
+            width: 4rem !important;
+            height: 4rem !important;
+            margin-bottom: -2.5rem !important;
+            border-radius: 1.25rem !important;
             background-color: white !important;
             border: 1px solid #e2e8f0 !important;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1) !important;
         }
         .mode-serbest .yan-butonlar span:first-child {
-            font-size: 1.5rem !important;
+            font-size: 1.25rem !important;
         }
         #z-sayac-kontrol-alani, #sayac-buton-grubu, #z-sayac, #btn-oku, #btn-oku-ic, #btn-oku-text, .yan-butonlar {
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
@@ -1302,13 +1302,48 @@
             
             if(aktifHedef > 0) {
                 if(hedefKapsayici) hedefKapsayici.classList.remove('hidden'); 
+                if(sayacKutusu) sayacKutusu.classList.add('hidden'); // YER KAZANMAK İÇİN SAYAÇ GİZLENİYOR
+                
                 if(hedefMetin) hedefMetin.innerText = `${aktifSayac} / ${aktifHedef}`; 
                 let kalan = aktifHedef - aktifSayac; if(kalan < 0) kalan = 0; 
                 if(hedefKalan) hedefKalan.innerText = `${kalan}`; 
-                let yuzde = (aktifSayac / aktifHedef) * 100; if(yuzde > 100) yuzde = 100; if(hedefBar) hedefBar.style.width = yuzde + "%";
-                if(aktifSayac >= aktifHedef) { if(hedefBar) { hedefBar.classList.replace('from-emerald-400', 'from-gold-400'); hedefBar.classList.replace('to-teal-500', 'to-yellow-500'); } if(sayacKutusu) sayacKutusu.classList.add('hedef-basarili'); } 
-                else { if(hedefBar) { hedefBar.classList.replace('from-gold-400', 'from-emerald-400'); hedefBar.classList.replace('to-yellow-500', 'to-teal-500'); } }
-            } else { if(hedefKapsayici) hedefKapsayici.classList.add('hidden'); }
+                
+                let yuzde = (aktifSayac / aktifHedef); if(yuzde > 1) yuzde = 1; 
+                if(hedefBar) hedefBar.style.width = (yuzde * 100) + "%";
+                
+                if(aktifSayac >= aktifHedef) { 
+                    if(hedefBar) { hedefBar.classList.replace('from-emerald-400', 'from-gold-400'); hedefBar.classList.replace('to-teal-500', 'to-yellow-500'); } 
+                } else { 
+                    if(hedefBar) { hedefBar.classList.replace('from-gold-400', 'from-emerald-400'); hedefBar.classList.replace('to-yellow-500', 'to-teal-500'); } 
+                }
+
+                // BUTON RENK GEÇİŞİ (Yeşilden Kırmızıya)
+                const r1 = Math.round(16 + (239 - 16) * yuzde); const g1 = Math.round(185 + (68 - 185) * yuzde); const b1 = Math.round(129 + (68 - 129) * yuzde);
+                const r2 = Math.round(6 + (153 - 6) * yuzde); const g2 = Math.round(95 + (27 - 95) * yuzde); const b2 = Math.round(70 + (27 - 70) * yuzde);
+                
+                const btnOkuIc = document.getElementById('btn-oku-ic');
+                if(btnOkuIc) {
+                    btnOkuIc.style.background = `linear-gradient(to bottom right, rgb(${r1},${g1},${b1}), rgb(${r2},${g2},${b2}))`;
+                    if(yuzde === 1) { 
+                        btnOkuIc.style.boxShadow = "0 0 40px rgba(239, 68, 68, 0.8), inset 0 0 15px rgba(255,255,255,0.4)";
+                        btnOkuIc.classList.add('animate-pulse');
+                    } else { 
+                        btnOkuIc.style.boxShadow = ""; 
+                        btnOkuIc.classList.remove('animate-pulse');
+                    }
+                }
+
+            } else { 
+                if(hedefKapsayici) hedefKapsayici.classList.add('hidden'); 
+                if(sayacKutusu) sayacKutusu.classList.remove('hidden'); // HEDEF YOKSA SAYAÇ GÖRÜNÜR
+                
+                const btnOkuIc = document.getElementById('btn-oku-ic');
+                if(btnOkuIc) {
+                    btnOkuIc.style.background = '';
+                    btnOkuIc.style.boxShadow = '';
+                    btnOkuIc.classList.remove('animate-pulse');
+                }
+            }
         };
 
         window.zikirArtir = () => {
@@ -1326,7 +1361,8 @@
                 osc.frequency.value = 300 + (progress * 500); const maxVol = 0.05 + (progress * 0.25); gainNode.gain.setValueAtTime(maxVol, audioCtx.currentTime); gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.1); osc.start(); osc.stop(audioCtx.currentTime + 0.1);
             }
             if(guncelHedef > 0 && guncelSayac === guncelHedef) {
-                if(zikirTimer) clearInterval(zikirTimer); if(navigator.vibrate) navigator.vibrate([100, 50, 100, 50, 200]);
+                if(zikirTimer) clearInterval(zikirTimer); 
+                if(navigator.vibrate) navigator.vibrate([300, 150, 300, 150, 500]); // Yüksek titreşimle uyarı
                 window.toastGoster("🎯 Hedefe Ulaştınız!", "success");
             } else { if (navigator.vibrate) navigator.vibrate(15); }
         };
@@ -1762,13 +1798,55 @@
         window.toastGoster = (mesaj, tip="info") => { const toast = document.getElementById('toast'); if(!toast) return; document.getElementById('toast-icon').innerText = tip === "success" ? "✅" : tip === "error" ? "❌" : "ℹ️"; document.getElementById('toast-msg').innerText = mesaj; toast.classList.remove('opacity-0', 'translate-y-2'); setTimeout(() => { toast.classList.add('opacity-0', 'translate-y-2'); }, 2500); };
         window.imsakiyeModalAc = async () => { document.getElementById('modal-imsakiye').classList.remove('hidden'); document.getElementById('imsakiye-yukleniyor').classList.remove('hidden'); document.getElementById('imsakiye-tablo-kapsayici').classList.add('hidden'); const tbody = document.getElementById('imsakiye-liste'); tbody.innerHTML = ""; try { const d = new Date(); const m = d.getMonth() + 1; const y = d.getFullYear(); const todayStr = String(d.getDate()).padStart(2, '0') + '-' + String(m).padStart(2, '0') + '-' + y; const res = await fetch(`https://api.aladhan.com/v1/calendarByCity?city=${encodeURIComponent(sehir)}&country=${encodeURIComponent(ulke)}&method=13&month=${m}&year=${y}`); const data = await res.json(); if (data.code === 200) { data.data.forEach(gun => { const isToday = gun.date.gregorian.date === todayStr; const bgClass = isToday ? "bg-emerald-50 font-bold" : ""; tbody.innerHTML += `<tr class="border-b border-slate-100 ${bgClass} hover:bg-slate-50 transition-colors"><td class="p-3 whitespace-nowrap text-slate-700">${gun.date.gregorian.day} ${gun.date.gregorian.month.en.substring(0,3)}</td><td class="p-3 font-bold text-emerald-700">${gun.timings.Fajr.split(' ')[0]}</td><td class="p-3 text-slate-500">${gun.timings.Sunrise.split(' ')[0]}</td><td class="p-3 text-slate-700">${gun.timings.Dhuhr.split(' ')[0]}</td><td class="p-3 text-slate-700">${gun.timings.Asr.split(' ')[0]}</td><td class="p-3 font-bold text-blue-700">${gun.timings.Maghrib.split(' ')[0]}</td><td class="p-3 text-slate-500">${gun.timings.Isha.split(' ')[0]}</td></tr>`; }); document.getElementById('imsakiye-yukleniyor').classList.add('hidden'); document.getElementById('imsakiye-tablo-kapsayici').classList.remove('hidden'); } else throw new Error(); } catch (e) { document.getElementById('imsakiye-yukleniyor').innerHTML = "❌ Veri çekilemedi."; } };
         window.imsakiyeModalKapat = () => document.getElementById('modal-imsakiye').classList.add('hidden');
+        
         window.raporlariListele = () => {
-            const liste = document.getElementById('kayit-listesi'); liste.innerHTML = ""; let toplamZikirSayisi = 0; let zikirFrekans = {};
-            if(kayitlar.length === 0) { document.getElementById('stat-toplam-zikir').innerText = "0"; document.getElementById('stat-kayit-sayisi').innerText = "0"; document.getElementById('stat-en-cok-okunan').innerText = "-"; liste.innerHTML = `<p class="text-center text-slate-400 py-8 font-medium">Kayıt bulunamadı.</p>`; return; } 
-            kayitlar.forEach(k => { toplamZikirSayisi += parseInt(k.sayi) || 0; zikirFrekans[k.baslik] = (zikirFrekans[k.baslik] || 0) + (parseInt(k.sayi) || 0); liste.innerHTML += `<div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-100 flex justify-between items-center"><div><h4 class="font-bold text-slate-800 text-sm mb-1">${window.xssKoru(k.baslik)}</h4><p class="text-[10px] font-medium text-slate-400">${window.xssKoru(k.tarih)}</p></div><div class="bg-emerald-50 border border-emerald-100 text-emerald-700 font-bold px-3 py-1.5 rounded-xl text-sm">${k.sayi}</div></div>`; });
-            let enCokOkunanZikir = "-", maxSayi = 0; for(let baslik in zikirFrekans) { if(zikirFrekans[baslik] > maxSayi) { maxSayi = zikirFrekans[baslik]; enCokOkunanZikir = baslik; } }
-            document.getElementById('stat-toplam-zikir').innerText = toplamZikirSayisi.toLocaleString('tr-TR'); document.getElementById('stat-kayit-sayisi').innerText = kayitlar.length.toLocaleString('tr-TR'); document.getElementById('stat-en-cok-okunan').innerText = enCokOkunanZikir;
+            const liste = document.getElementById('kayit-listesi'); liste.innerHTML = ""; let toplamZikirSayisi = 0;
+            
+            if(kayitlar.length === 0) { 
+                document.getElementById('stat-toplam-zikir').innerText = "0"; 
+                document.getElementById('stat-kayit-sayisi').innerText = "0"; 
+                document.getElementById('stat-en-cok-okunan').innerText = "-"; 
+                liste.innerHTML = `<p class="text-center text-slate-400 py-8 font-medium">Kayıt bulunamadı.</p>`; 
+                return; 
+            } 
+            
+            // AYNI BAŞLIKLARI GRUPLA (DISTINCT)
+            let gruplanmis = {};
+            kayitlar.forEach(k => { 
+                let sayi = parseInt(k.sayi) || 0;
+                toplamZikirSayisi += sayi; 
+                
+                if(!gruplanmis[k.baslik]) {
+                    gruplanmis[k.baslik] = { baslik: k.baslik, sayi: sayi, sonTarih: k.tarih, kere: 1 };
+                } else {
+                    gruplanmis[k.baslik].sayi += sayi;
+                    gruplanmis[k.baslik].kere += 1;
+                }
+            });
+
+            // LİSTEYİ EN ÇOK OKUNANDAN EN AZA GÖRE SIRALA
+            let gruplanmisDizi = Object.values(gruplanmis).sort((a,b) => b.sayi - a.sayi);
+
+            gruplanmisDizi.forEach(g => {
+                liste.innerHTML += `
+                    <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-100 flex justify-between items-center">
+                        <div>
+                            <h4 class="font-bold text-slate-800 text-sm mb-1">${window.xssKoru(g.baslik)}</h4>
+                            <p class="text-[10px] font-medium text-slate-400">Toplam ${g.kere} oturum • Son: ${window.xssKoru(g.sonTarih.split('(')[0].trim())}</p>
+                        </div>
+                        <div class="bg-emerald-50 border border-emerald-100 text-emerald-700 font-bold px-3 py-1.5 rounded-xl text-sm">
+                            ${g.sayi.toLocaleString('tr-TR')}
+                        </div>
+                    </div>`; 
+            });
+
+            let enCokOkunanZikir = gruplanmisDizi.length > 0 ? gruplanmisDizi[0].baslik : "-";
+            
+            document.getElementById('stat-toplam-zikir').innerText = toplamZikirSayisi.toLocaleString('tr-TR'); 
+            document.getElementById('stat-kayit-sayisi').innerText = kayitlar.length.toLocaleString('tr-TR'); 
+            document.getElementById('stat-en-cok-okunan').innerText = enCokOkunanZikir;
         };
+
         window.kayitlariTemizle = async () => { window.onayIste("Geçmişi Temizle", "Tüm kayıt geçmişiniz silinecek. Emin misiniz?", "⚠️", async () => { kayitlar = []; await idb.remove('kayitlar'); if (isCloudConnected && currentUser && window.fb) { const sn = await window.fb.getDocs(window.fb.collection(firestoreDb, 'artifacts', appId, 'users', currentUser.uid, 'kayitlar')); sn.forEach(d => window.fb.deleteDoc(d.ref)); } window.raporlariListele(); window.toastGoster("Geçmiş temizlendi", "info"); }); };
         window.csvIndir = () => { if(kayitlar.length === 0) return; let csv = "\uFEFFTarih;Zikir;Okunan Sayi\n"; kayitlar.forEach(k => { csv += `${k.tarih};${k.baslik.replace(/;/g, ',')};${k.sayi}\n`; }); const link = document.createElement("a"); link.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8;' })); link.download = "Rapor.csv"; link.click(); };
 
