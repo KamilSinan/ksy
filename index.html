@@ -737,7 +737,13 @@
                 sehirSelect.classList.remove('hidden'); sehirText.classList.add('hidden'); if(infoText) infoText.classList.add('hidden');
                 sehirSelect.innerHTML = ""; const sehirler = konumVerisi[secilenUlke];
                 sehirler.sort().forEach(s => { const opt = document.createElement('option'); opt.value = s; opt.text = s; sehirSelect.appendChild(opt); });
-                if(sehirler.includes(window.sehir)) sehirSelect.value = window.sehir;
+                
+                if(sehirler.includes(window.sehir)) {
+                    sehirSelect.value = window.sehir;
+                } else if (window.ulke === secilenUlke && window.sehir) {
+                    const opt = document.createElement('option'); opt.value = window.sehir; opt.text = window.sehir; 
+                    sehirSelect.appendChild(opt); sehirSelect.value = window.sehir;
+                }
             } else { 
                 sehirSelect.classList.add('hidden'); sehirText.classList.remove('hidden'); if(infoText) infoText.classList.remove('hidden');
                 sehirText.value = (window.ulke === secilenUlke && window.sehir) ? window.sehir : ""; 
@@ -758,9 +764,27 @@
                 try {
                     const res = await fetch('https://get.geojs.io/v1/ip/geo.json'); const data = await res.json();
                     if(data && data.country && data.city) {
-                        let c = data.country; let s = data.city; if(c.toLowerCase() === "türkiye" || c.toLowerCase() === "turkey") c = "Turkey";
-                        const ulkeSelect = document.getElementById('input-ulke'); if(ulkeSelect) { if(!tumUlkeler.includes(c)) { tumUlkeler.push(c); const opt = document.createElement('option'); opt.value = c; opt.text = c; ulkeSelect.appendChild(opt); } ulkeSelect.value = c; window.ulkeDegisti(c); }
-                        if(konumVerisi[c]) { const ss = document.getElementById('input-sehir-select'); const normalizeStr = (str) => (str || "").replace(/İ/g,'I').replace(/ı/g,'i').toLowerCase(); const normS = normalizeStr(s); let match = konumVerisi[c].find(x => normalizeStr(x) === normS || normS.includes(normalizeStr(x)) || normalizeStr(x).includes(normS)); if(ss) { if(match) ss.value = match; else { const opt = document.createElement('option'); opt.value = s; opt.text = s; ss.appendChild(opt); ss.value = s; } } } else { const st = document.getElementById('input-sehir-text'); if(st) st.value = s; } window.toastGoster("Konum internet üzerinden (IP) bulundu.", "success");
+                        let c = data.country; let s = data.region || data.city; 
+                        if(c.toLowerCase() === "türkiye" || c.toLowerCase() === "turkey") c = "Turkey";
+                        if(s) s = s.replace(' Province', '').replace(' City', '').trim();
+                        const ulkeSelect = document.getElementById('input-ulke'); 
+                        if(ulkeSelect) { 
+                            if(!tumUlkeler.includes(c)) { tumUlkeler.push(c); const opt = document.createElement('option'); opt.value = c; opt.text = c; ulkeSelect.appendChild(opt); } 
+                            ulkeSelect.value = c; window.ulkeDegisti(c); 
+                        }
+                        const sehirSelect = document.getElementById('input-sehir-select');
+                        if(konumVerisi[c] && sehirSelect) { 
+                            let match = konumVerisi[c].find(x => x.toLowerCase() === s.toLowerCase() || s.toLowerCase().includes(x.toLowerCase())); 
+                            if(match) {
+                                sehirSelect.value = match; 
+                            } else { 
+                                const opt = document.createElement('option'); opt.value = s; opt.text = s; 
+                                sehirSelect.appendChild(opt); sehirSelect.value = s; 
+                            } 
+                        } else { 
+                            const st = document.getElementById('input-sehir-text'); if(st) st.value = s; 
+                        } 
+                        window.toastGoster("Konum IP üzerinden bulundu.", "success");
                     } else throw new Error();
                 } catch(e) { window.toastGoster("Konum bulunamadı. Lütfen listeden seçiniz.", "error"); } finally { btn.innerText = eskiMetin; btn.disabled = false; }
             };
@@ -771,11 +795,28 @@
                     try {
                         const bdcUrl = `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${pos.coords.latitude}&longitude=${pos.coords.longitude}&localityLanguage=en`;
                         const res = await fetch(bdcUrl); const data = await res.json();
-                        let c = data.countryName || ""; let s = data.city || data.locality || data.principalSubdivision || "";
+                        let c = data.countryName || ""; let s = data.principalSubdivision || data.city || data.locality || "";
                         if(c && s) {
                             if(c.toLowerCase() === "türkiye" || c.toLowerCase() === "turkiye") c = "Turkey";
-                            const ulkeSelect = document.getElementById('input-ulke'); if(ulkeSelect) { if(!tumUlkeler.includes(c)) { tumUlkeler.push(c); const opt = document.createElement('option'); opt.value = c; opt.text = c; ulkeSelect.appendChild(opt); } ulkeSelect.value = c; window.ulkeDegisti(c); }
-                            if(konumVerisi[c]) { const ss = document.getElementById('input-sehir-select'); const normalizeStr = (str) => (str || "").replace(/İ/g,'I').replace(/ı/g,'i').toLowerCase(); const normS = normalizeStr(s); let match = konumVerisi[c].find(x => normalizeStr(x) === normS || normS.includes(normalizeStr(x)) || normalizeStr(x).includes(normS)); if(ss) { if(match) ss.value = match; else { const opt = document.createElement('option'); opt.value = s; opt.text = s; ss.appendChild(opt); ss.value = s; } } } else { const st = document.getElementById('input-sehir-text'); if(st) st.value = s; } window.toastGoster("Konum başarıyla tespit edildi.", "success"); btn.innerText = eskiMetin; btn.disabled = false;
+                            if(s) s = s.replace(' Province', '').replace(' City', '').trim();
+                            const ulkeSelect = document.getElementById('input-ulke'); 
+                            if(ulkeSelect) { 
+                                if(!tumUlkeler.includes(c)) { tumUlkeler.push(c); const opt = document.createElement('option'); opt.value = c; opt.text = c; ulkeSelect.appendChild(opt); } 
+                                ulkeSelect.value = c; window.ulkeDegisti(c); 
+                            }
+                            const sehirSelect = document.getElementById('input-sehir-select');
+                            if(konumVerisi[c] && sehirSelect) { 
+                                let match = konumVerisi[c].find(x => x.toLowerCase() === s.toLowerCase() || s.toLowerCase().includes(x.toLowerCase())); 
+                                if(match) {
+                                    sehirSelect.value = match; 
+                                } else { 
+                                    const opt = document.createElement('option'); opt.value = s; opt.text = s; 
+                                    sehirSelect.appendChild(opt); sehirSelect.value = s; 
+                                } 
+                            } else { 
+                                const st = document.getElementById('input-sehir-text'); if(st) st.value = s; 
+                            } 
+                            window.toastGoster("Konum başarıyla tespit edildi.", "success"); btn.innerText = eskiMetin; btn.disabled = false;
                         } else throw new Error();
                     } catch(e) { IP_Fallback(); }
                 }, (err) => { IP_Fallback(); }, { enableHighAccuracy: false, timeout: 8000, maximumAge: 60000 });
@@ -993,7 +1034,8 @@
             const yukleniyor = document.getElementById('vakit-yukleniyor'); const grid = document.getElementById('vakit-grid'); const sonraki = document.getElementById('sonraki-vakit-karti'); const nafile = document.getElementById('nafile-namaz-karti'); const asrKarti = document.getElementById('vakit-asri-serif-karti');
             if(yukleniyor) yukleniyor.classList.remove('hidden'); if(grid) grid.classList.add('hidden'); if(sonraki) sonraki.classList.add('hidden'); if(nafile) nafile.classList.add('hidden'); if(asrKarti) asrKarti.classList.add('hidden');
             try {
-                const res = await fetch(`https://api.aladhan.com/v1/timingsByCity?city=${encodeURIComponent(window.sehir)}&country=${encodeURIComponent(window.ulke)}&method=13`); const data = await res.json();
+                let temizSehir = window.sehir.split('/')[0].split('-')[0].trim();
+                const res = await fetch(`https://api.aladhan.com/v1/timingsByCity?city=${encodeURIComponent(temizSehir)}&country=${encodeURIComponent(window.ulke)}&method=13`); const data = await res.json();
                 if(data && data.code === 200) {
                     window.namazVakitleri = data.data.timings; window.sehirLat = data.data.meta.latitude; window.sehirLon = data.data.meta.longitude; window.qiblaDirection = data.data.meta.qibla;
                     if(grid) grid.innerHTML = ""; 
@@ -1103,7 +1145,7 @@
 
         window.csvIndir = () => { if(kayitlar.length === 0) return; let csv = "\uFEFFTarih;Zikir;Okunan Sayi\n"; kayitlar.forEach(k => { csv += `${k.tarih||""};${(k.baslik||"").replace(/;/g, ',')};${k.sayi||0}\n`; }); const link = document.createElement("a"); link.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8;' })); link.download = "Rapor.csv"; link.click(); };
 
-        // === KIBLE PUSULASI MODÜLÜ (DİYANET 81 İL SÖZLÜĞÜ VE GLOBAL ÇEVRİMDIŞI ALGORİTMA) ===
+        // === KIBLE PUSULASI MODÜLÜ BAŞLANGICI ===
         window.kibleModalAc = () => { 
             try {
                 window.kibleBulunduMu = false; 
@@ -1118,13 +1160,12 @@
                 let foundPusulaAci = null; 
                 let foundGercekAci = null;
                 
-                // Türkiye geneli Diyanet İşleri verisi (Gerçek açılar ve Manyetik sapma hesaba katılarak)
                 const diyanetPusulaAcilar = { "adana": 160, "adiyaman": 164, "afyonkarahisar": 150, "agri": 174, "amasya": 158, "ankara": 154, "antalya": 153, "artvin": 169, "aydin": 146, "balikesir": 146, "bilecik": 149, "bingol": 169, "bitlis": 172, "bolu": 153, "burdur": 150, "bursa": 147, "canakkale": 145, "cankiri": 156, "corum": 157, "denizli": 148, "diyarbakir": 168, "edirne": 146, "elazig": 165, "erzincan": 167, "erzurum": 172, "eskisehir": 151, "gaziantep": 162, "giresun": 162, "gumushane": 165, "hakkari": 174, "hatay": 160, "isparta": 151, "mersin": 158, "istanbul": 148, "izmir": 145, "kars": 174, "kastamonu": 154, "kayseri": 158, "kirklareli": 147, "kirsehir": 156, "kocaeli": 149, "konya": 154, "kutahya": 149, "malatya": 164, "manisa": 145, "kahramanmaras": 162, "mardin": 168, "mugla": 148, "mus": 171, "nevsehir": 158, "nigde": 157, "ordu": 161, "rize": 166, "sakarya": 150, "samsun": 157, "siirt": 170, "sinop": 156, "sivas": 163, "tekirdag": 147, "tokat": 160, "trabzon": 164, "tunceli": 167, "sanliurfa": 165, "usak": 148, "van": 174, "yozgat": 158, "zonguldak": 152, "aksaray": 155, "bayburt": 169, "karaman": 156, "kirikkale": 155, "batman": 169, "sirnak": 171, "bartin": 152, "ardahan": 173, "igdir": 175, "yalova": 148, "karabuk": 153, "kilis": 162, "osmaniye": 161, "duzce": 151 };
                 
                 const normalizeSehirAdi = (str) => {
                     if (!str) return "";
-                    return str.toString()
-                        .toLowerCase()
+                    let temiz = str.split('/')[0].split('-')[0].trim();
+                    return temiz.toLowerCase()
                         .replace(/ı/g, 'i')
                         .replace(/ş/g, 's')
                         .replace(/ğ/g, 'g')
@@ -1135,7 +1176,6 @@
                         .trim();
                 };
 
-                // Türkiye'de ise Diyanet Açısını Çek
                 if (window.ulke === "Turkey" && window.sehir) {
                     let normS = normalizeSehirAdi(window.sehir);
                     if(diyanetPusulaAcilar[normS]) { 
@@ -1144,7 +1184,6 @@
                     }
                 }
 
-                // Global Matematiksel Formül (Eğer Diyanet Veritabanında Yoksa Devreye Girer)
                 let gercekAci = window.qiblaDirection || 0; 
                 let pusulaAcisi = gercekAci;
 
@@ -1164,17 +1203,14 @@
                         const y = Math.sin(lonK - lO);
                         const x = Math.cos(lU) * Math.tan(latK) - Math.sin(lU) * Math.cos(lonK - lO); 
                         gercekAci = ((Math.atan2(y, x) / rad) + 360) % 360; 
-                        pusulaAcisi = gercekAci;
+                        pusulaAcisi = gercekAci; 
                     }
                 }
 
                 window.manyetikSapma = 0;
-                
-                // Manyetik Sapma Hesabı (Formül)
                 if (window.sehirLat && window.sehirLon) {
                     let lat = parseFloat(String(window.sehirLat).replace(',', '.')); 
                     let lon = parseFloat(String(window.sehirLon).replace(',', '.'));
-                    
                     if (!isNaN(lat) && !isNaN(lon)) {
                         if (lat > 35 && lat < 43 && lon > 25 && lon < 45) { 
                             window.manyetikSapma = 5.5 + (lon - 32.8) * 0.16; 
@@ -1190,7 +1226,6 @@
                     pusulaAcisi = (gercekAci - window.manyetikSapma + 360) % 360;
                 }
 
-                // Diyanet Verisi bulunduysa Tüm Hesaplamaların Üzerine Yaz (Örn: Ankara 154)
                 if (foundPusulaAci !== null) { 
                     pusulaAcisi = foundPusulaAci; 
                     gercekAci = foundGercekAci; 
@@ -1199,7 +1234,6 @@
                 window.kibleAci = gercekAci;
                 window.kiblePusulaAcisi = pusulaAcisi;
 
-                // UI Güncelleme (Geçerli bir açı varsa ekrana yazdırır)
                 if (gercekAci && gercekAci !== 0 && !isNaN(gercekAci)) {
                     const kam = document.getElementById('kible-aci-metni'); if(kam) kam.innerText = Math.round(window.kiblePusulaAcisi) + "°"; 
                     const kdm = document.getElementById('kible-detay-metni'); if(kdm) kdm.innerText = `Pusula: ${Math.round(window.kiblePusulaAcisi)}° | Gerçek: ${Math.round(window.kibleAci)}° (${window.sehir || 'Konum'})`; 
